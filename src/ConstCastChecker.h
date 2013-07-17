@@ -10,6 +10,10 @@
 #include <clang/StaticAnalyzer/Core/Checker.h>
 #include <clang/StaticAnalyzer/Core/PathSensitive/CheckerContext.h>
 #include <clang/StaticAnalyzer/Core/BugReporter/BugType.h>
+
+// [FB] Added missing #include
+#include <clang/AST/ExprCXX.h>
+
 #include "CmsException.h"
 
 namespace clangcms {
