@@ -32,3 +32,6 @@ export PATH=$SAS_LIB_DIR:$PATH
 
 # Let scan-build find the clang and the sas plugin
 alias lcg-scan-build="scan-build --use-analyzer `which clang` -load-plugin `which $SAS_LIB_FILENAME`"
+
+# Setup g++
+source /afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6/setup.sh
