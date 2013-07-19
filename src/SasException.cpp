@@ -1,4 +1,4 @@
-//== CmsException.cpp -                             --------------*- C++ -*--==//
+//== SasException.cpp -                             --------------*- C++ -*--==//
 //
 // by Thomas Hauth [ Thomas.Hauth@cern.ch ] and Patrick Gartung
 //
