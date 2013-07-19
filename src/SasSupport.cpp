@@ -1,10 +1,10 @@
-//===--- CmsSupport.cpp - Provides support functions ------------*- C++ -*-===//
+//===--- SasSupport.cpp - Provides support functions ------------*- C++ -*-===//
 //
 // by Shahzad Malik MUZAFFAR [ Shahzad.Malik.MUZAFFAR@cern.ch ]
 //
 //===----------------------------------------------------------------------===//
 
-#include "CmsSupport.h"
+#include "SasSupport.h"
 #include <cstdlib>
 #include <cstring>
 using namespace sas;

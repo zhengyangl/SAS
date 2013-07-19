@@ -1,4 +1,4 @@
-//===--- CmsSupport.h - Provides support functions ------------*- C++ -*-===//
+//===--- SasSupport.h - Provides support functions ------------*- C++ -*-===//
 //
 // by Thomas Hauth [ Thomas.Hauth@cern.ch ] and Patrick Gartung
 //
