@@ -4,8 +4,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef LLVM_CLANG_STATICANALYZER_SAS_CMSEXCEPTION_H
-#define LLVM_CLANG_STATICANALYZER_SAS_CMSEXCEPTION_H
+#ifndef LLVM_CLANG_STATICANALYZER_SAS_SASEXCEPTION_H
+#define LLVM_CLANG_STATICANALYZER_SAS_SASEXCEPTION_H
 
 #include <llvm/Support/Regex.h>
 
