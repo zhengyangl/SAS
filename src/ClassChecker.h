@@ -15,7 +15,7 @@
 #include <clang/StaticAnalyzer/Core/BugReporter/BugType.h>
 #include <llvm/ADT/SmallString.h>
 
-#include "CmsException.h"
+#include "SasException.h"
 #include "SasSupport.h"
 
 namespace sas {

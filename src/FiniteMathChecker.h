@@ -7,7 +7,7 @@
 #include <clang/StaticAnalyzer/Core/PathSensitive/CheckerContext.h>
 #include <clang/StaticAnalyzer/Core/BugReporter/BugType.h>
 
-#include "CmsException.h"
+#include "SasException.h"
 
 namespace sas {
 class FiniteMathChecker : public clang::ento::Checker<clang::ento::check::PreStmt<clang::CallExpr> > {

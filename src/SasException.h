@@ -1,4 +1,4 @@
-//===--- CmsException.h - exceptions for bug reports ------------*- C++ -*-===//
+//===--- SasException.h - exceptions for bug reports ------------*- C++ -*-===//
 //
 // by Thomas Hauth [ Thomas.Hauth@cern.ch ] and Patrick Gartung
 //
