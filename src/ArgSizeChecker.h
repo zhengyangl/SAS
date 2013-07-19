@@ -1,3 +1,5 @@
+// Reports args passed by value with size>4k.
+
 #ifndef Utilities_StaticAnalyzers_ArgSizeChecker_h
 #define Utilities_StaticAnalyzers_ArgSizeChecker_h
 

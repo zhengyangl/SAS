@@ -1,3 +1,5 @@
+// Checks classes of interest
+
 #ifndef Utilities_StaticAnalyzers_MemberChecker_h
 #define Utilities_StaticAnalyzers_MemberChecker_h
 #include <clang/AST/DeclCXX.h>

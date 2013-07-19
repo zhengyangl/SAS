@@ -4,6 +4,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+// Checks for members with the mutable keyword which might not be thread-safe
+
 #ifndef Utilities_StaticAnalyzers_MutableMemberChecker_h
 #define Utilities_StaticAnalyzers_MutableMemberChecker_h
 

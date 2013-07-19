@@ -3,6 +3,9 @@
 // by Shahzad Malik MUZAFFAR [ Shahzad.Malik.MUZAFFAR@cern.ch ]
 //
 //===----------------------------------------------------------------------===//
+
+// Checks for 'using namespace' or 'using std::' in header files
+
 #ifndef Utilities_StaticAnalyzers_UsingNamespace_h
 #define Utilities_StaticAnalyzers_UsingNamespace_h
 

@@ -1,3 +1,5 @@
+// Checks classes inheriting from edm::Producer and edm::Filter
+
 #ifndef Utilities_StaticAnalyzers_edmChecker_h
 #define Utilities_StaticAnalyzers_edmChecker_h
 #include <clang/AST/DeclCXX.h>

@@ -4,6 +4,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+// Checks for non-const method local statics which might not be thread-safe
+
 #ifndef Utilities_StaticAnalyzers_StaticLocalChecker_h
 #define Utilities_StaticAnalyzers_StaticLocalChecker_h
 

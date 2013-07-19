@@ -1,3 +1,6 @@
+// Dumps class info
+// Dumps class inheritance info
+
 #ifndef Utilities_StaticAnalyzers_MemberDumper_h
 #define Utilities_StaticAnalyzers_MemberDumper_h
 #include <clang/AST/DeclCXX.h>
@@ -30,6 +33,7 @@ private:
 
 };
 
+// Dumps class info
 class ClassDumperCT : public clang::ento::Checker<clang::ento::check::ASTDecl<clang::ClassTemplateDecl> > {
  mutable clang::OwningPtr< clang::ento::BugType> BT;
 
@@ -43,6 +47,7 @@ private:
 
 };
 
+// Dumps class info
 class ClassDumperFT : public clang::ento::Checker<clang::ento::check::ASTDecl<clang::FunctionTemplateDecl> > {
  mutable clang::OwningPtr< clang::ento::BugType> BT;
 
@@ -56,6 +61,7 @@ private:
 
 };
 
+// Dumps class inheritance info
 class ClassDumperInherit : public clang::ento::Checker<clang::ento::check::ASTDecl<clang::CXXRecordDecl> > {
  mutable clang::OwningPtr< clang::ento::BugType> BT;
 

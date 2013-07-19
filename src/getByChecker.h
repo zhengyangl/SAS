@@ -1,3 +1,5 @@
+// Checks for calls to edm::getByLabel or edm::getManyByType and reports edm::Handle type passed
+
 #ifndef Utilities_StaticAnalyzers_EDMChecker_h
 #define Utilities_StaticAnalyzers_EDMChecker_h
 #include <clang/AST/DeclCXX.h>

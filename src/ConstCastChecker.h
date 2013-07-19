@@ -4,6 +4,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+// Checks for casts which remove const qualifier and might result in thread-unsafe code
+
 #ifndef Utilities_StaticAnalyzers_ConstCastChecker_h
 #define Utilities_StaticAnalyzers_ConstCastChecker_h
 

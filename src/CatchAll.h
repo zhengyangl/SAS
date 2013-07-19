@@ -3,6 +3,9 @@
 // by Shahzad Malik MUZAFFAR [ Shahzad.Malik.MUZAFFAR@cern.ch ]
 //
 //===----------------------------------------------------------------------===//
+
+// Checks for 'catch(...)' in source files
+
 #ifndef Utilities_StaticAnalyzers_CatchAll_h
 #define Utilities_StaticAnalyzers_CatchAll_h
 

@@ -1,3 +1,5 @@
+// Reports usage of isnan and isinf.
+
 #ifndef Utilities_StaticAnalyzers_FastMathChecker_h
 #define Utilities_StaticAnalyzers_FastMathChecker_h
 

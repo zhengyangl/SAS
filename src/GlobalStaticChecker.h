@@ -3,6 +3,9 @@
 // by Thomas Hauth [ Thomas.Hauth@cern.ch ]
 //
 //===----------------------------------------------------------------------===//
+
+// Checks for global non-const statics which might not be thread-safe
+
 #ifndef Utilities_StaticAnalyzers_GlobalStaticChecker_h
 #define Utilities_StaticAnalyzers_GlobalStaticChecker_h
 

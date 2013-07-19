@@ -5,6 +5,9 @@
 // by Thomas Hauth [ Thomas.Hauth@cern.ch ]
 //
 //===----------------------------------------------------------------------===//
+
+// Checks for casts which remove const qualifier and might result in thread-unsafe code
+
 #ifndef Utilities_StaticAnalyzers_ConstCastAwayChecker_h
 #define Utilities_StaticAnalyzers_ConstCastAwayChecker_h
 
