@@ -6,4 +6,4 @@
 # The build is not incremental as this script is intended for testing purposes.
 
 cmake .
-make -B
+make -j 32
