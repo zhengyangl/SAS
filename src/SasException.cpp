@@ -9,7 +9,7 @@
 
 namespace sas {
 
-bool CmsException::reportGeneral( clang::ento::PathDiagnosticLocation const& path,
+bool SasException::reportGeneral( clang::ento::PathDiagnosticLocation const& path,
 				clang::ento::BugReporter & BR ) const
 {
 	  clang::SourceLocation SL = path.asLocation();
@@ -35,7 +35,7 @@ bool CmsException::reportGeneral( clang::ento::PathDiagnosticLocation const& pat
 
 }
 
-bool CmsException::reportConstCast( const clang::ento::BugReport &R,
+bool SasException::reportConstCast( const clang::ento::BugReport &R,
 		clang::ento::CheckerContext &C) const 
 {
 		clang::ento::BugReporter &BR = C.getBugReporter();
@@ -45,7 +45,7 @@ bool CmsException::reportConstCast( const clang::ento::BugReport &R,
 }
 
 
-bool CmsException::reportConstCastAway( const clang::ento::BugReport &R,
+bool SasException::reportConstCastAway( const clang::ento::BugReport &R,
 		clang::ento::CheckerContext &C) const 
 {
 		clang::ento::BugReporter & BR = C.getBugReporter();
@@ -55,21 +55,21 @@ bool CmsException::reportConstCastAway( const clang::ento::BugReport &R,
  
 }
 
-bool CmsException::reportGlobalStatic( clang::QualType const& t,
+bool SasException::reportGlobalStatic( clang::QualType const& t,
 			clang::ento::PathDiagnosticLocation const& path,
 			clang::ento::BugReporter & BR  ) const
 {
 	return reportGeneral ( path, BR );
 }
 
-bool CmsException::reportMutableMember( clang::QualType const& t,
+bool SasException::reportMutableMember( clang::QualType const& t,
 			clang::ento::PathDiagnosticLocation const& path,
 			clang::ento::BugReporter & BR  ) const
 {
 	return reportGeneral ( path, BR );
 }
 
-bool CmsException::reportClass( 
+bool SasException::reportClass( 
 			clang::ento::PathDiagnosticLocation const& path,
 			clang::ento::BugReporter & BR  ) const
 {
@@ -77,7 +77,7 @@ bool CmsException::reportClass(
 }
 
 
-bool CmsException::reportGlobalStaticForType( clang::QualType const& t,
+bool SasException::reportGlobalStaticForType( clang::QualType const& t,
 				clang::ento::PathDiagnosticLocation const& path,
 				clang::ento::BugReporter & BR ) const
 {

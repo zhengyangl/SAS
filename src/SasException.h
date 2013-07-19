@@ -17,7 +17,7 @@
 
 namespace sas {
 
-class CmsException {
+class SasException {
 public:
 	bool reportGlobalStaticForType( clang::QualType const& t,
 				clang::ento::PathDiagnosticLocation const& path,

@@ -26,7 +26,7 @@ public:
 	void checkPreStmt(const clang::CXXConstCastExpr *CE, clang::ento::CheckerContext &C) const;
 
 private:
-  CmsException m_exception;
+  SasException m_exception;
 };
 } 
 

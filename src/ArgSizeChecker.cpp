@@ -22,7 +22,7 @@ namespace sas {
 void ArgSizeChecker::checkPreStmt(const CXXConstructExpr *E, CheckerContext &ctx) const
 {
 
-  CmsException m_exception;
+  SasException m_exception;
   clang::LangOptions LangOpts;
   LangOpts.CPlusPlus = true;
   clang::PrintingPolicy Policy(LangOpts);
@@ -111,7 +111,7 @@ void ArgSizeChecker::checkPreStmt(const CXXConstructExpr *E, CheckerContext &ctx
 void ArgSizeChecker::checkASTDecl(const CXXMethodDecl *MD, AnalysisManager& mgr,
                     BugReporter &BR) const {
        	const SourceManager &SM = BR.getSourceManager();
-	CmsException m_exception;
+	SasException m_exception;
        	PathDiagnosticLocation DLoc =PathDiagnosticLocation::createBegin( MD, SM );
 	
  

@@ -38,7 +38,7 @@ public:
 
 
 private:
-  CmsException m_exception;
+  SasException m_exception;
 };
 
 }

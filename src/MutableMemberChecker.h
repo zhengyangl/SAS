@@ -24,7 +24,7 @@ public:
                       clang::ento::AnalysisManager &Mgr,
                       clang::ento::BugReporter &BR) const;
 private:
-  CmsException m_exception;
+  SasException m_exception;
 };  
 }
 

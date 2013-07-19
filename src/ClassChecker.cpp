@@ -314,7 +314,7 @@ void WalkAST::ReportDeclRef( const clang::DeclRefExpr * DRE) {
  if (const clang::VarDecl * D = llvm::dyn_cast<clang::VarDecl>(DRE->getDecl())) {
 	clang::QualType t =  D->getType();  
 	const clang::Stmt * PS = ParentStmt(DRE);
- 	CmsException m_exception;
+ 	SasException m_exception;
   	clang::LangOptions LangOpts;
   	LangOpts.CPlusPlus = true;
   	clang::PrintingPolicy Policy(LangOpts);
@@ -452,7 +452,7 @@ void WalkAST::ReportMember(const clang::MemberExpr *ME) {
 	}
   llvm::SmallString<100> buf;
   llvm::raw_svector_ostream os(buf);
-  CmsException m_exception;
+  SasException m_exception;
   clang::ento::PathDiagnosticLocation CELoc;
   clang::SourceRange R;
   clang::LangOptions LangOpts;
@@ -498,7 +498,7 @@ void WalkAST::ReportCall(const clang::CXXMemberCallExpr *CE) {
   llvm::SmallString<100> buf;
   llvm::raw_svector_ostream os(buf);
 
-  CmsException m_exception;
+  SasException m_exception;
   clang::LangOptions LangOpts;
   LangOpts.CPlusPlus = true;
   clang::PrintingPolicy Policy(LangOpts);
@@ -526,7 +526,7 @@ void WalkAST::ReportCast(const clang::ExplicitCastExpr *CE,const clang::Expr *E)
   llvm::SmallString<100> buf;
   llvm::raw_svector_ostream os(buf);
 
-  CmsException m_exception;
+  SasException m_exception;
   clang::LangOptions LangOpts;
   LangOpts.CPlusPlus = true;
   clang::PrintingPolicy Policy(LangOpts);
@@ -562,7 +562,7 @@ void WalkAST::ReportCallArg(const clang::CXXMemberCallExpr *CE,const int i) {
 
   llvm::SmallString<100> buf;
   llvm::raw_svector_ostream os(buf);
-  CmsException m_exception;
+  SasException m_exception;
   clang::LangOptions LangOpts;
   LangOpts.CPlusPlus = true;
   clang::PrintingPolicy Policy(LangOpts);
@@ -595,7 +595,7 @@ void WalkAST::ReportCallReturn(const clang::ReturnStmt * RS) {
   llvm::SmallString<100> buf;
   llvm::raw_svector_ostream os(buf);
 
-  CmsException m_exception;
+  SasException m_exception;
   clang::LangOptions LangOpts;
   LangOpts.CPlusPlus = true;
   clang::PrintingPolicy Policy(LangOpts);
