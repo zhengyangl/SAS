@@ -16,7 +16,7 @@ using namespace clang;
 using namespace ento;
 using namespace llvm;
 
-namespace clangcms {
+namespace sas {
 
 
 void ArgSizeChecker::checkPreStmt(const CXXConstructExpr *E, CheckerContext &ctx) const

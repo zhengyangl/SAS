@@ -7,7 +7,7 @@
 #include "CatchAll.h"
 #include "clang/Basic/SourceManager.h"
 #include "CmsSupport.h"
-using namespace clangcms;
+using namespace sas;
 
 void CatchAll::checkASTCodeBody(const clang::Decl*& D, clang::ento::AnalysisManager& AM, clang::ento::BugReporter& BR) const
 {

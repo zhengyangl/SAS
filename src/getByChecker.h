@@ -20,7 +20,7 @@
 #include "CmsException.h"
 #include "CmsSupport.h"
 
-namespace clangcms {
+namespace sas {
 
 class getByChecker : public clang::ento::Checker< clang::ento::check::ASTDecl<clang::CXXMethodDecl>,
 						clang::ento::check::ASTDecl<clang::FunctionTemplateDecl> > 

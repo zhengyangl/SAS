@@ -3,7 +3,7 @@ using namespace clang;
 using namespace ento;
 using namespace llvm;
 
-namespace clangcms {
+namespace sas {
 
 class Walker : public clang::StmtVisitor<Walker> {
   clang::ento::BugReporter &BR;
@@ -146,7 +146,7 @@ void getByChecker::checkASTDecl(const CXXMethodDecl *MD, AnalysisManager& mgr,
        	PathDiagnosticLocation DLoc =PathDiagnosticLocation::createBegin( MD, SM );
 	if ( SM.isInSystemHeader(DLoc.asLocation()) || SM.isInExternCSystemHeader(DLoc.asLocation()) ) return;
        	if (!MD->doesThisDeclarationHaveABody()) return;
-	clangcms::Walker walker(BR, mgr.getAnalysisDeclContext(MD));
+	sas::Walker walker(BR, mgr.getAnalysisDeclContext(MD));
 	walker.Visit(MD->getBody());
        	return;
 } 
@@ -161,7 +161,7 @@ void getByChecker::checkASTDecl(const FunctionTemplateDecl *TD, AnalysisManager&
 			E = const_cast<clang::FunctionTemplateDecl *>(TD)->spec_end(); I != E; ++I) 
 		{
 			if (I->doesThisDeclarationHaveABody()) {
-				clangcms::Walker walker(BR, mgr.getAnalysisDeclContext(*I));
+				sas::Walker walker(BR, mgr.getAnalysisDeclContext(*I));
 				walker.Visit(I->getBody());
 				}
 		}	

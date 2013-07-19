@@ -9,7 +9,7 @@
 
 #include "CmsException.h"
 
-namespace clangcms {
+namespace sas {
 class ArgSizeChecker : public clang::ento::Checker<clang::ento::check::PreStmt<clang::CXXConstructExpr>, 
 						clang::ento::check::ASTDecl<clang::CXXMethodDecl>	> {
   mutable llvm::OwningPtr<clang::ento::BugType> BT;

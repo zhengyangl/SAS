@@ -9,7 +9,7 @@
 #include "CmsSupport.h"
 #include <iostream>
 
-namespace clangcms {
+namespace sas {
 
 void FiniteMathChecker::checkPreStmt(const clang::CallExpr *CE, clang::ento::CheckerContext &ctx) const
 {

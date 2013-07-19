@@ -18,7 +18,7 @@
 
 #include "CmsException.h"
 
-namespace clangcms {
+namespace sas {
 
 class ConstCastChecker: public clang::ento::Checker< clang::ento::check::PreStmt< clang::CXXConstCastExpr> > {
 public:

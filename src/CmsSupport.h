@@ -11,7 +11,7 @@
 
 #include <clang/AST/Type.h>
 
-namespace clangcms {
+namespace sas {
 
 namespace support {
 

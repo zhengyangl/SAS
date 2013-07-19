@@ -13,7 +13,7 @@
 #include <clang/StaticAnalyzer/Core/PathSensitive/CheckerContext.h>
 #include <clang/AST/StmtCXX.h>
 
-namespace clangcms {
+namespace sas {
   class CatchAll : public clang::ento::Checker< clang::ento::check::ASTCodeBody >
   {
   public:

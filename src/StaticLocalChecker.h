@@ -16,7 +16,7 @@
 #include "CmsException.h"
 
 
-namespace clangcms {
+namespace sas {
 class StaticLocalChecker : public clang::ento::Checker< clang::ento::check::ASTDecl< clang::VarDecl> > {
   mutable clang::OwningPtr<clang::ento::BuiltinBug> BT;
 

@@ -9,7 +9,7 @@
 
 #include "CmsException.h"
 
-namespace clangcms {
+namespace sas {
 class FiniteMathChecker : public clang::ento::Checker<clang::ento::check::PreStmt<clang::CallExpr> > {
   mutable llvm::OwningPtr<clang::ento::BugType> BT;
 public:

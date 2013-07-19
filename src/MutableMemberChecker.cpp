@@ -6,7 +6,7 @@
 
 #include "MutableMemberChecker.h"
 
-namespace clangcms {
+namespace sas {
 
 void MutableMemberChecker::checkASTDecl(const clang::FieldDecl *D,
                     clang::ento::AnalysisManager &Mgr,

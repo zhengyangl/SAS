@@ -15,7 +15,7 @@
 #include "clang/StaticAnalyzer/Core/PathSensitive/CheckerContext.h"
 
 
-namespace clangcms {
+namespace sas {
 
 class CmsException {
 public:

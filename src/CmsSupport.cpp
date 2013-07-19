@@ -7,7 +7,7 @@
 #include "CmsSupport.h"
 #include <cstdlib>
 #include <cstring>
-using namespace clangcms;
+using namespace sas;
 
 bool support::isCmsLocalFile(const char* file)
 {

@@ -9,7 +9,7 @@
 #include "ConstCastAwayChecker.h"
 #include "CmsSupport.h" 
 
-namespace clangcms
+namespace sas
 {
 
 

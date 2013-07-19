@@ -3,7 +3,7 @@ using namespace clang;
 using namespace clang::ento;
 using namespace llvm;
 
-namespace clangcms {
+namespace sas {
 
 void edmChecker::checkASTDecl(const clang::CXXRecordDecl *RD, clang::ento::AnalysisManager& mgr,
                     clang::ento::BugReporter &BR) const {

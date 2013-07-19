@@ -9,7 +9,7 @@
 #include "CmsSupport.h"
 #include <iostream>
 
-namespace clangcms {
+namespace sas {
 
 
 void StaticLocalChecker::checkASTDecl(const clang::VarDecl *D,

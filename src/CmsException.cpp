@@ -7,7 +7,7 @@
 
 #include "CmsException.h"
 
-namespace clangcms {
+namespace sas {
 
 bool CmsException::reportGeneral( clang::ento::PathDiagnosticLocation const& path,
 				clang::ento::BugReporter & BR ) const

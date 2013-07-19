@@ -7,7 +7,7 @@
 #include "UsingNamespace.h"
 #include "clang/Basic/SourceManager.h"
 #include "CmsSupport.h"
-using namespace clangcms;
+using namespace sas;
 
 void UsingNamespace::checkASTDecl (const clang::UsingDirectiveDecl *D, clang::ento::AnalysisManager &Mgr, clang::ento::BugReporter &BR) const
 {

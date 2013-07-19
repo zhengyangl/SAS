@@ -13,7 +13,7 @@
 #include <clang/StaticAnalyzer/Core/PathSensitive/CheckerContext.h>
 #include <clang/AST/DeclCXX.h>
 
-namespace clangcms {
+namespace sas {
   class UsingNamespace : public clang::ento::Checker< clang::ento::check::ASTDecl <clang::UsingDirectiveDecl>,clang::ento::check::ASTDecl <clang::UsingDecl> >
   {
   public:

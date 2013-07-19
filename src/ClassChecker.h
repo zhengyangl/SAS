@@ -18,7 +18,7 @@
 #include "CmsException.h"
 #include "CmsSupport.h"
 
-namespace clangcms {
+namespace sas {
 
 class ClassChecker : public clang::ento::Checker<clang::ento::check::ASTDecl<clang::CXXRecordDecl> > {
   mutable clang::OwningPtr< clang::ento::BugType> BT;

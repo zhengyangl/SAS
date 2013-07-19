@@ -16,7 +16,7 @@
 #include <clang/StaticAnalyzer/Core/BugReporter/BugType.h>
 #include "CmsException.h" 
 
-namespace clangcms {
+namespace sas {
 
 class ConstCastAwayChecker: public clang::ento::Checker< clang::ento::check::PreStmt< clang::ExplicitCastExpr> > {
 public:

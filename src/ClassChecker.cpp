@@ -23,7 +23,7 @@ using namespace clang;
 using namespace clang::ento;
 using namespace llvm;
 
-namespace clangcms {
+namespace sas {
 
 class WalkAST : public clang::StmtVisitor<WalkAST> {
   clang::ento::BugReporter &BR;
@@ -642,7 +642,7 @@ void ClassChecker::checkASTDecl(const clang::CXXRecordDecl *RD, clang::ento::Ana
 		if (buffer->getBuffer().find(Rname) == llvm::StringRef::npos ) {return;}
 	clang::ento::PathDiagnosticLocation DLoc =clang::ento::PathDiagnosticLocation::createBegin( RD, SM );
 	if (  !m_exception.reportClass( DLoc, BR ) ) return;
-//	clangcms::WalkAST walker(BR, mgr.getAnalysisDeclContext(RD));
+//	sas::WalkAST walker(BR, mgr.getAnalysisDeclContext(RD));
 //	clang::LangOptions LangOpts;
 //	LangOpts.CPlusPlus = true;
 //	clang::PrintingPolicy Policy(LangOpts);
@@ -701,7 +701,7 @@ void ClassChecker::checkASTDecl(const clang::CXXRecordDecl *RD, clang::ento::Ana
 //        				llvm::errs() << s.str();
 //					Body->dumpAll();
 //	       				llvm::errs() << "\n\n+++++++++++++++++++++++++++++++++++++\n\n";
-					clangcms::WalkAST walker(BR, mgr.getAnalysisDeclContext(MD));
+					sas::WalkAST walker(BR, mgr.getAnalysisDeclContext(MD));
 	       				walker.Visit(Body);
 					clang::QualType CQT = MD->getCallResultType();
 					clang::QualType RQT = MD->getResultType();

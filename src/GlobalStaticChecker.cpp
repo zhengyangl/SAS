@@ -8,7 +8,7 @@
 
 #include "CmsSupport.h"
 
-namespace clangcms
+namespace sas
 {
 
 void GlobalStaticChecker::checkASTDecl(const clang::VarDecl *D,

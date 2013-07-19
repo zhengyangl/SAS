@@ -7,7 +7,7 @@
 
 #include "ConstCastChecker.h"
 
-namespace clangcms {
+namespace sas {
 
 void ConstCastChecker::checkPreStmt(const clang::CXXConstCastExpr *CE,
 		clang::ento::CheckerContext &C) const

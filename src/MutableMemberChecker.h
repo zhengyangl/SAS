@@ -15,7 +15,7 @@
 
 #include "CmsException.h"
 
-namespace clangcms {
+namespace sas {
 class MutableMemberChecker : public clang::ento::Checker< clang::ento::check::ASTDecl< clang::FieldDecl> > {
   mutable clang::OwningPtr< clang::ento::BuiltinBug> BT;
 
