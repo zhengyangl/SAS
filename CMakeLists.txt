@@ -115,7 +115,7 @@ set (USER_LIBS
 )
 
 add_clang_plugin( sas
-	src/ClangCmsCheckerPluginRegister.cpp
+	src/ClangSasCheckerPluginRegister.cpp
 	src/SasException.cpp
 	src/ConstCastChecker.cpp
 	src/ConstCastAwayChecker.cpp
