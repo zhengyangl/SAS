@@ -25,7 +25,7 @@ SCANVIEW_DIR=$LLVM_SRC_DIR/tools/clang/tools/scan-view
 export PATH=$SCANVIEW_DIR:$PATH
 
 # Locate sas library and add its location to PATH
-SAS_LIB_FILENAME=ClangCms.so
+SAS_LIB_FILENAME=sas.so
 SAS_LIB_DIR=`pwd`/lib
 SAS_LIB_PATH=$SAS_LIB_DIR/$SAS_LIB_FILENAME
 export PATH=$SAS_LIB_DIR:$PATH

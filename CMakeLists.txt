@@ -114,10 +114,10 @@ set (USER_LIBS
 	pthread
 )
 
-add_clang_plugin( ClangCms 
-	src/ClangCmsCheckerPluginRegister.cpp 
+add_clang_plugin( sas
+	src/ClangCmsCheckerPluginRegister.cpp
 	src/CmsException.cpp
-	src/ConstCastChecker.cpp 
+	src/ConstCastChecker.cpp
 	src/ConstCastAwayChecker.cpp
 	src/StaticLocalChecker.cpp
 	src/GlobalStaticChecker.cpp
