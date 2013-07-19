@@ -5,6 +5,11 @@
 # Test the plugin on example files.
 
 cd test
-#lcg-scan-build -v -v -v -o report -enable-checker threadsafety make -B
+
+# All sas checkers (both threadsafe. and cms.):
+#lcg-scan-build -o report -enable-checker threadsafety -enable-checker cms make -B -j 32
+
+# Only threadsafe. sas checkers:
 lcg-scan-build -o report -enable-checker threadsafety make -B -j 32
+
 cd -
