@@ -6,4 +6,5 @@ Makefile
 cmake_install.cmake
 lib/
 test/a.out
+test/report/
 
