@@ -6,10 +6,10 @@
 
 cd test
 
-# All sas checkers (both threadsafe. and cms.):
-#lcg-scan-build -o report -enable-checker threadsafety -enable-checker cms make -B -j 32
+# All sas checkers (both threadsafe.* and sas.*):
+#lcg-scan-build -o report -enable-checker threadsafety -enable-checker sas make -B -j 32
 
-# Only threadsafe. sas checkers:
+# Only threadsafe.* checkers:
 lcg-scan-build -o report -enable-checker threadsafety make -B -j 32
 
 cd -

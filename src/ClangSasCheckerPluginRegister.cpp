@@ -37,17 +37,13 @@ void clang_registerCheckers ( clang::ento::CheckerRegistry &registry)
 	registry.addChecker< sas::ClassDumperCT>( "optional.ClassDumperCT", "Dumps class info" );
 	registry.addChecker< sas::ClassDumperFT>( "optional.ClassDumperFT", "Dumps class info" );
 	registry.addChecker< sas::ClassDumperInherit>( "optional.ClassDumperInherit", "Dumps class inheritance info" );
-	registry.addChecker< sas::FiniteMathChecker>( "cms.NonFiniteMath", "Reports usage of isnan and isinf." );
-	registry.addChecker< sas::UsingNamespace>( "cms.CodeRules.UsingNamespace", "Checks for 'using namespace' or 'using std::' in header files" );
-	registry.addChecker< sas::CatchAll>( "cms.CodeRules.CatchAll", "Checks for 'catch(...)' in source files" );
+	registry.addChecker< sas::FiniteMathChecker>( "sas.NonFiniteMath", "Reports usage of isnan and isinf." );
+	registry.addChecker< sas::UsingNamespace>( "sas.CodeRules.UsingNamespace", "Checks for 'using namespace' or 'using std::' in header files" );
+	registry.addChecker< sas::CatchAll>( "sas.CodeRules.CatchAll", "Checks for 'catch(...)' in source files" );
 	registry.addChecker< sas::edmChecker>( "optional.edmChecker", "Checks classes inheriting from edm::Producer and edm::Filter" );
 	registry.addChecker< sas::getByChecker>( "optional.getByChecker", "Checks for calls to edm::getByLabel or edm::getManyByType and reports edm::Handle type passed" );
-	registry.addChecker< sas::ArgSizeChecker>( "cms.ArgSize", "Reports args passed by value with size>4k." );
+	registry.addChecker< sas::ArgSizeChecker>( "sas.ArgSize", "Reports args passed by value with size>4k." );
 }
 
 extern "C"
 const char clang_analyzerAPIVersionString[] = CLANG_ANALYZER_API_VERSION_STRING;
-
-
-
-
