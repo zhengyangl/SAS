@@ -27,6 +27,7 @@ bool SasException::reportGeneral( clang::ento::PathDiagnosticLocation const& pat
 	  found += FN.count("/lcg/");
 	  found += FN.count("/cms/cmssw/"); 
 	  found += FN.count("/test/"); 
+	  found += FN.count("/sas/");
 //	  found += FN.count("/FWCore/"); 
 	  if ( found!=0 )  {return false;}
 
