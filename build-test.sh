@@ -5,4 +5,5 @@
 # Build and test the sas library.
 
 source ./build.sh
+source ./setup.sh
 source ./test.sh
