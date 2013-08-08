@@ -10,6 +10,6 @@ cd test
 #sas-scan-build -o report -enable-checker threadsafety -enable-checker sas make -B -j 32
 
 # Only threadsafe.* checkers:
-sas-scan-build -o report -enable-checker threadsafety make -B -j 32
+sas-scan-build -o report -enable-checker threadsafety make -B
 
 cd -
