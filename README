@@ -1,6 +1,38 @@
 Static Analysis Suite
+=====================
 
-sas-dev@cern.ch
+<sas-dev@cern.ch>
 
 Filip Bartek <filip.bartek@cern.ch>
+
+
+How to build the library
+------------------------
+The build process of the library "sas.so" consists of two steps.
+
+1. Create a build directory ($BUILD_DIR), enter it and run `cmake $SAS_DIR`, replacing $SAS_DIR by the path (relative or absolute) to the SAS directory.
+
+2. Enter $BUILD_DIR and run `make`.
+
+After these steps, you should have the library ready in "$BUILD_DIR/lib/sas.so".
+
+
+How to run the static analysis
+------------------------------
+[section under construction]
+
+
+How to add a new checker
+------------------------
+To add a new checker to the library, you need to define a checker class derived from `clang::ento::Checker` and register the checker in the library.
+
+You can find the source code of the existing SAS checkers in the files "src/*Checker.*". Feel free to inspect the source code to get basic understanding of how checkers are implemented. Please consult the [Checker Developer Manual] for more information about implementing the checkers.
+
+Once you've created a new checker, you need to register it in the SAS library. To do that, edit the files "src/ClangSasCheckerPluginRegister.cpp" and "CMakeLists.txt". The comments in the files explain the steps to be taken in order to add a checker to the library.
+
+After this, run `cmake` to project the changes in "CMakeLists.txt" into the "Makefile" and then you are ready to build the library with the new checker.
+
+Important links:
+Checker Developer Manual: http://clang-analyzer.llvm.org/checker_dev_manual.html
+clang API Documentation:  http://clang.llvm.org/doxygen/
 
