@@ -1,3 +1,7 @@
+# To register a new checker class in the SAS library, add an argument
+# "src/*Checker.cpp" (replacing the asterisk with the actual name of the
+# checker) to the `add_clang_plugin` call further in this file.
+
 
 cmake_minimum_required (VERSION 2.6)
 project (sas CXX)
@@ -121,6 +125,5 @@ add_clang_plugin( sas
 	src/ConstCastAwayChecker.cpp
 	src/StaticLocalChecker.cpp
 	src/GlobalStaticChecker.cpp
-	src/MutableMemberChecker.cpp)
-
-
+	src/MutableMemberChecker.cpp
+	src/VarnameChecker.cpp)
