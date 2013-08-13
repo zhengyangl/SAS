@@ -33,7 +33,7 @@ void FiniteMathChecker::checkPreStmt(const clang::CallExpr *CE, clang::ento::Che
     return;
 
   if (!BT)
-    BT.reset(new clang::ento::BugType("std::isnan / std::isinf does not work when fast-math is used. Please check the bits of the floating point number instead."));
+    BT.reset(new clang::ento::BugType("std::isnan / std::isinf does not work when fast-math is used. Please check the bits of the floating point number instead.", "SAS"));
 
   clang::ento::BugReport *report = new clang::ento::BugReport(*BT, BT->getName(), N);
   report->addRange(Callee->getSourceRange());

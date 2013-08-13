@@ -36,7 +36,7 @@ void ClassDumper::checkASTDecl(const clang::CXXRecordDecl *RD,clang::ento::Analy
 // Dump the class members.
 	std::string err;
 	std::string fname("/tmp/classes.txt.unsorted");
-	llvm::raw_fd_ostream output(fname.c_str(),err,llvm::raw_fd_ostream::F_Append);
+	llvm::raw_fd_ostream output(fname.c_str(),err,llvm::sys::fs::F_Append);
 //	llvm::errs() <<"class " <<RD->getQualifiedNameAsString()<<"\n";
 	output <<"class " <<RD->getQualifiedNameAsString()<<"\n";
 	for (clang::RecordDecl::field_iterator I = RD->field_begin(), E = RD->field_end(); I != E; ++I)
@@ -153,7 +153,7 @@ void ClassDumperInherit::checkASTDecl(const clang::CXXRecordDecl *RD, clang::ent
 			{
 			std::string err;
 			std::string fname("/tmp/classes.txt.unsorted");
-			llvm::raw_fd_ostream output(fname.c_str(),err,llvm::raw_fd_ostream::F_Append);
+			llvm::raw_fd_ostream output(fname.c_str(),err,llvm::sys::fs::F_Append);
 			output <<"class " <<RD->getQualifiedNameAsString()<<"\n";
 
 			llvm::SmallString<100> buf;

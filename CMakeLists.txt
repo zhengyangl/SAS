@@ -118,7 +118,7 @@ set (USER_LIBS
 	pthread
 )
 
-add_clang_plugin( sas
+add_clang_plugin(sas
 	src/ClangSasCheckerPluginRegister.cpp
 	src/SasException.cpp
 	src/ConstCastChecker.cpp
@@ -126,4 +126,9 @@ add_clang_plugin( sas
 	src/StaticLocalChecker.cpp
 	src/GlobalStaticChecker.cpp
 	src/MutableMemberChecker.cpp
+	src/ClassDumper.cpp
+	src/FiniteMathChecker.cc
+	src/CatchAll.cpp
+	src/UsingNamespace.cpp
+	src/ArgSizeChecker.cpp
 	src/VarnameChecker.cpp)
