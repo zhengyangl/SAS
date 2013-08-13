@@ -1,3 +1,5 @@
+// Test case for the checker "threadsafety.MutableMember" (1 bug)
+
 
 #include <string>
 

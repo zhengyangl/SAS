@@ -1,3 +1,13 @@
+// Test case for the checkers:
+// "threadsafety.GlobalStatic" (2 bugs)
+// "threadsafety.StaticLocal" (3 bugs)
+// "threadsafety.ConstCastAway" (4 bugs)
+
+// Also triggers the checkers:
+// "deadcode.DeadStores" (3 bugs)
+
+// FIXME: Doesn't report the ConstCastAway bugs.
+
 
 // is ok, because const-qualified
 const static int g_staticConst = 23;

@@ -1,3 +1,5 @@
+// Test case for the checker "threadsafety.GlobalStatic" (2 bugs)
+
 
 #include <string>
 

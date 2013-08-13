@@ -1,3 +1,6 @@
+// Test case for the checker "threadsafety.ConstCast" (1 bug)
+// Also triggers the checker "threadsafety.ConstCastAway" (1 bug)
+
 
 #include <string>
 

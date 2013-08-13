@@ -1,9 +1,12 @@
 // Filip Bartek <filip.bartek@cern.ch>
 
-// A test case for the checker sas.NonFiniteMath
+// A test case for the checker "sas.NonFiniteMath"
+
 // Bugs: 2
+
 // Warning: Doesn't work properly on my computer as <math.h> doesn't seem to
 // define isnan and isinf as functions.
+
 
 #include <math.h>
 // isnan
