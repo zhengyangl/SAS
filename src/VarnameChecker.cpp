@@ -57,9 +57,10 @@ namespace sas {
       BT.reset(new BugType("Variable name doesn't begin with uppercase letter",
 			   "SAS"));
     BugReport * Report = new BugReport(*BT,
-      "Variable name doesn't begin with an uppercase letter "
-      "(example variable name checker)",
-      Location);
+				       "Variable name doesn't begin with an "
+				       "uppercase letter "
+				       "(example variable name checker)",
+				       Location);
     Report->setDeclWithIssue(D);
     BR.emitReport(Report);
 #else
@@ -67,7 +68,7 @@ namespace sas {
 		       "Variable name doesn't begin with uppercase letter",
 		       "SAS",
 		       "Variable name doesn't begin with an uppercase letter "
-		         "(example variable name checker)",
+		       "(example variable name checker)",
 		       Location);
 #endif // USE_BUGTYPE
   }

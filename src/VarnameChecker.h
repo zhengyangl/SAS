@@ -43,17 +43,17 @@
 
 namespace sas {
 
-class VarnameChecker : public clang::ento::Checker<
-  clang::ento::check::ASTDecl<clang::VarDecl> > {
-public:
-  void checkASTDecl(const clang::VarDecl *D,
-		    clang::ento::AnalysisManager &Mgr,
-		    clang::ento::BugReporter &BR) const;
+  class VarnameChecker : public clang::ento::Checker<
+    clang::ento::check::ASTDecl<clang::VarDecl> > {
+  public:
+    void checkASTDecl(const clang::VarDecl *D,
+                      clang::ento::AnalysisManager &Mgr,
+                      clang::ento::BugReporter &BR) const;
 #ifdef USE_BUGTYPE
-private:
-  mutable clang::OwningPtr<clang::ento::BugType> BT;
+  private:
+    mutable clang::OwningPtr<clang::ento::BugType> BT;
 #endif // USE_BUGTYPE
-};
+  };
 
 } // end namespace sas
 
