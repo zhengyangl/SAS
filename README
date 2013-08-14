@@ -47,7 +47,7 @@ How to build SAS plugin
 =======================
 
 1. Get SAS source code
-   -------------------
+----------------------
 
 You can get the SAS source code from its Git repository simply by running:
 
@@ -58,7 +58,7 @@ download the latest version of SAS into it. In the rest of the document, this
 "sas" directory will be called $SAS_DIR.
 
 2. Prepare the working environment
-   -------------------------------
+----------------------------------
 
 First, you need to setup the working environment for SAS build system.
 
@@ -76,7 +76,7 @@ Links:
 Building LLVM and Clang: http://clang.llvm.org/get_started.html#build
 
 3. Build the library
-   -----------------
+--------------------
 
 The build process of the library "sas.so" consists of two steps:
 
