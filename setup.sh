@@ -33,12 +33,12 @@ SAS_LIB_PATH=$SAS_LIB_DIR/$SAS_LIB_FILENAME
 
 
 # Let scan-build find the clang and the sas plugin
-alias sas-scan-build="scan-build --use-analyzer `which clang` -load-plugin $SAS_LIB_PATH"
+alias sas-scan-build="scan-build --use-analyzer `which clang` -load-plugin $SAS_LIB_PATH -disable-checker sas.Varname"
 
 # scan-build with all checkers disabled
 SCANBUILD_ARG_DISABLE_CHECKERS="-disable-checker alpha -disable-checker core -disable-checker cplusplus -disable-checker deadcode -disable-checker debug -disable-checker llvm -disable-checker osx -disable-checker security -disable-checker unix"
 alias sas-scan-build-none="sas-scan-build $SCANBUILD_ARG_DISABLE_CHECKERS"
 
 # scan-build with only SAS checkers enabled
-SCANBUILD_ARG_ENABLE_SAS_CHECKERS="-enable-checker sas -enable-checker threadsafety"
+SCANBUILD_ARG_ENABLE_SAS_CHECKERS="-enable-checker sas -enable-checker threadsafety -disable-checker sas.Varname"
 alias sas-scan-build-sas="sas-scan-build-none $SCANBUILD_ARG_ENABLE_SAS_CHECKERS"
