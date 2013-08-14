@@ -8,29 +8,73 @@ Filip Bartek <filip.bartek@cern.ch>
 
 How to build the library
 ------------------------
+
+You need:
+LLVM [TODO: Describe the parts of LLVM necessary.]
+
 The build process of the library "sas.so" consists of two steps.
 
-1. Create a build directory ($BUILD_DIR), enter it and run `cmake $SAS_DIR`, replacing $SAS_DIR by the path (relative or absolute) to the SAS directory.
+1. Create a build directory ($BUILD_DIR), enter it and run `cmake $SAS_DIR`,
+   replacing $SAS_DIR by the path (relative or absolute) to the SAS directory.
 
 2. Enter $BUILD_DIR and run `make`.
 
 After these steps, you should have the library ready in "$BUILD_DIR/lib/sas.so".
 
+Note that for completing the second step, the build system must have access to
+LLVM and Clang files.
+
+[TODO: Describe the relation.]
 
 How to run the static analysis
 ------------------------------
-[section under construction]
 
+You need:
+scan-build : scan-build script
+clang      : clang executable
+sas.so     : SAS plugin
+
+To run static analysis using SAS, simply use the following command:
+scan-build --load-plugin $SAS_LIB_PATH -enable-checker sas -enable-checker threadsafety
+where $SAS_LIB_PATH is the path to "sas.so", i.e. "$BUILD_DIR/lib/sas.so". Use
+the command the same way that plain scan-build is used. See [scan-build
+instructions] for details.
+Note that you have to make the clang executable available to the scan-build
+script. The easiest way is using the "--use-analyzer" argument, for example:
+scan-build --use-analyzer `which clang`
+
+Typical usage:
+scan-build ./configure
+scan-build make
+
+For your convenience, a script for automatic setup of an alias for scan-build is
+provided in the file "./setup.sh". The file sets the following aliases:
+sas-scan-build      : scan-build with SAS plugin loaded
+sas-scan-build-none : sas-scan-build with all checkers disabled (for
+                      checker-selective scans)
+sas-scan-build-sas  : sas-scan-build with only SAS checkers enabled
+
+Relevant links:
+scan-build instructions: http://clang-analyzer.llvm.org/scan-build.html
 
 How to add a new checker
 ------------------------
-To add a new checker to the library, you need to define a checker class derived from `clang::ento::Checker` and register the checker in the library.
 
-You can find the source code of the existing SAS checkers in the files "src/*Checker.*". Feel free to inspect the source code to get basic understanding of how checkers are implemented. Please consult the [Checker Developer Manual] for more information about implementing the checkers.
+To add a new checker to the library, you need to define a checker class derived
+from `clang::ento::Checker` and register the checker in the library.
 
-Once you've created a new checker, you need to register it in the SAS library. To do that, edit the files "src/ClangSasCheckerPluginRegister.cpp" and "CMakeLists.txt". The comments in the files explain the steps to be taken in order to add a checker to the library.
+You can find the source code of the existing SAS checkers in the files
+"src/*Checker.*". Feel free to inspect the source code to get basic
+understanding of how checkers are implemented. Please consult the [Checker
+Developer Manual] for more information about implementing the checkers.
 
-After this, run `cmake` to project the changes in "CMakeLists.txt" into the "Makefile" and then you are ready to build the library with the new checker.
+Once you've created a new checker, you need to register it in the SAS
+library. To do that, edit the files "src/ClangSasCheckerPluginRegister.cpp" and
+"CMakeLists.txt". The comments in the files explain the steps to be taken in
+order to add a checker to the library.
+
+After this, run `cmake` to project the changes in "CMakeLists.txt" into the
+"Makefile" and then you are ready to build the library with the new checker.
 
 Important links:
 Checker Developer Manual: http://clang-analyzer.llvm.org/checker_dev_manual.html
