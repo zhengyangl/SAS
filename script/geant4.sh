@@ -13,5 +13,6 @@ mkdir -p geant4-build
 
 cd geant4-build
 sas-scan-build-none -o ../report cmake -DCMAKE_BUILD_TYPE=Debug ../geant4.9.6.p02
-sas-scan-build-sas -o ../report -disable-checker sas.Varname make -j
+# In case of error: add the -D(install) arg
+sas-scan-build-sas -o ../report -disable-checker sas.Varname make
 cd -
