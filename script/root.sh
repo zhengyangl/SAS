@@ -6,7 +6,7 @@ cd ..
 source ./setup.sh
 cd -
 
-git fetch http://root.cern.ch/git/root.git
+git clone http://root.cern.ch/git/root.git
 
 mkdir -p root
 
