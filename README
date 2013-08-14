@@ -6,55 +6,117 @@ Static Analysis Suite
 Filip Bartek <filip.bartek@cern.ch>
 
 
-How to build the library
-------------------------
+Introduction
+------------
 
-You need:
-LLVM [TODO: Describe the parts of LLVM necessary.]
+Static Analysis Suite (SAS) is a plugin (dynamic shared object library) for
+Clang Static Analyzer. SAS provides new checkers for Clang Static Analyzer and
+allows easy extension with new checkers.
 
-The build process of the library "sas.so" consists of two steps.
+Requirements
+------------
 
-1. Create a build directory ($BUILD_DIR), enter it and run `cmake $SAS_DIR`,
-   replacing $SAS_DIR by the path (relative or absolute) to the SAS directory.
+To use the SAS, you need the [Clang Static Analyzer], namely including the
+[scan-build] script.
+
+To build the SAS, you need the following:
+- [cmake] (executable; version 2.6 or later)
+- make (executable)
+- [clang] (executable, includes)
+- [LLVM] (includes)
+- pthread (library)
+[FIXME: Check dependency on pthread.]
+
+Links:
+Clang Static Analyzer: http://clang-analyzer.llvm.org/
+scan-build:            http://clang-analyzer.llvm.org/scan-build.html
+cmake:                 http://www.cmake.org/
+clang:                 http://clang.llvm.org/
+LLVM:                  http://llvm.org/
+
+How to build the SAS plugin
+---------------------------
+
+Prepare the working environment
+...............................
+
+First, you need to setup the working environment for SAS build system.
+
+Let's suppose that $SAS_DIR is the main directory of SAS (i.e. the one
+containing the file you are reading). Fetch LLVM source code into
+"$SAS_DIR/../llvm" and build it in "$SAS_DIR/../build", following the
+instructions in [Building LLVM and Clang].
+
+Note that you can use other locations for LLVM source code and build. In that
+case, you need to edit the variables LLVM_SRC_DIR and LLVM_SRC_BUILD_DIR in
+"CMakeLists.txt" to match the actual directories.
+
+Having done this, you are ready to build the SAS plugin library.
+
+Build the library
+.................
+
+The build process of the library "sas.so" consists of two steps:
+
+1. Create a build directory ($BUILD_DIR; do not confuse with LLVM build
+   directory), enter it and run `cmake $SAS_DIR`, replacing $SAS_DIR by the path
+   (relative or absolute) to the SAS directory.
+
+[TODO: First step: describe linking on LLVM in "CMakeLists.txt".]
 
 2. Enter $BUILD_DIR and run `make`.
 
-After these steps, you should have the library ready in "$BUILD_DIR/lib/sas.so".
+Having performed these steps, you should have the library ready in
+"$BUILD_DIR/lib/sas.so".
 
-Note that for completing the second step, the build system must have access to
-LLVM and Clang files.
+Links:
+Building LLVM and Clang: http://clang.llvm.org/get_started.html#build
 
-[TODO: Describe the relation.]
+How to run the SAS
+------------------
 
-How to run the static analysis
-------------------------------
+Requirements
+............
 
-You need:
 scan-build : scan-build script
-clang      : clang executable
 sas.so     : SAS plugin
 
-To run static analysis using SAS, simply use the following command:
-scan-build --load-plugin $SAS_LIB_PATH -enable-checker sas -enable-checker threadsafety
-where $SAS_LIB_PATH is the path to "sas.so", i.e. "$BUILD_DIR/lib/sas.so". Use
-the command the same way that plain scan-build is used. See [scan-build
-instructions] for details.
-Note that you have to make the clang executable available to the scan-build
-script. The easiest way is using the "--use-analyzer" argument, for example:
-scan-build --use-analyzer `which clang`
+Setup
+.....
 
-Typical usage:
-scan-build ./configure
-scan-build make
-
-For your convenience, a script for automatic setup of an alias for scan-build is
-provided in the file "./setup.sh". The file sets the following aliases:
+For your convenience, a script for automatic setup of useful scan-build aliases
+is provided in the file "./setup.sh". The file sets the following aliases:
 sas-scan-build      : scan-build with SAS plugin loaded
 sas-scan-build-none : sas-scan-build with all checkers disabled (for
                       checker-selective scans)
 sas-scan-build-sas  : sas-scan-build with only SAS checkers enabled
 
-Relevant links:
+Typical usage
+.............
+
+cd $SAS_DIR
+source ./setup.sh
+cd $PROJECT_DIR
+sas-scan-build ./configure
+sas-scan-build -o $REPORT_DIR make
+
+where:
+
+- $SAS_DIR is SAS main directory,
+
+- $PROJECT_DIR is a directory of a project using a configure script and Makefile
+  for building and
+
+- $REPORT_DIR is the target directory for static analysis reports (for example
+  "./report").
+
+Advanced usage
+..............
+
+Consult [scan-build instructions] for advanced instructions for using scan-build
+(and sas-scan-build).
+
+Links:
 scan-build instructions: http://clang-analyzer.llvm.org/scan-build.html
 
 How to add a new checker
@@ -76,7 +138,6 @@ order to add a checker to the library.
 After this, run `cmake` to project the changes in "CMakeLists.txt" into the
 "Makefile" and then you are ready to build the library with the new checker.
 
-Important links:
+Links:
 Checker Developer Manual: http://clang-analyzer.llvm.org/checker_dev_manual.html
 clang API Documentation:  http://clang.llvm.org/doxygen/
-
