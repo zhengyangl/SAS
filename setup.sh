@@ -40,5 +40,5 @@ SCANBUILD_ARG_DISABLE_CHECKERS="-disable-checker alpha -disable-checker core -di
 alias sas-scan-build-none="sas-scan-build $SCANBUILD_ARG_DISABLE_CHECKERS"
 
 # scan-build with only SAS checkers enabled
-SCANBUILD_ARG_ENABLE_SAS_CHECKERS="-enable-checker sas -enable-checker threadsafety -disable-checker sas.Varname"
+SCANBUILD_ARG_ENABLE_SAS_CHECKERS="-enable-checker sas -enable-checker threadsafety -enable-checker performance -disable-checker sas.example"
 alias sas-scan-build-sas="sas-scan-build-none $SCANBUILD_ARG_ENABLE_SAS_CHECKERS"
