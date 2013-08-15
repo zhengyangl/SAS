@@ -41,6 +41,6 @@ void UsingNamespace::reportBug (const char* bug, const clang::Decl *D, clang::en
   std::string buf;
   llvm::raw_string_ostream os(buf);
   os << bug << " in headers files.";
-  BR.EmitBasicReport(D, "using namespace in header files","CMS code rules",os.str(), DLoc);
+  BR.EmitBasicReport(D, "using namespace in header files","code rules",os.str(), DLoc);
 }
 
