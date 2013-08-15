@@ -137,6 +137,29 @@ Feel free to inspect the script "setup.sh".
 Links:
 scan-build instructions: http://clang-analyzer.llvm.org/scan-build.html
 
+Available checkers
+==================
+
+threadsafety
+  ConstCast
+  ConstCastAway
+  GlobalStatic
+  StaticLocal
+  MutableMember
+optional
+  ClassDumperCT
+  ClassDumperFT
+  ClassDumperInherit
+sas
+  CodeRules
+    UsingNamespace
+    CatchAll
+  example
+    Varname
+  NonFiniteMath
+performance
+  ArgSize
+
 How to add a new checker
 ========================
 
