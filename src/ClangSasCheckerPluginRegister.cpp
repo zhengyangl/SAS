@@ -49,9 +49,9 @@ void clang_registerCheckers ( clang::ento::CheckerRegistry &registry)
 					   "Checks for 'using namespace' or 'using std::' in header files");
   registry.addChecker<sas::CatchAll>("sas.CodeRules.CatchAll",
 				     "Checks for 'catch(...)' in source files");
-  registry.addChecker<sas::ArgSizeChecker>("sas.ArgSize",
+  registry.addChecker<sas::ArgSizeChecker>("performance.ArgSize",
 					   "Reports args passed by value with size>4k.");
-  registry.addChecker<sas::VarnameChecker>("sas.Varname",
+  registry.addChecker<sas::VarnameChecker>("sas.example.Varname",
 					   "Reports variables whose names don't start with an uppercase letter.");
 }
 
