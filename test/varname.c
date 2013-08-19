@@ -1,6 +1,6 @@
 // Filip Bartek <filip.bartek@cern.ch>
 
-// Test case for the checker sas.Varname
+// Test case for the checker sas.example.Varname
 // Bugs: 1
 
 int main(void) {
