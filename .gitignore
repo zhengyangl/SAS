@@ -10,4 +10,10 @@ lib/
 test/a.out
 test/report/
 doxygen/
+script/geant4-build/
+script/geant4.9.6.p02/
+script/report/
+script/root/
+script/geant4.9.6.p02.tar.gz
+script/*.log
 
