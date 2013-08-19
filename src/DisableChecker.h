@@ -1,3 +1,5 @@
+// -*-c++-*-
+
 // The function determines whether a given Decl is disabled using a comment.
 // The declaration is considered disabled when its associated special comment
 // includes the substring: "sas::disable_checker(\"MyChecker\")" (where
@@ -6,24 +8,24 @@
 
 // Filip Bartek <filip.bartek@cern.ch>
 
-// LLVM style:
-// (Based on llvm/tools/clang/include/clang/StaticAnalyzer/ClangCheckers.h)
-#ifndef SAS_CHECKERS_DISABLECHECKER_H
-#define SAS_CHECKERS_DISABLECHECKER_H
+#ifndef SAS_DISABLECHECKER_H
+#define SAS_DISABLECHECKER_H
 
-// CMS Static Analyzer style:
-//#ifndef Utilities_StaticAnalyzers_VarnameChecker_h
-//#define Utilities_StaticAnalyzers_VarnameChecker_h
-
-#include <clang/AST/DeclBase.h>
+//#include <clang/AST/DeclBase.h>
 // clang::Decl
+namespace clang {
+  class Decl; // forward declaration
+}
 
-#include <llvm/ADT/StringRef.h>
+//#include <llvm/ADT/StringRef.h>
 // llvm::StringRef
+namespace llvm {
+  class StringRef; // forward declaration
+}
 
 namespace sas {
-  static _Bool isDisabled(const clang::Decl * const D,
-                   const llvm::StringRef& CheckerName);
+  bool IsDisabled(const clang::Decl * const decl,
+                  const llvm::StringRef checkerName);
 } // end namespace sas
 
 #endif

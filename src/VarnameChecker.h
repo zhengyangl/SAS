@@ -5,14 +5,8 @@
 
 // Filip Bartek <filip.bartek@cern.ch>
 
-// LLVM style:
-// (Based on llvm/tools/clang/include/clang/StaticAnalyzer/ClangCheckers.h)
 #ifndef SAS_CHECKERS_VARNAMECHECKER_H
 #define SAS_CHECKERS_VARNAMECHECKER_H
-
-// CMS Static Analyzer style:
-//#ifndef Utilities_StaticAnalyzers_VarnameChecker_h
-//#define Utilities_StaticAnalyzers_VarnameChecker_h
 
 // If USE_BUGTYPE is defined, reporting is done using the method
 // `BugReporter.emitReport`. Otherwise, reporting uses the method
@@ -37,12 +31,11 @@
 #include <clang/StaticAnalyzer/Core/BugReporter/BugType.h>
 // clang::ento::BugType
 
-//#include <?>
+#include <llvm/ADT/OwningPtr.h>
 // clang::OwningPtr
 #endif // USE_BUGTYPE
 
 namespace sas {
-
   class VarnameChecker : public clang::ento::Checker<
     clang::ento::check::ASTDecl<clang::VarDecl> > {
   public:
@@ -53,8 +46,9 @@ namespace sas {
   private:
     mutable clang::OwningPtr<clang::ento::BugType> BT;
 #endif // USE_BUGTYPE
+  private:
+    static const char * const checkerName;
   };
-
 } // end namespace sas
 
 #endif
