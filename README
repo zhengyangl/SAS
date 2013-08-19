@@ -183,3 +183,10 @@ Links:
 Checker Developer Manual: http://clang-analyzer.llvm.org/checker_dev_manual.html
 clang API Documentation:  http://clang.llvm.org/doxygen/
 
+How to build a single file
+==========================
+
+Example:
+
+$(CXX) -c -I ../../llvm/include -I ../../build/include -I ../../llvm/tools/clang/include -I ../../build/tools/clang/include -D __STDC_LIMIT_MACROS -D __STDC_CONSTANT_MACROS DisableChecker.cpp
+
