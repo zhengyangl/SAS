@@ -18,5 +18,5 @@ mkdir -p root-build
 
 cd root-build
 cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=`which c++-analyzer` -DCMAKE_C_COMPILER=`which ccc-analyzer` ../root
-sas-scan-build-sas -o ../report -disable-checker sas.Varname make -j
+sas-scan-build-sas -o ../report -disable-checker sas.CodeRules.CatchAll make -j
 cd -
