@@ -1,9 +1,12 @@
 // Filip Bartek <filip.bartek@cern.ch>
 
-#include "DisableChecker.h"
+#include "CheckerDisabler.h"
 
 #include <clang/AST/DeclBase.h>
 using clang::Decl;
+
+#include <clang/AST/Stmt.h>
+using clang::DeclStmt;
 
 #include <llvm/ADT/StringRef.h>
 using llvm::StringRef;
@@ -30,13 +33,16 @@ using std::ostringstream;
 #include <string>
 using std::string;
 
+#include <clang/AST/DeclGroup.h>
+using clang::DeclGroupRef;
+
 namespace {
-  bool IsCommentedWithString(const clang::Decl * const decl,
-                             const llvm::StringRef commentString);
+  bool IsCommentedWithString(const Decl * const decl,
+                             const StringRef commentString);
 }
 
-bool sas::IsDisabled(const clang::Decl * const decl,
-                     const llvm::StringRef checkerName) {
+bool sas::IsDisabled(const Decl * const decl,
+                     const StringRef checkerName) {
   ostringstream commentOss;
   commentOss << "sas::disable_checker(\"";
   commentOss << checkerName.data();
@@ -44,6 +50,21 @@ bool sas::IsDisabled(const clang::Decl * const decl,
   string commentString = commentOss.str();
   const StringRef commentStringRef(commentString);
   return IsCommentedWithString(decl, commentStringRef);
+}
+
+bool sas::IsDisabled(const DeclStmt * const declStmt,
+                     const StringRef checkerName) {
+  if (!declStmt)
+    return false; // invalid stmt
+  const DeclGroupRef declGroupRef = declStmt->getDeclGroup();
+  typedef DeclGroupRef::const_iterator DeclIterator;
+  DeclIterator b = declGroupRef.begin();
+  DeclIterator e = declGroupRef.end();
+  for (DeclIterator i = b; i != e; ++i) {
+    if (IsDisabled(*i, checkerName))
+      return true; // disabled decl
+  }
+  return false;
 }
 
 namespace {
@@ -55,9 +76,10 @@ namespace {
     const ASTContext& Context = decl->getASTContext();
     FullComment * Comment = Context.getLocalCommentForDeclUncached(decl);
     if (!Comment)
-      return false; // decl has no associated special comment
+      return false; // no comment is attached
     ArrayRef<BlockContentComment *> BlockContent = Comment->getBlocks();
-    typedef ArrayRef<BlockContentComment *>::const_iterator BlockContentIterator;
+    typedef ArrayRef<BlockContentComment *>::const_iterator
+      BlockContentIterator;
     BlockContentIterator b = BlockContent.begin();
     BlockContentIterator e = BlockContent.end();
     for (BlockContentIterator i = b; i != e; ++i) {

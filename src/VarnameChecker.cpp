@@ -52,7 +52,7 @@ using llvm::ArrayRef;
 #include <llvm/Support/Casting.h>
 using llvm::dyn_cast;
 
-#include "DisableChecker.h"
+#include "CheckerDisabler.h"
 using sas::IsDisabled;
 
 namespace sas {

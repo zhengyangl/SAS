@@ -132,4 +132,4 @@ add_clang_plugin(sas
 	src/UsingNamespace.cpp
 	src/ArgSizeChecker.cpp
 	src/VarnameChecker.cpp
-        src/DisableChecker.cpp)
+        src/CheckerDisabler.cpp)

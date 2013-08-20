@@ -8,23 +8,27 @@
 
 // Filip Bartek <filip.bartek@cern.ch>
 
-#ifndef SAS_DISABLECHECKER_H
-#define SAS_DISABLECHECKER_H
+#ifndef SAS_CHECKERDISABLER_H
+#define SAS_CHECKERDISABLER_H
 
-//#include <clang/AST/DeclBase.h>
-// clang::Decl
 namespace clang {
   class Decl; // forward declaration
+  class DeclStmt; // forward declaration
 }
 
-//#include <llvm/ADT/StringRef.h>
-// llvm::StringRef
 namespace llvm {
   class StringRef; // forward declaration
 }
 
 namespace sas {
+  /// Is a checker disabled on a declaration?
+  /// \param decl declaration
+  /// \param checkerName name of the checker
+  /// \return True iff the checker checkerName is disabled on the declaration
+  ///         decl
   bool IsDisabled(const clang::Decl * const decl,
+                  const llvm::StringRef checkerName);
+  bool IsDisabled(const clang::DeclStmt * const declStmt,
                   const llvm::StringRef checkerName);
 } // end namespace sas
 
