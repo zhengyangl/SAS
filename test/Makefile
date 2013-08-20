@@ -1,7 +1,7 @@
 # dont overwrite this here, otherwise clang can't insert his "custom compiler"
 #CXX = g++#/build/gcc/gcc-4.7.0-bin/bin/g++
 
-all: class_checker.o mutable_member.o const_cast.o const_cast_away.o global_static.o static_local.o global_static_edm.o varname.o finitemath.o usingnamespace.o varname-localdisable.o
+all: class_checker.o mutable_member.o const_cast.o const_cast_away.o global_static.o static_local.o global_static_edm.o varname.o finitemath.o usingnamespace.o checkerdisabler.o
 
 mutable_member.o: mutable_member.cpp
 	$(CXX) mutable_member.cpp
@@ -33,5 +33,5 @@ finitemath.o: finitemath.c
 usingnamespace.o: usingnamespace.cpp usingnamespace.h
 	$(CXX) usingnamespace.cpp
 
-varname-localdisable.o: varname-localdisable.c
-	$(CC) varname-localdisable.c
+checkerdisabler.o: checkerdisabler.cpp
+	$(CXX) checkerdisabler.cpp
