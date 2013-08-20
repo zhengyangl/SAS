@@ -52,5 +52,11 @@ int main(void) {
   /// <!-- sas::disable_checker("sas.example.Varname") -->
   int varDoxygenComment; // not bug: HTML comment markup
 
+  // sas::disable_checker("sas.example.Varname")
+  int varCommonSlash; // bug: disabler in common comment (not special)
+
+  /* sas::disable_checker("sas.example.Varname") */
+  int varCommonAsterisk; // bug: disabler in common comment (not special)
+
   return 0;
 }
