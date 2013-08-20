@@ -76,7 +76,7 @@ namespace {
         const StringRef text = textComment->getText();
         const size_t found = text.find(commentString);
         if (found != npos)
-          return true;
+          return true; // the comment line contains the disabling string
       }
     }  
     return false;
