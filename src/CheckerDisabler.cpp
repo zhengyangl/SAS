@@ -44,9 +44,9 @@ namespace {
 bool sas::IsDisabled(const Decl * const decl,
                      const StringRef checkerName) {
   ostringstream commentOss;
-  commentOss << "sas::disable_checker(\"";
+  commentOss << "sas[disable_checker : \"";
   commentOss << checkerName.data();
-  commentOss << "\")";
+  commentOss << "\"]";
   string commentString = commentOss.str();
   const StringRef commentStringRef(commentString);
   return IsCommentedWithString(decl, commentStringRef);

@@ -6,9 +6,9 @@
 // std::string
 // namespace std
 
-/// sas::disable_checker("sas.CodeRules.UsingNamespace")
+/// sas[disable_checker : "sas.CodeRules.UsingNamespace"]
 using std::string; // not bug: disabled by comment
-/// sas::disable_checker("sas.CodeRules.UsingNamespace")
+/// sas[disable_checker : "sas.CodeRules.UsingNamespace"]
 using namespace std; // not bug: disabled by comment
 
 using std::string; // bug: using std::*
