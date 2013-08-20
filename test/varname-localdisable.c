@@ -9,7 +9,7 @@ int main(void) {
   int variable; // bug: doesn't begin with uppercase
   int Variable; // not bug: begins with uppercase
 
-  /// sas::disable_checker("sas.example.Varname")
+  /// <!-- sas::disable_checker("sas.example.Varname") -->
   int var0; // not bug: checker disabled by comment
 
   /** sas::disable_checker("sas.example.Varname") */
