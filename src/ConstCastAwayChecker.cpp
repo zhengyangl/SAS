@@ -22,7 +22,7 @@ void ConstCastAwayChecker::checkPreStmt(const clang::ExplicitCastExpr *CE,
 	clang::QualType ToTy = Ctx.getCanonicalType(CE->getType());
 
 	if ( support::isConst( OrigTy ) && ! support::isConst(ToTy) ) {
-		if ( clang::ento::ExplodedNode *errorNode = C.generateSink()) {
+		if ( clang::ento::ExplodedNode *errorNode = C.addTransition()) {
 			if (!BT)
 				BT.reset(
 						new clang::ento::BugType("const cast away",

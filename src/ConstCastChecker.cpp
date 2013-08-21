@@ -12,7 +12,7 @@ namespace sas {
 void ConstCastChecker::checkPreStmt(const clang::CXXConstCastExpr *CE,
 		clang::ento::CheckerContext &C) const
 {
-	if (clang::ento::ExplodedNode *errorNode = C.generateSink()) {
+	if (clang::ento::ExplodedNode *errorNode = C.addTransition()) {
 		if (!BT)
 			BT.reset(
 					new clang::ento::BugType("const_cast used",
