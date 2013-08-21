@@ -46,15 +46,12 @@ using sas::dbgs;
 namespace {
   bool IsCommentedWithString(const Decl * const decl,
                              const StringRef commentString);
+  string FormDisablerString(const StringRef checkerName);
 }
 
 bool sas::IsDisabled(const Decl * const decl,
                      const StringRef checkerName) {
-  ostringstream commentOss;
-  commentOss << "sas[disable_checker : \"";
-  commentOss << checkerName.data();
-  commentOss << "\"]";
-  string commentString = commentOss.str();
+  string commentString = FormDisablerString(checkerName);
   const StringRef commentStringRef(commentString);
   return IsCommentedWithString(decl, commentStringRef);
 }
@@ -91,6 +88,15 @@ bool sas::IsDisabled(const Stmt * const stmt,
 }
 
 namespace {
+  string FormDisablerString(const StringRef checkerName)
+  {
+    ostringstream commentOss;
+    commentOss << "sas[disable_checker : \"";
+    commentOss << checkerName.data();
+    commentOss << "\"]";
+    return commentOss.str();
+  }
+
   bool IsCommentedWithString(const Decl * const decl,
                              const StringRef commentString)
   {
