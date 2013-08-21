@@ -8,11 +8,16 @@
 
 #include "ConstCastChecker.h"
 
+#include "CheckerDisabler.h"
+using sas::IsDisabled;
+
 namespace sas {
 
 void ConstCastChecker::checkPreStmt(const clang::CXXConstCastExpr *CE,
 		clang::ento::CheckerContext &C) const
 {
+  if (IsDisabled(CE, C.getSourceManager(), "threadsafety.ConstCast"))
+    return; // Disabled by comment
 	if (clang::ento::ExplodedNode *errorNode = C.addTransition()) {
 		if (!BT)
 			BT.reset(
