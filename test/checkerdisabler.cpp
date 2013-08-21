@@ -10,7 +10,11 @@
 
 #include "checkerdisabler.h"
 
-int main(void) {
+#include <string>
+using std::string;
+
+int main(void)
+{
   int variable; // bug: doesn't begin with uppercase
   int Variable; // not bug: begins with uppercase
 
@@ -57,6 +61,11 @@ int main(void) {
 
   /* sas[disable_checker : "sas.example.Varname"] */
   int varCommonAsterisk; // bug: disabler in common comment (not special)
+
+  const string& s_const = "s";
+  string& s = const_cast<string&>(s_const); // bug: const_cast used
+  /// sas[disable_checker : "threadsafety.ConstCast"]
+  string& sDis = const_cast<string&>(s_const); // not bug: disabled by comment
 
   return 0;
 }
