@@ -64,7 +64,7 @@ int main(void)
 
   const string& S_const = "s";
   string& S = const_cast<string&>(S_const); // bug: const_cast used
-  /// sas[disable_checker : "threadsafety.ConstCast"]
+  // sas[disable_checker : "threadsafety.ConstCast"]
   string& SDis = const_cast<string&>(S_const); // not bug: disabled by comment
 
   return 0;
