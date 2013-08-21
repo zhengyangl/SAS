@@ -11,14 +11,20 @@
 #ifndef SAS_CHECKERDISABLER_H
 #define SAS_CHECKERDISABLER_H
 
+// Forward declarations:
+
 namespace clang {
-  class Decl; // forward declaration
-  class DeclStmt; // forward declaration
+  class Decl;
+  class DeclStmt;
+  class Stmt;
+  class SourceManager;
 }
 
 namespace llvm {
-  class StringRef; // forward declaration
+  class StringRef;
 }
+
+// Declarations:
 
 namespace sas {
   /// Is a checker disabled on a declaration?
@@ -29,6 +35,9 @@ namespace sas {
   bool IsDisabled(const clang::Decl * const decl,
                   const llvm::StringRef checkerName);
   bool IsDisabled(const clang::DeclStmt * const declStmt,
+                  const llvm::StringRef checkerName);
+  bool IsDisabled(const clang::Stmt * const stmt,
+                  clang::SourceManager& sourceManager,
                   const llvm::StringRef checkerName);
 } // end namespace sas
 

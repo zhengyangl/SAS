@@ -7,6 +7,7 @@ using clang::Decl;
 
 #include <clang/AST/Stmt.h>
 using clang::DeclStmt;
+using clang::Stmt;
 
 #include <llvm/ADT/StringRef.h>
 using llvm::StringRef;
@@ -36,6 +37,9 @@ using std::string;
 #include <clang/AST/DeclGroup.h>
 using clang::DeclGroupRef;
 
+#include <clang/Basic/SourceManager.h>
+using clang::SourceManager;
+
 namespace {
   bool IsCommentedWithString(const Decl * const decl,
                              const StringRef commentString);
@@ -64,6 +68,19 @@ bool sas::IsDisabled(const DeclStmt * const declStmt,
     if (IsDisabled(*i, checkerName))
       return true; // disabled decl
   }
+  return false;
+}
+
+bool sas::IsDisabled(const Stmt * const stmt,
+                     SourceManager& sourceManager,
+                     const StringRef checkerName)
+{
+  if (!stmt)
+    return false; // Invalid stmt
+  // TODO: Implement.
+  stmt->dump(sourceManager);
+  //SourceRange stmt->getSourceRange();
+  //SourceLocation stmt->getLocStart();
   return false;
 }
 
