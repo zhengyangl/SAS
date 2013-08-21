@@ -3,6 +3,7 @@
 // Check in a generic way if an explicit cast removes a const qualifier.
 //
 // by Thomas Hauth [ Thomas.Hauth@cern.ch ]
+//    Filip Bartek [ Filip.Bartek@cern.ch ] (2013)
 //
 //===----------------------------------------------------------------------===//
 
