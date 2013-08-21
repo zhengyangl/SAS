@@ -69,3 +69,18 @@ int main(void)
 
   return 0;
 }
+
+void f1(void)
+{
+  const string& s_const = "s";
+  string& s = const_cast<string&>(s_const); // bug: const_cast used
+  return;
+}
+
+/// sas[disable_checker : "threadsafety.ConstCast"]
+void f2(void)
+{
+  const string& s_const = "s";
+  string& s = const_cast<string&>(s_const); // not bug: disabled by comment
+  return;
+}
