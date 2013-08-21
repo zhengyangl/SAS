@@ -1,8 +1,8 @@
 // Author: <unknown>
 //         Filip Bartek <filip.bartek@cern.ch> 2013
 
-// Test case for the checker "threadsafety.ConstCast" (1 bug)
-// Also triggers the checker "threadsafety.ConstCastAway" (1 bug)
+// Test case for the checker "threadsafety.ConstCast" (2 bugs)
+// Also triggers the checker "threadsafety.ConstCastAway" (2 bugs)
 
 
 #include <string>
