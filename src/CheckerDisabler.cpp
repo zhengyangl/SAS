@@ -43,6 +43,9 @@ using clang::SourceManager;
 #include <clang/StaticAnalyzer/Core/PathSensitive/CheckerContext.h>
 using clang::ento::CheckerContext;
 
+#include <clang/Analysis/AnalysisContext.h>
+using clang::LocationContext;
+
 #include "dbgs.h"
 using sas::dbgs;
 
@@ -80,6 +83,12 @@ bool sas::IsDisabled(const Stmt * const stmt,
 {
   if (!stmt)
     return false; // Invalid stmt
+  const LocationContext * const locationContext =
+    checkerContext.getLocationContext();
+  const Decl * const decl = locationContext->getDecl();
+  return IsDisabled(decl, checkerName);
+
+#if 0
   SourceManager& sourceManager = checkerContext.getSourceManager();
   // TODO: Implement.
   dbgs() << "IsDisabled(Stmt*, ...)\n";
@@ -92,7 +101,21 @@ bool sas::IsDisabled(const Stmt * const stmt,
   dbgs() << "\n";
   unsigned lineNumber = sourceManager.getSpellingLineNumber(locStart);
   dbgs() << lineNumber << "\n";
+  clang::ASTContext& astContext = checkerContext.getASTContext();
+  const clang::RawCommentList commentList = astContext.getRawCommentList();
+  llvm::ArrayRef<clang::RawComment*> comments = commentList.getComments();
+  llvm::ArrayRef<clang::RawComment*>::iterator b = comments.begin();
+  llvm::ArrayRef<clang::RawComment*>::iterator e = comments.end();
+  dbgs() << "<comments>\n";
+  for (llvm::ArrayRef<clang::RawComment*>::iterator i = b; i != e; ++i) {
+    const StringRef text = (*i)->getRawText(sourceManager);
+    dbgs() << "<text>\n";
+    dbgs() << text.data();
+    dbgs() << "</text>\n";
+  }
+  dbgs() << "</comments>\n";
   return false;
+#endif // 0
 }
 
 namespace {
