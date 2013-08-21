@@ -40,6 +40,9 @@ using clang::DeclGroupRef;
 #include <clang/Basic/SourceManager.h>
 using clang::SourceManager;
 
+#include <clang/StaticAnalyzer/Core/PathSensitive/CheckerContext.h>
+using clang::ento::CheckerContext;
+
 #include "dbgs.h"
 using sas::dbgs;
 
@@ -72,18 +75,23 @@ bool sas::IsDisabled(const DeclStmt * const declStmt,
 }
 
 bool sas::IsDisabled(const Stmt * const stmt,
-                     SourceManager& sourceManager,
+                     CheckerContext& checkerContext,
                      const StringRef checkerName)
 {
   if (!stmt)
     return false; // Invalid stmt
+  SourceManager& sourceManager = checkerContext.getSourceManager();
   // TODO: Implement.
   dbgs() << "IsDisabled(Stmt*, ...)\n";
-  dbgs() << "dump:begin\n";
-  stmt->dump(dbgs(), sourceManager);
-  dbgs() << "dump:end\n";
-  //SourceRange stmt->getSourceRange();
-  //SourceLocation stmt->getLocStart();
+  //dbgs() << "dump:begin\n";
+  //stmt->dump(dbgs(), sourceManager);
+  //dbgs() << "dump:end\n";
+  //clang::SourceRange sourceRange = stmt->getSourceRange();
+  clang::SourceLocation locStart = stmt->getLocStart();
+  locStart.print(dbgs(), sourceManager);
+  dbgs() << "\n";
+  unsigned lineNumber = sourceManager.getSpellingLineNumber(locStart);
+  dbgs() << lineNumber << "\n";
   return false;
 }
 

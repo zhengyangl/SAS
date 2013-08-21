@@ -17,9 +17,10 @@ namespace clang {
   class Decl;
   class DeclStmt;
   class Stmt;
-  class SourceManager;
+  namespace ento {
+    class CheckerContext;
+  }
 }
-
 namespace llvm {
   class StringRef;
 }
@@ -37,7 +38,7 @@ namespace sas {
   bool IsDisabled(const clang::DeclStmt * const declStmt,
                   const llvm::StringRef checkerName);
   bool IsDisabled(const clang::Stmt * const stmt,
-                  clang::SourceManager& sourceManager,
+                  clang::ento::CheckerContext& checkerContext,
                   const llvm::StringRef checkerName);
 } // end namespace sas
 
