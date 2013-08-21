@@ -62,25 +62,26 @@ int main(void)
   /* sas[disable_checker : "sas.example.Varname"] */
   int varCommonAsterisk; // bug: disabler in common comment (not special)
 
-  const string& s_const = "s";
-  string& s = const_cast<string&>(s_const); // bug: const_cast used
+  const string& S_const = "s";
+  string& S = const_cast<string&>(S_const); // bug: const_cast used
   /// sas[disable_checker : "threadsafety.ConstCast"]
-  string& sDis = const_cast<string&>(s_const); // not bug: disabled by comment
+  string& SDis = const_cast<string&>(S_const); // not bug: disabled by comment
 
   return 0;
 }
 
 void f1(void)
 {
-  const string& s_const = "s";
-  string& s = const_cast<string&>(s_const); // bug: const_cast used
+  const string& S_const = "s";
+  string& S = const_cast<string&>(S_const); // bug: const_cast used
   return;
 }
 
 /// sas[disable_checker : "threadsafety.ConstCast"]
+/// sas[disable_checker : "sas.example.Varname"]
 void f2(void)
 {
-  const string& s_const = "s";
-  string& s = const_cast<string&>(s_const); // not bug: disabled by comment
+  const string& S_const = "s";
+  string& s = const_cast<string&>(S_const); // not bug: disabled by comment
   return;
 }
