@@ -1,6 +1,7 @@
 //== ConstCastChecker.h - Checks for const_cast<> --------------*- C++ -*--==//
 //
 // by Thomas Hauth [ Thomas.Hauth@cern.ch ]
+//    Filip Bartek [ Filip.Bartek@cern.ch ] (2013)
 //
 //===----------------------------------------------------------------------===//
 
@@ -27,6 +28,8 @@ public:
 
 private:
   SasException m_exception;
+private:
+  static const char * const checkerName;
 };
 } 
 

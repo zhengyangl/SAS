@@ -13,10 +13,12 @@ using sas::IsDisabled;
 
 namespace sas {
 
+const char * const ConstCastChecker::checkerName = "threadsafety.ConstCast";
+
 void ConstCastChecker::checkPreStmt(const clang::CXXConstCastExpr *CE,
 		clang::ento::CheckerContext &C) const
 {
-  if (IsDisabled(CE, C.getSourceManager(), "threadsafety.ConstCast"))
+  if (IsDisabled(CE, C.getSourceManager(), checkerName))
     return; // Disabled by comment
 	if (clang::ento::ExplodedNode *errorNode = C.addTransition()) {
 		if (!BT)
