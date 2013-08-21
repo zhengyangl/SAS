@@ -5,17 +5,14 @@
 // Also triggers the checker "threadsafety.ConstCastAway" (2 bugs)
 
 #include <string>
-std::string;
+using std::string;
 
 int main()
 {
-  string s = "23";
-  string const& r_const = s;
+  const string& r_const = "23";
     
-  // will produce a warning by ConstCastChecker
-  // and ConstCastAwayChecker
-  string & r = const_cast< string & >( r_const );
-  string & r2 = const_cast< string & >( r_const ); // bug
+  string& r1 = const_cast<string&>(r_const); // bug
+  string& r2 = const_cast<string&>(r_const); // bug
 
   return 0;
 }
