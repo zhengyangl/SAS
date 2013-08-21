@@ -40,6 +40,9 @@ using clang::DeclGroupRef;
 #include <clang/Basic/SourceManager.h>
 using clang::SourceManager;
 
+#include "dbgs.h"
+using sas::dbgs;
+
 namespace {
   bool IsCommentedWithString(const Decl * const decl,
                              const StringRef commentString);
@@ -78,7 +81,10 @@ bool sas::IsDisabled(const Stmt * const stmt,
   if (!stmt)
     return false; // Invalid stmt
   // TODO: Implement.
-  stmt->dump(sourceManager);
+  dbgs() << "IsDisabled(Stmt*, ...)\n";
+  dbgs() << "dump:begin\n";
+  stmt->dump(dbgs(), sourceManager);
+  dbgs() << "dump:end\n";
   //SourceRange stmt->getSourceRange();
   //SourceLocation stmt->getLocStart();
   return false;
