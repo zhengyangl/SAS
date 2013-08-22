@@ -23,6 +23,9 @@ using clang::ento::BugReporter;
 #include <clang/AST/Expr.h>
 using clang::DeclRefExpr;
 
+#include <clang/AST/Decl.h>
+using clang::ValueDecl;
+
 #include "dbgs.h"
 using sas::dbgs;
 
@@ -51,6 +54,18 @@ namespace {
 
 void SAICVisitor::VisitDeclRefExpr(const DeclRefExpr * const DRE)
 {
+  dbgs() << "0";
+  if (!DRE)
+    return; // Invalid expression
+  const ValueDecl * const valueDecl = DRE->getDecl();
+  dbgs() << "1";
+  if (!valueDecl)
+    return;
+  dbgs() << "3 ";
+  //dbgs() << valueDecl->getName() << "\n";
+  valueDecl->printName(dbgs());
+  dbgs() << "\n";
+  //dbgs() << DRE->getFoundDecl()->getName() << "\n";
   // Check DRE. Does it reference a static variable?
   //const ValueDecl * const valueDecl = DRE->getDecl();
   return;
