@@ -2,10 +2,20 @@
 
 #include "StaticAccInCtorChecker.h"
 
-using clang::CXXConstructorDecl;
-using clang::ento::AnalysisManager;
-using clang::ento::BugReporter;
+#include <clang/AST/DeclBase.h>
 using clang::Decl;
+
+#include <clang/AST/DeclCXX.h>
+using clang::CXXConstructorDecl;
+
+#include <clang/StaticAnalyzer/Core/PathSensitive/AnalysisManager.h>
+using clang::ento::AnalysisManager;
+
+#include <clang/StaticAnalyzer/Core/BugReporter/BugReporter.h>
+using clang::ento::BugReporter;
+
+#include "dbgs.h"
+using sas::dbgs;
 
 namespace sas {
   const char * const StaticAccInCtorChecker::checkerName =
@@ -15,11 +25,18 @@ namespace sas {
                                             AnalysisManager &Mgr,
                                             BugReporter &BR) const
   {
+    if (!D)
+      return; // invalid D
+    //D->dump();
+    dbgs() << ".";
   }
 
   void StaticAccInCtorChecker::checkASTCodeBody(const Decl *D,
                                                 AnalysisManager& mgr,
                                                 BugReporter &BR) const
   {
+    if (!D)
+      return; // invalid D
+    //D->dump();
   }
 } // end namespace sas
