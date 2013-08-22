@@ -16,9 +16,9 @@
 
 #include <clang/StaticAnalyzer/Core/Checker.h>
 // clang::ento::Checker
-// clang::ento::check::PreCall
-// clang::ento::CallEvent
-// clang::ento::CheckerContext
+// clang::CXXConstructorDecl
+// clang::ento::AnalysisManager
+// clang::ento::BugReporter
 
 #ifdef USE_BUGTYPE
 //#include <clang/StaticAnalyzer/Core/BugReporter/BugType.h>
@@ -37,11 +37,16 @@ namespace clang {
 
 namespace sas {
   class StaticAccInCtorChecker : public clang::ento::Checker<
-    clang::ento::check::PreCall > {
+    clang::ento::check::ASTDecl<clang::CXXConstructorDecl>,
+    clang::ento::check::ASTCodeBody > {
   public:
-    // In case of constructor call, saves the information in program state.
-    void checkPreCall(const clang::ento::CallEvent &Call,
-                      clang::ento::CheckerContext &C) const;
+    void checkASTDecl(const clang::CXXConstructorDecl *D,
+                      clang::ento::AnalysisManager &Mgr,
+                      clang::ento::BugReporter &BR) const;
+    void checkASTCodeBody(const clang::Decl *D,
+                          clang::ento::AnalysisManager& mgr,
+                          clang::ento::BugReporter &BR) const;
+
 #ifdef USE_BUGTYPE
   private:
     mutable clang::OwningPtr<clang::ento::BugType> BT;

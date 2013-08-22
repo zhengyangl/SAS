@@ -2,15 +2,24 @@
 
 #include "StaticAccInCtorChecker.h"
 
-using clang::ento::CallEvent;
-using clang::ento::CheckerContext;
+using clang::CXXConstructorDecl;
+using clang::ento::AnalysisManager;
+using clang::ento::BugReporter;
+using clang::Decl;
 
 namespace sas {
   const char * const StaticAccInCtorChecker::checkerName =
     "security.StaticAccInCtor";
 
-  void StaticAccInCtorChecker::checkPreCall(const CallEvent &Call,
-                                            CheckerContext &C) const
+  void StaticAccInCtorChecker::checkASTDecl(const CXXConstructorDecl *D,
+                                            AnalysisManager &Mgr,
+                                            BugReporter &BR) const
+  {
+  }
+
+  void StaticAccInCtorChecker::checkASTCodeBody(const Decl *D,
+                                                AnalysisManager& mgr,
+                                                BugReporter &BR) const
   {
   }
 } // end namespace sas
