@@ -20,6 +20,7 @@
 #include "UsingNamespace.h"
 #include "ArgSizeChecker.h"
 #include "VarnameChecker.h"
+#include "StaticAccInCtorChecker.h"
 
 #include <clang/StaticAnalyzer/Core/CheckerRegistry.h>
 
@@ -53,6 +54,8 @@ void clang_registerCheckers ( clang::ento::CheckerRegistry &registry)
 					   "Reports args passed by value with size>4k.");
   registry.addChecker<sas::VarnameChecker>("sas.example.Varname",
 					   "Reports variables whose names don't start with an uppercase letter.");
+  registry.addChecker<sas::StaticAccInCtorChecker>("security.StaticAccInCtor",
+    "Reports access to global static variable in constructor.");
 }
 
 extern "C"
