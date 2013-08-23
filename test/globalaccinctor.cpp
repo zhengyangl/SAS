@@ -64,7 +64,7 @@ const static Foo Global_Foo_After;
 Foo::Foo(void) : m_val(Global_Integer.get_value()) // bug: global acc in ctor
 {
   cout << Global_Integer.get_value() << "\n"; // bug: global acc in ctor
-  cout << Global_Integer.get_initialized() << "\n";
+  cout << Global_Integer.get_initialized() << "\n"; // bug: global acc in ctor
   cout << x << "\n"; // bug: global acc in ctor
   cout << y << "\n"; // not bug: y initialized by constant
   cout << m_val << "\n";
