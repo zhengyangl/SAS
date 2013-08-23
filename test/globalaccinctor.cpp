@@ -49,6 +49,8 @@ public:
 class Foo {
 public:
   Foo(void);
+private:
+  int m_val;
 };
 
 int f() { return 5; }
@@ -59,12 +61,13 @@ const static int x = f();
 const static int y = 6;
 const static Foo Global_Foo_After;
 
-Foo::Foo(void)
+Foo::Foo(void) : m_val(Global_Integer.get_value()) // bug: global acc in ctor
 {
   cout << Global_Integer.get_value() << "\n"; // bug: global acc in ctor
   cout << Global_Integer.get_initialized() << "\n";
   cout << x << "\n"; // bug: global acc in ctor
   cout << y << "\n"; // not bug: y initialized by constant
+  cout << m_val << "\n";
 }
 
 int main(void)
