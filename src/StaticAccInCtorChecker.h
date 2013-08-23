@@ -29,15 +29,11 @@ namespace clang {
 
 namespace sas {
   class StaticAccInCtorChecker : public clang::ento::Checker<
-    clang::ento::check::ASTDecl<clang::CXXConstructorDecl>,
-    clang::ento::check::ASTCodeBody > {
+    clang::ento::check::ASTDecl<clang::CXXConstructorDecl> > {
   public:
     void checkASTDecl(const clang::CXXConstructorDecl *D,
                       clang::ento::AnalysisManager &Mgr,
                       clang::ento::BugReporter &BR) const;
-    void checkASTCodeBody(const clang::Decl *D,
-                          clang::ento::AnalysisManager& mgr,
-                          clang::ento::BugReporter &BR) const;
   private:
     mutable clang::OwningPtr<clang::ento::BugType> BT;
   private:

@@ -151,27 +151,25 @@ namespace {
     const PathDiagnosticLocation l =
       PathDiagnosticLocation::createBegin(DRE, SM, lac);
     BugReport * const report = new BugReport(*BT, desc, l);
-    // FIXME: Memory leak?
-    report->setDeclWithIssue(varDecl);
+    report->setDeclWithIssue(DeclWithIssue);
     report->addRange(DRE->getSourceRange());
-    //bugreporter::trackNullOrUndefValue(N, S, *report);
     BR.emitReport(report);
     return;
   }
 } // anonymous namespace
 
-const char * const sas::StaticAccInCtorChecker::checkerName =
-  "security.StaticAccInCtor";
+const char * const
+sas::StaticAccInCtorChecker::checkerName = "security.StaticAccInCtor";
 
 void
 sas::StaticAccInCtorChecker::checkASTDecl(const CXXConstructorDecl *D,
-                                               AnalysisManager &Mgr,
-                                               BugReporter &BR) const
+                                          AnalysisManager &Mgr,
+                                          BugReporter &BR) const
 {
   if (!D)
     return; /// Invalid declaration
   if (!D->isThisDeclarationADefinition())
-    return; /// No definition (here)
+    return; /// No definition attached to declaration
   /// `D` has a definition attached.
   assert(D->hasBody());
   const Stmt * const body = D->getBody();
@@ -180,14 +178,4 @@ sas::StaticAccInCtorChecker::checkASTDecl(const CXXConstructorDecl *D,
   SAICVisitor walker(D, BR, BT, Mgr);
   walker.Visit(body);
   // TODO: Parse the initializers.
-}
-
-void
-sas::StaticAccInCtorChecker::checkASTCodeBody(const Decl *D,
-                                                   AnalysisManager& mgr,
-                                                   BugReporter &BR) const
-{
-  if (!D)
-    return; // Invalid declaration
-  // TODO: Parse.
 }
