@@ -5,6 +5,9 @@
 
 #include "StaticAccInCtorChecker.h"
 
+#include <clang/Analysis/AnalysisContext.h>
+using clang::AnalysisDeclContext;
+
 #include <clang/AST/Decl.h>
 using clang::ValueDecl;
 using clang::VarDecl;
@@ -37,6 +40,7 @@ using clang::ento::BugType;
 
 #include <clang/StaticAnalyzer/Core/BugReporter/PathDiagnostic.h>
 using clang::ento::PathDiagnosticLocation;
+using clang::ento::LocationOrAnalysisDeclContext;
 
 #include <clang/StaticAnalyzer/Core/PathSensitive/AnalysisManager.h>
 using clang::ento::AnalysisManager;
@@ -55,13 +59,13 @@ namespace {
   private:
     BugReporter &BR;
     const Decl * const DeclWithIssue;
-    const SourceManager& SM;
     OwningPtr<BugType>& BT;
+    AnalysisManager& Mgr;
   public:
     SAICVisitor(const Decl * const declWithIssue,
                 BugReporter &br,
-                const SourceManager& SM,
-                OwningPtr<BugType>& BT);
+                OwningPtr<BugType>& BT,
+                AnalysisManager& Mgr);
     void VisitChildren(const Stmt * const S);
     void VisitStmt(const Stmt * const S);
     void VisitDeclRefExpr(const DeclRefExpr * const DRE);
@@ -69,16 +73,17 @@ namespace {
 
   void EmitReport(const DeclRefExpr * const DRE,
                   const VarDecl * const varDecl,
-                  const SourceManager& SM,
+                  const Decl * const DeclWithIssue,
                   BugReporter& BR,
-                  OwningPtr<BugType>& BT);
+                  OwningPtr<BugType>& BT,
+                  AnalysisManager& Mgr);
 } // end anonymous namespace
 
 SAICVisitor::SAICVisitor(const Decl * const declWithIssue,
                          BugReporter &br,
-                         const SourceManager& SM,
-                         OwningPtr<BugType>& BT)
-  : BR(br), DeclWithIssue(declWithIssue), SM(SM), BT(BT) {}
+                         OwningPtr<BugType>& BT,
+                         AnalysisManager& Mgr)
+  : BR(br), DeclWithIssue(declWithIssue), BT(BT), Mgr(Mgr) {}
 
 void
 SAICVisitor::VisitChildren(const Stmt * const S)
@@ -107,9 +112,6 @@ SAICVisitor::VisitDeclRefExpr(const DeclRefExpr * const DRE)
   if (!valueDecl)
     return; /// Invalid value declaration
   /// `valueDecl` is the declaration referred by `DRE`.
-  dbgs() << "name: ";
-  valueDecl->printQualifiedName(dbgs());
-  dbgs() << "\n";
   const VarDecl * const varDecl = dyn_cast<VarDecl>(valueDecl);
   if (!varDecl)
     return; /// Not a variable declaration
@@ -125,7 +127,7 @@ SAICVisitor::VisitDeclRefExpr(const DeclRefExpr * const DRE)
   /// `storageClass` is static.
   /// `DRE` refers to a static variable.
   /// Bingo!
-  EmitReport(DRE, varDecl, SM, BR, BT);
+  EmitReport(DRE, varDecl, DeclWithIssue, BR, BT, Mgr);
 }
 
 
@@ -133,24 +135,25 @@ namespace {
   void
   EmitReport(const DeclRefExpr * const DRE,
              const VarDecl * const varDecl,
-             const SourceManager& SM,
+             const Decl * const DeclWithIssue,
              BugReporter& BR,
-             OwningPtr<BugType>& BT)
+             OwningPtr<BugType>& BT,
+             AnalysisManager& Mgr)
   {
-    dbgs() << "Emit report!\n";
-    // TODO: Emit a report.
     static const char * const desc = "Static variable accessed in constructor";
     if (!BT)
       BT.reset(new BugType("Static variable accessed in constructor",
                            "Security"));
-    /*PathDiagnosticLocation VDLoc =
-      PathDiagnosticLocation::createBegin(VD, BR.getSourceManager());
-    BR.EmitBasicReport(DeclWithIssue, desc, "LLVM Conventions", desc,
-    VDLoc, Init->getSourceRange());*/
+    const SourceManager& SM = BR.getSourceManager();
+    AnalysisDeclContext * const analysisDeclContext =
+      Mgr.getAnalysisDeclContext(DeclWithIssue);
+    const LocationOrAnalysisDeclContext lac = analysisDeclContext;
     const PathDiagnosticLocation l =
-      PathDiagnosticLocation::create(varDecl, SM);
+      PathDiagnosticLocation::createBegin(DRE, SM, lac);
     BugReport * const report = new BugReport(*BT, desc, l);
-    //report->addRange(S->getSourceRange());
+    // FIXME: Memory leak?
+    report->setDeclWithIssue(varDecl);
+    report->addRange(DRE->getSourceRange());
     //bugreporter::trackNullOrUndefValue(N, S, *report);
     BR.emitReport(report);
     return;
@@ -174,7 +177,7 @@ sas::StaticAccInCtorChecker::checkASTDecl(const CXXConstructorDecl *D,
   const Stmt * const body = D->getBody();
   assert(body);
   /// `body` is the definition of `D`.
-  SAICVisitor walker(D, BR, Mgr.getSourceManager(), BT);
+  SAICVisitor walker(D, BR, BT, Mgr);
   walker.Visit(body);
   // TODO: Parse the initializers.
 }
