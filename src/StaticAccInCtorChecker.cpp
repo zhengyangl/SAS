@@ -101,6 +101,25 @@ SAICVisitor::VisitStmt(const Stmt * const S)
   VisitChildren(S);
 }
 
+void PrintVarDecl(const VarDecl * const varDecl)
+{
+  dbgs() << "VarDecl: ";
+  if (!varDecl) {
+    dbgs() << "<null>\n";
+    return;
+  }
+  dbgs() << varDecl->getName() << "\n";
+  dbgs() << " isStaticDataMember: " << varDecl->isStaticDataMember() << "\n";
+  dbgs() << " TSCSpec:            " << varDecl->getTSCSpec() << "\n";
+  dbgs() << " TLSKind:            " << varDecl->getTLSKind() << "\n";
+  dbgs() << " hasLocalStorage:    " << varDecl->hasLocalStorage() << "\n";
+  dbgs() << " hasGlobalStorage:   " << varDecl->hasGlobalStorage() << "\n";
+  dbgs() << " hasExternalStorage: " << varDecl->hasExternalStorage() << "\n";
+  dbgs() << " isStaticLocal:      " << varDecl->isStaticLocal() << "\n";
+  dbgs() << " StorageDuration:    " << varDecl->getStorageDuration() << "\n";
+  //dbgs() << " isInitICE:          " << varDecl->isInitICE() << "\n";
+}
+
 void
 SAICVisitor::VisitDeclRefExpr(const DeclRefExpr * const DRE)
 {
@@ -108,7 +127,7 @@ SAICVisitor::VisitDeclRefExpr(const DeclRefExpr * const DRE)
     return; /// Invalid reference expression
   /// `DRE` is a reference to a declared variable, function, enum etc.
   const ValueDecl * const valueDecl = DRE->getDecl();
-  assert(valueDecl);
+  assert(valueDecl); /// `DeclRefExpr` should always have a value declaration
   if (!valueDecl)
     return; /// Invalid value declaration
   /// `valueDecl` is the declaration referred by `DRE`.
@@ -117,17 +136,12 @@ SAICVisitor::VisitDeclRefExpr(const DeclRefExpr * const DRE)
     return; /// Not a variable declaration
   /// `varDecl` (that is `valueDecl`) is a variable delcaration.
   /// `DRE` refers to a variable.
-  const StorageClass storageClass = varDecl->getStorageClass();
-  if (!storageClass)
-    return; /// No storage class
-  /// `storageClass` is the storage class of `varDecl`.
-  /// `DRE` refers to a variable with a storage class.
-  if (storageClass != clang::SC_Static)
-    return; /// Non-static storage class
-  /// `storageClass` is static.
-  /// `DRE` refers to a static variable.
-  /// Bingo!
-  EmitReport(DRE, varDecl, DeclWithIssue, BR, BT, Mgr);
+  if (varDecl->hasGlobalStorage()) {
+    /// `varDecl` is a global variable.
+    /// `DRE` refers to a global variable.
+    /// Bingo!
+    EmitReport(DRE, varDecl, DeclWithIssue, BR, BT, Mgr);
+  }
 }
 
 
@@ -140,9 +154,9 @@ namespace {
              OwningPtr<BugType>& BT,
              AnalysisManager& Mgr)
   {
-    static const char * const desc = "Static variable accessed in constructor";
+    static const char * const desc = "Global variable accessed in constructor";
     if (!BT)
-      BT.reset(new BugType("Static variable accessed in constructor",
+      BT.reset(new BugType("Global variable accessed in constructor",
                            "Security"));
     const SourceManager& SM = BR.getSourceManager();
     AnalysisDeclContext * const analysisDeclContext =
