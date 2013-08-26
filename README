@@ -9,7 +9,7 @@ correctly reflect the reality of SAS.
 
 Developed by:
 <sas-dev@cern.ch>
-Filip Bartek <filip.bartek@cern.ch>
+Filip Bartek <filip.bartek@cern.ch> (2013)
 
 
 Introduction
@@ -49,9 +49,14 @@ How to build SAS plugin
 1. Get SAS source code
 ----------------------
 
-You can get the SAS source code from its Git repository simply by running:
+You need to be in CERN ph-dep-sft e-group as of now to access the SAS Git
+repository.
+
+You can get the SAS source code from its Git repository simply by running one
+of the following commands:
 
 git clone https://:@git.cern.ch/kerberos/sas
+git clone https://git.cern.ch/reps/sas
 
 This command will create "sas" directory in the current working directory and
 download the latest stable ("master" branch) version of SAS into it. In the
@@ -81,8 +86,9 @@ Building LLVM and Clang: http://clang.llvm.org/get_started.html#build
 The build process of the library "sas.so" consists of two steps:
 
 1. Create a build directory ($BUILD_DIR; do not confuse with LLVM build
-   directory), enter it and run `cmake $SAS_DIR`, replacing $SAS_DIR by the path
-   (relative or absolute) to the SAS directory.
+   directory), enter it and run:
+   `cmake $SAS_DIR -D LLVM_SRC_DIR=$LLVM_SRC_DIR -D LLVM_SRC_BUILD_DIR=$LLVM_SRC_BUILD_DIR`
+   replacing $SAS_DIR by the path (relative or absolute) to the SAS directory.
 
 2. Enter $BUILD_DIR and run `make`.
 
