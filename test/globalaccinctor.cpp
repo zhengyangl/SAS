@@ -34,16 +34,16 @@
 #include <iostream>
 using std::cout;
 
+int get_number(const int& v) { return v; }
+
 class Integer {
+private:
   int m_value;
-  bool m_initialized; // initialized to 0 in static instance before ctor call
 public:
   Integer(int v) {
     m_value = v;
-    m_initialized = true;
   }
   int get_value(void) const { return m_value; }
-  bool get_initialized(void) const { return m_initialized; }
 };
 
 class Foo {
@@ -51,23 +51,34 @@ public:
   Foo(void);
 private:
   int m_val;
+  static int m_constant;
+  static int m_function;
 };
 
-int f() { return 5; }
+const static Foo Global_Foo_Before; // May print uninitialized values (zeros)
 
-const static Foo Global_Foo_Before; // May print "0" (unitialized value)
-const static Integer Global_Integer(5);
-const static int x = f();
-const static int y = 6;
+const static Integer Global_Integer(1);
+const static int x_constant = 1;
+const static int x_function = get_number(1);
+int Foo::m_constant = 1;
+int Foo::m_function = get_number(1);
+
 const static Foo Global_Foo_After;
 
-Foo::Foo(void) : m_val(Global_Integer.get_value()) // bug: global acc in ctor
+Foo::Foo(void) : m_val(Global_Integer.get_value()) // bug: static acc in ctor
 {
-  cout << Global_Integer.get_value() << "\n"; // bug: global acc in ctor
-  cout << Global_Integer.get_initialized() << "\n"; // bug: global acc in ctor
-  cout << x << "\n"; // bug: global acc in ctor
-  cout << y << "\n"; // not bug: y initialized by constant
-  cout << m_val << "\n";
+  cout << "Global static class instance (direct):                   "
+       << Global_Integer.get_value() << "\n"; // bug: static acc in ctor
+  cout << "Global static class instance (initializer):              "
+       << m_val << "\n";
+  cout << "Global static built-in instance initialized by constant: "
+       << x_constant << "\n"; // not bug?: x_constant initialized by constant
+  cout << "Global static built-in instance initialized by function: "
+       << x_function << "\n"; // bug: static acc in ctor
+  cout << "Local static built-in instance initialized by constant:  "
+       << m_constant << "\n"; // not bug?: m_constant initialized by constant
+  cout << "Local static built-in instance initialized by function:  "
+       << m_function << "\n"; // bug: static acc in ctor
 }
 
 int main(void)
