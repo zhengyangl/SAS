@@ -1,6 +1,7 @@
 //== SasException.cpp -                             --------------*- C++ -*--==//
 //
 // by Thomas Hauth [ Thomas.Hauth@cern.ch ] and Patrick Gartung
+//    Filip Bartek [ Filip.Bartek@cern.ch ] (2013)
 //
 //===----------------------------------------------------------------------===//
 
