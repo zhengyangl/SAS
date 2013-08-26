@@ -10,11 +10,6 @@ set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin )
 set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib )
 set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib )
 
-# set your llvm/clang paths here
-set (LLVM_SRC_DIR ../llvm)
-set (LLVM_SRC_BUILD_DIR ../build)
-set (LLVM_BIN_BUILD_DIR ${LLVM_SRC_BUILD_DIR}/Release+Asserts)
-
 
 # the rest should work automatically
 
@@ -25,11 +20,6 @@ set (CLANG_BUILD_DIR ${LLVM_SRC_BUILD_DIR}/tools/clang)
 
 add_definitions (-D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS)
 add_definitions (-D_GNU_SOURCE -DHAVE_CLANG_CONFIG_H)
-
-
-# this sets up the devel clang as our compiler
-set (CMAKE_CXX_COMPILER "${LLVM_BIN_BUILD_DIR}/bin/clang++")
-set (CMAKE_CC_COMPILER "${LLVM_BIN_BUILD_DIR}/bin/clang")
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-common -Woverloaded-virtual -Wcast-qual -fno-strict-aliasing -pedantic -Wno-long-long -Wall -W -Wno-unused-parameter -Wwrite-strings -fno-exceptions -fno-rtti")
 
