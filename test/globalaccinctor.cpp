@@ -67,17 +67,17 @@ const static Foo Global_Foo_After;
 
 Foo::Foo(void) : m_val(Global_Integer.get_value()) // bug: static acc in ctor
 {
-  cout << "Global static class instance (direct):                   "
+  cout << "Non-member static class instance (direct):                   "
        << Global_Integer.get_value() << "\n"; // bug: static acc in ctor
-  cout << "Global static class instance (initializer):              "
+  cout << "Non-member static class instance (initializer):              "
        << m_val << "\n";
-  cout << "Global static built-in instance initialized by constant: "
+  cout << "Non-member static built-in instance initialized by constant: "
        << x_constant << "\n"; // not bug?: x_constant initialized by constant
-  cout << "Global static built-in instance initialized by function: "
+  cout << "Non-member static built-in instance initialized by function: "
        << x_function << "\n"; // bug: static acc in ctor
-  cout << "Local static built-in instance initialized by constant:  "
+  cout << "Member static built-in instance initialized by constant:     "
        << m_constant << "\n"; // not bug?: m_constant initialized by constant
-  cout << "Local static built-in instance initialized by function:  "
+  cout << "Member static built-in instance initialized by function:     "
        << m_function << "\n"; // bug: static acc in ctor
 }
 
