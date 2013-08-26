@@ -108,6 +108,8 @@ sas-scan-build      : scan-build with SAS plugin loaded
 sas-scan-build-none : sas-scan-build with all checkers disabled (for
                       checker-selective scans)
 sas-scan-build-sas  : sas-scan-build with only SAS checkers enabled
+sas-scan-build-all  : sas-scan-build with all the checkers enabled (both default
+                      and SAS-specific)
 
 Typical usage
 -------------
@@ -116,7 +118,7 @@ cd $SAS_DIR
 source ./setup.sh
 cd $PROJECT_DIR
 sas-scan-build ./configure
-sas-scan-build -o $REPORT_DIR make
+sas-scan-build-all -o $REPORT_DIR make
 
 where:
 
