@@ -54,8 +54,8 @@ You can get the SAS source code from its Git repository simply by running:
 git clone https://:@git.cern.ch/kerberos/sas
 
 This command will create "sas" directory in the current working directory and
-download the latest version of SAS into it. In the rest of the document, this
-"sas" directory will be called $SAS_DIR.
+download the latest stable ("master" branch) version of SAS into it. In the
+rest of this document, this "sas" directory will be referred to as $SAS_DIR.
 
 2. Prepare the working environment
 ----------------------------------
