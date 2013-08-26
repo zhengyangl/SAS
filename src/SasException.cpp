@@ -25,7 +25,6 @@ bool SasException::reportGeneral( clang::ento::PathDiagnosticLocation const& pat
 	  found += FN.count("LinkDef.cc");
 	  found += FN.count("/external/");
 	  found += FN.count("/lcg/");
-	  found += FN.count("/cms/cmssw/"); 
 	  found += FN.count("/test/"); 
 	  found += FN.count("/sas/");
 //	  found += FN.count("/FWCore/"); 
