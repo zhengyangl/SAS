@@ -78,8 +78,8 @@ set (USER_LIBS
 	pthread
 )
 
-# Add new checkers to the plugin by adding their CPP files as arguments to the
-# following call.
+# Add new checkers to the plugin by adding their source files as arguments to
+# the following call.
 # The first argument is the plugin name.
 add_clang_plugin(sas
 	src/ClangSasCheckerPluginRegister.cpp
