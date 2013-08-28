@@ -65,7 +65,7 @@ namespace sas {
       return; // this checker is disabled by a comment
     // Name of the declared variable:
     const StringRef Name = D->getName();
-    const char * const NameChar = Name.data();\
+    const char * const NameChar = Name.data();
     // First letter of the name:
     const char FirstLetter = NameChar[0];
     // Don't emit report if FirstLetter is uppercase:
