@@ -20,7 +20,7 @@
 #include "UsingNamespace.h"
 #include "ArgSizeChecker.h"
 #include "VarnameChecker.h"
-#include "StaticAccInCtorChecker.h"
+#include "GlobalAccInCtorChecker.h"
 
 #include <clang/StaticAnalyzer/Core/CheckerRegistry.h>
 

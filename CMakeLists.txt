@@ -133,4 +133,4 @@ add_clang_plugin(sas
 	src/ArgSizeChecker.cpp
 	src/VarnameChecker.cpp
         src/CheckerDisabler.cpp
-        src/StaticAccInCtorChecker.cpp)
+        src/GlobalAccInCtorChecker.cpp)

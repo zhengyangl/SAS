@@ -3,7 +3,7 @@
 // Inspiration:
 // LLVMConventionsChecker (StmtVisitor)
 
-#include "StaticAccInCtorChecker.h"
+#include "GlobalAccInCtorChecker.h"
 
 #include <clang/Analysis/AnalysisContext.h>
 using clang::AnalysisDeclContext;
