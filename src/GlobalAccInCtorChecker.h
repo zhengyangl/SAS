@@ -5,8 +5,18 @@
 // Clang Static Analyzer checker
 // Reports a bug when a static global variable is accessed from constructor.
 
-#ifndef SAS_CHECKERS_STATICACCINCTORCHECKER_H
-#define SAS_CHECKERS_STATICACCINCTORCHECKER_H
+#ifndef SAS_CHECKERS_GLOBALACCINCTORCHECKER_H
+#define SAS_CHECKERS_GLOBALACCINCTORCHECKER_H
+
+
+//#include <clang/StaticAnalyzer/Core/BugReporter/BugType.h>
+namespace clang {
+  namespace ento {
+    class BugType; // forward declaration
+    // [FB] Assuming OwningPtr doesn't require a complete type as its template
+    // parameter.
+  }
+}
 
 #include <clang/StaticAnalyzer/Core/Checker.h>
 // clang::ento::Checker
@@ -14,21 +24,11 @@
 // clang::ento::AnalysisManager
 // clang::ento::BugReporter
 
-//#include <clang/StaticAnalyzer/Core/BugReporter/BugType.h>
-// clang::ento::BugType
-namespace clang {
-  namespace ento {
-    class BugType; // forward declaration
-    // TODO: Is this correct? Does OwningPtr require the template parameter to
-    // be a complete type?
-  }
-}
-
 #include <llvm/ADT/OwningPtr.h>
 // clang::OwningPtr
 
 namespace sas {
-  class StaticAccInCtorChecker : public clang::ento::Checker<
+  class GlobalAccInCtorChecker : public clang::ento::Checker<
     clang::ento::check::ASTDecl<clang::CXXConstructorDecl> > {
   public:
     void checkASTDecl(const clang::CXXConstructorDecl *D,

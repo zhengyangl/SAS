@@ -101,7 +101,8 @@ SAICVisitor::VisitStmt(const Stmt * const S)
   VisitChildren(S);
 }
 
-void PrintVarDecl(const VarDecl * const varDecl)
+void
+PrintVarDecl(const VarDecl * const varDecl)
 {
   dbgs() << "VarDecl: ";
   if (!varDecl) {
@@ -173,10 +174,10 @@ namespace {
 } // anonymous namespace
 
 const char * const
-sas::StaticAccInCtorChecker::checkerName = "security.StaticAccInCtor";
+sas::GlobalAccInCtorChecker::checkerName = "security.GlobalAccInCtor";
 
 void
-sas::StaticAccInCtorChecker::checkASTDecl(const CXXConstructorDecl *D,
+sas::GlobalAccInCtorChecker::checkASTDecl(const CXXConstructorDecl *D,
                                           AnalysisManager &Mgr,
                                           BugReporter &BR) const
 {

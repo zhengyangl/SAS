@@ -54,8 +54,8 @@ void clang_registerCheckers ( clang::ento::CheckerRegistry &registry)
 					   "Reports args passed by value with size>4k.");
   registry.addChecker<sas::VarnameChecker>("sas.example.Varname",
 					   "Reports variables whose names don't start with an uppercase letter.");
-  registry.addChecker<sas::StaticAccInCtorChecker>("security.StaticAccInCtor",
-    "Reports access to global static variable in constructor.");
+  registry.addChecker<sas::GlobalAccInCtorChecker>("security.GlobalAccInCtor",
+    "Reports access to global variable in constructor.");
 }
 
 extern "C"
