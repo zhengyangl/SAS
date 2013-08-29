@@ -30,32 +30,33 @@ extern "C"
 void clang_registerCheckers ( clang::ento::CheckerRegistry &registry) 
 { 
   registry.addChecker<sas::ConstCastAwayChecker>("threadsafety.ConstCastAway",
-						 "Checks for casts which remove const qualifier and might result in thread-unsafe code");
+						 "Check for casts which remove const qualifier");
   registry.addChecker<sas::ConstCastChecker>("threadsafety.ConstCast",
-					     "Checks for casts which remove const qualifier and might result in thread-unsafe code");
+					     "Check for casts which remove const qualifier");
   registry.addChecker<sas::StaticLocalChecker>("threadsafety.StaticLocal",
-					       "Checks for non-const method local statics which might not be thread-safe");
+					       "Check for non-const method local static variables");
   registry.addChecker<sas::MutableMemberChecker>("threadsafety.MutableMember",
-						 "Checks for members with the mutable keyword which might not be thread-safe");
+						 "Check for members with the mutable keyword");
   registry.addChecker<sas::GlobalStaticChecker>("threadsafety.GlobalStatic",
-						"Checks for global non-const statics which might not be thread-safe");
+						"Check for global non-const static variables");
   registry.addChecker<sas::ClassDumperCT>("optional.ClassDumperCT",
-					  "Dumps class info");
+					  "Dump class info");
   registry.addChecker<sas::ClassDumperFT>("optional.ClassDumperFT",
-					  "Dumps class info");
+					  "Dump class info");
   registry.addChecker<sas::ClassDumperInherit>("optional.ClassDumperInherit",
-					       "Dumps class inheritance info");
-  registry.addChecker<sas::FiniteMathChecker>("sas.NonFiniteMath", "Reports usage of isnan and isinf.");
+					       "Dump class inheritance info");
+  registry.addChecker<sas::FiniteMathChecker>("sas.NonFiniteMath",
+    "Check for usage of isnan and isinf");
   registry.addChecker<sas::UsingNamespace>("sas.CodeRules.UsingNamespace",
-					   "Checks for 'using namespace' or 'using std::' in header files");
+					   "Check for 'using namespace' or 'using std::' in header files");
   registry.addChecker<sas::CatchAll>("sas.CodeRules.CatchAll",
-				     "Checks for 'catch(...)' in source files");
+				     "Check for 'catch(...)' in source files");
   registry.addChecker<sas::ArgSizeChecker>("performance.ArgSize",
-					   "Reports args passed by value with size>4k.");
+					   "Check for arguments passed by value with size over 4 KB");
   registry.addChecker<sas::VarnameChecker>("sas.example.Varname",
-					   "Reports variables whose names don't start with an uppercase letter.");
+					   "Report variables whose names don't start with an uppercase letter");
   registry.addChecker<sas::GlobalAccInCtorChecker>("security.GlobalAccInCtor",
-    "Reports access to global variable in constructor.");
+    "Check for access to global variable in constructor");
 }
 
 extern "C"
