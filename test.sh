@@ -15,6 +15,9 @@ cd test
 #sas-scan-build -o report $SCANBUILD_ARG_DISABLE_CHECKERS -enable-checker threadsafety make -B -j 32
 
 # threadsafe.* and sas.Varname
-sas-scan-build -o report $SCANBUILD_ARG_DISABLE_CHECKERS -enable-checker threadsafety -enable-checker sas make -B -j 32
+#sas-scan-build -o report $SCANBUILD_ARG_DISABLE_CHECKERS -enable-checker threadsafety -enable-checker sas make -B -j 32
+
+# sas-scan-build-sas
+sas-scan-build-sas -o report make -B -j 32
 
 cd -
