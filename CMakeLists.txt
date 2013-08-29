@@ -1,4 +1,4 @@
-# Author: <unknown>
+# Author: <CMS>
 #         Filip Bartek <filip.bartek@cern.ch> (2013)
 
 # Requirements:
