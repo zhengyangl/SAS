@@ -7,13 +7,16 @@
 # Locate SAS build directory
 SAS_BUILD_DIR_REL=../sas-build
 
+LLVM_SRC_DIR=$PWD/../llvm
+LLVM_SRC_BUILD_DIR=$PWD/../build
+
 
 # Go to SAS build directory
 mkdir -p $SAS_BUILD_DIR_REL
 cd $SAS_BUILD_DIR_REL
 
 # Configure the build
-cmake $OLDPWD
+cmake -D LLVM_SRC_DIR=$LLVM_SRC_DIR -D LLVM_SRC_BUILD_DIR=$LLVM_SRC_BUILD_DIR $OLDPWD
 
 # Build the library
 make -j 32
