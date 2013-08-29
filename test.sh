@@ -4,7 +4,7 @@
 
 # Test the plugin on example files.
 
-SCANBUILD_ARG_DISABLE_CHECKERS=-disable-checker core -disable-checker cplusplus -disable-checker deadcode -disable-checker llvm -disable-checker osx -disable-checker security -disable-checker unix
+SCANBUILD_ARG_DISABLE_CHECKERS="-disable-checker core -disable-checker cplusplus -disable-checker deadcode -disable-checker llvm -disable-checker osx -disable-checker security -disable-checker unix"
 
 cd test
 
