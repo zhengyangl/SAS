@@ -1,13 +1,17 @@
 //==                                                                     --==//
 //
 // by Thomas Hauth [ Thomas.Hauth@cern.ch ] 
-//    Filip Bartek [ filip.bartek@cern.ch ]
+//    Filip Bartek (2013)
 //
 //===----------------------------------------------------------------------===//
 
-// To register a new checker class in the SAS library, add a call to `registry.addChecker` to the body of the function `clang_registerCheckers`. This call needs to have the proper arguments, for example:
-// registry.addChecker<sas::MyChecker>("sas.MyCheckersName", "My checker's description");
-// This call refers to the class `MyChecker` so you must also make this class available in this file by #including the corresponding header file (`#include "MyChecker.h"`).
+// To register a new checker class in the SAS library, add a call to
+// `registry.addChecker` to the body of the function `clang_registerCheckers`
+// in this file. This call needs to have the proper arguments, for example:
+// registry.addChecker<sas::MyChecker>("sas.MyCheckerName", "My checker's description");
+// This call refers to the class `MyChecker` so you must also make this class
+// available in this file by #including the corresponding header file
+// (`#include "MyChecker.h"`).
 
 #include "ConstCastChecker.h"
 #include "ConstCastAwayChecker.h"
