@@ -1,5 +1,5 @@
 # Author: <CMS>
-#         Filip Bartek <filip.bartek@cern.ch> (2013)
+#         Filip Bartek (2013)
 
 # Requirements:
 # LLVM_SRC_DIR
@@ -9,8 +9,8 @@
 # cmake -D LLVM_SRC_DIR=$LLVM_SRC_DIR LLVM_SRC_BUILD_DIR=$LLVM_SRC_BUILD_DIR $SAS_DIR
 
 # To register a new checker class in the SAS library, add an argument
-# "src/*Checker.cpp" (replacing the asterisk with the actual name of the
-# checker) to the `add_clang_plugin` call further in this file.
+# "src/MyChecker.cpp" (replacing "MyChecker" with the actual name of the
+# checker file) to the `add_clang_plugin` call further in this file.
 
 
 cmake_minimum_required (VERSION 2.6)
@@ -97,4 +97,5 @@ add_clang_plugin(sas
 	src/VarnameChecker.cpp
         src/CheckerDisabler.cpp
         src/GlobalAccInCtorChecker.cpp
+        # Add your checker here!
 )
