@@ -92,7 +92,8 @@ Building LLVM and Clang: http://clang.llvm.org/get_started.html#build
 The build process of the plugin shared object "sas.so" consists of two steps:
 
 1. Create a build directory ($BUILD_DIR), enter it and run:
-   `cmake -D LLVM_SRC_DIR=$LLVM_SRC_DIR -D LLVM_SRC_BUILD_DIR=$LLVM_SRC_BUILD_DIR $SAS_DIR`
+   `cmake -D LLVM_SRC_DIR=$LLVM_SRC_DIR \
+          -D LLVM_SRC_BUILD_DIR=$LLVM_SRC_BUILD_DIR $SAS_DIR`
 
 2. Enter $BUILD_DIR and run `make`.
 
@@ -113,15 +114,16 @@ Typical usage
 
 cd $PROJECT_DIR
 scan-build ./configure
-scan-build -load-plugin $BUILD_DIR/lib/sas.so -enable-plugin sas -disable-plugin sas.example -o $REPORT_DIR make
+scan-build -load-plugin $BUILD_DIR/lib/sas.so -enable-plugin sas \
+           -disable-plugin sas.example -o $REPORT_DIR make
 
 where:
 
 - $PROJECT_DIR is a directory of a project that uses a "configure" script and
   a "Makefile" for building
 - $BUILD_DIR is SAS build directory
-- $REPORT_DIR is the target directory for static analysis reports (for example
-  "./report")
+- $REPORT_DIR is the target directory for static analysis reports (for
+  example "./report")
 
 Advanced usage
 --------------
@@ -140,7 +142,7 @@ sas
     GlobalAccInCtor
     NonFiniteMath
   threadsafety
-    ConstCast
+    ConstCast *
     ConstCastAway
     GlobalStatic
     StaticLocal
@@ -148,14 +150,38 @@ sas
   performance
     ArgSize
   CodeRules
-    UsingNamespace
+    UsingNamespace *
     CatchAll
   optional
     ClassDumperCT
     ClassDumperFT
     ClassDumperInherit
   example
-    Varname
+    Varname *
+
+Checkers marked with an asterisk ('*') are mutable by comments (see next
+section for details).
+
+How to mute a checker
+=====================
+
+Checker muting mechanism is provided for suppressing false positives.
+
+To mute a mutable checker on a particular line in target source code, add a
+comment on a preceding line that starts with "//" (two slashes) and contains
+the following text:
+sas[disable_checker : "MyChecker"]
+where MyChecker is a fully qualified name of the checker to be disabled.
+
+Example (source code extract):
+
+// sas[disable_checker : "sas.example.Varname"]
+int varLowercase; // not bug (Varname): lowercase, but disabled by comment
+
+For more examples see the file "test/checkerdisabler.cpp".
+
+Note that checker muting is only supported by some of the SAS checkers. See
+previous section (Available checkers) to learn which checkers support muting.
 
 How to add a new checker
 ========================
@@ -181,15 +207,19 @@ Links:
 Checker Developer Manual: http://clang-analyzer.llvm.org/checker_dev_manual.html
 clang API Documentation:  http://clang.llvm.org/doxygen/
 
-Muting checkers
-===============
+How to make the checker mutable
+-------------------------------
 
-[TODO: Complete this section.]
+Consult the file "src/CheckerDisabler.h" for instructions on how to make your
+checker mutable.
 
 How to build a single file
 ==========================
 
 Example:
 
-$(CXX) -c -I $LLVM_SRC_DIR/include -I $LLVM_SRC_BUILD_DIR/include -I $LLVM_SRC_DIR/tools/clang/include -I $LLVM_SRC_BUILD_DIR/tools/clang/include -D __STDC_LIMIT_MACROS -D __STDC_CONSTANT_MACROS MyChecker.cpp
+$(CXX) -c -I $LLVM_SRC_DIR/include -I $LLVM_SRC_BUILD_DIR/include \
+  -I $LLVM_SRC_DIR/tools/clang/include \
+  -I $LLVM_SRC_BUILD_DIR/tools/clang/include -D __STDC_LIMIT_MACROS \
+  -D __STDC_CONSTANT_MACROS MyChecker.cpp
 
