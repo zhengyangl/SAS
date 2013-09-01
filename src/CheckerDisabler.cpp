@@ -5,16 +5,12 @@
 
 #include "CheckerDisabler.h"
 
-#include <clang/AST/DeclBase.h>
-using clang::Decl;
-
-#include <clang/AST/Stmt.h>
-using clang::DeclStmt;
-using clang::Stmt;
-
 #include <llvm/ADT/StringRef.h>
 using llvm::StringRef;
 static const size_t& npos = StringRef::npos;
+
+#include <clang/Analysis/AnalysisContext.h>
+using clang::LocationContext;
 
 #include <clang/AST/ASTContext.h>
 using clang::ASTContext;
@@ -24,6 +20,32 @@ using clang::comments::FullComment;
 using clang::comments::BlockContentComment;
 using clang::comments::ParagraphComment;
 using clang::comments::TextComment;
+
+#include <clang/AST/DeclBase.h>
+using clang::Decl;
+
+#include <clang/AST/DeclGroup.h>
+using clang::DeclGroupRef;
+
+#include <clang/AST/Stmt.h>
+using clang::DeclStmt;
+using clang::Stmt;
+
+#include <clang/Basic/SourceManager.h>
+using clang::SourceManager;
+
+#include <clang/Basic/SourceLocation.h>
+using clang::SourceLocation;
+using clang::FileID;
+
+#include <clang/StaticAnalyzer/Core/BugReporter/BugReporter.h>
+using clang::ento::BugReporter;
+
+#include <clang/StaticAnalyzer/Core/PathSensitive/AnalysisManager.h>
+using clang::ento::AnalysisManager;
+
+#include <clang/StaticAnalyzer/Core/PathSensitive/CheckerContext.h>
+using clang::ento::CheckerContext;
 
 #include <llvm/ADT/ArrayRef.h>
 using llvm::ArrayRef;
@@ -37,43 +59,31 @@ using std::ostringstream;
 #include <string>
 using std::string;
 
-#include <clang/AST/DeclGroup.h>
-using clang::DeclGroupRef;
-
-#include <clang/Basic/SourceManager.h>
-using clang::SourceManager;
-
-#include <clang/StaticAnalyzer/Core/PathSensitive/CheckerContext.h>
-using clang::ento::CheckerContext;
-
-#include <clang/Analysis/AnalysisContext.h>
-using clang::LocationContext;
-
-#include <clang/Basic/SourceLocation.h>
-using clang::SourceLocation;
-using clang::FileID;
-
 namespace {
   bool IsCommentedWithString(const Decl * const decl,
                              const StringRef commentString);
   string FormDisablerString(const StringRef checkerName);
-  bool IsDisabledByParentDecl(const Stmt * const stmt,
-                              const CheckerContext& checkerContext,
-                              const StringRef checkerName);
-  bool IsDisabledBySpecial(const Decl * const decl,
-                           const StringRef checkerName);
   bool IsDisabledByPreceding(const Stmt * const stmt,
                              CheckerContext& checkerContext,
                              const StringRef checkerName);
+  bool IsDisabledByPreceding(const SourceLocation& stmtLoc,
+                             const SourceManager& sourceManager,
+                             const StringRef disablerString);
 }
 
-bool sas::IsDisabled(const Decl * const decl,
-                     const StringRef checkerName) {
-  return IsDisabledBySpecial(decl, checkerName);
+bool
+sas::IsDisabledBySpecial(const Decl * const decl,
+                const StringRef checkerName)
+{
+  string commentString = FormDisablerString(checkerName);
+  const StringRef commentStringRef(commentString);
+  return IsCommentedWithString(decl, commentStringRef);
 }
 
-bool sas::IsDisabled(const DeclStmt * const declStmt,
-                     const StringRef checkerName) {
+bool
+sas::IsDisabledBySpecial(const DeclStmt * const declStmt,
+                const StringRef checkerName)
+{
   if (!declStmt)
     return false; // invalid stmt
   const DeclGroupRef declGroupRef = declStmt->getDeclGroup();
@@ -81,23 +91,52 @@ bool sas::IsDisabled(const DeclStmt * const declStmt,
   DeclIterator b = declGroupRef.begin();
   DeclIterator e = declGroupRef.end();
   for (DeclIterator i = b; i != e; ++i) {
-    if (IsDisabled(*i, checkerName))
+    if (IsDisabledBySpecial(*i, checkerName))
       return true; // disabled decl
   }
   return false;
 }
 
-bool sas::IsDisabled(const Stmt * const stmt,
-                     CheckerContext& checkerContext,
-                     const StringRef checkerName)
+bool
+sas::IsDisabled(const Stmt * const stmt,
+                CheckerContext& checkerContext,
+                const StringRef checkerName)
 {
   if (!stmt)
     return false; // Invalid stmt
   if (IsDisabledByPreceding(stmt, checkerContext, checkerName))
     return true; // Disabled by preceding line comment
-  if (IsDisabledByParentDecl(stmt, checkerContext, checkerName))
-    return true; // Parent declaration disabled
   return false;
+}
+
+bool
+sas::IsDisabled(const Decl * const decl,
+                AnalysisManager& analysisMgr,
+                const StringRef checkerName)
+{
+  const SourceManager& sourceManager = analysisMgr.getSourceManager();
+  return IsDisabled(decl, sourceManager, checkerName);
+}
+
+bool
+sas::IsDisabled(const Decl * const decl,
+                BugReporter& bugReporter,
+                const StringRef checkerName)
+{
+  const SourceManager& sourceManager = bugReporter.getSourceManager();
+  return IsDisabled(decl, sourceManager, checkerName);
+}
+
+bool
+sas::IsDisabled(const Decl * const decl,
+                const SourceManager& sourceManager,
+                const StringRef checkerName)
+{
+  const SourceLocation sourceLocation = decl->getLocation();
+  string disablerString = FormDisablerString(checkerName);
+  const StringRef disablerStringRef = StringRef(disablerString);
+  return IsDisabledByPreceding(sourceLocation, sourceManager,
+                               disablerStringRef);
 }
 
 namespace {
@@ -108,25 +147,6 @@ namespace {
     commentOss << checkerName.data();
     commentOss << "\"]";
     return commentOss.str();
-  }
-
-  bool IsDisabledByParentDecl(const Stmt * const stmt,
-                              const CheckerContext& checkerContext,
-                              const StringRef checkerName)
-  {
-    const LocationContext * const locationContext =
-      checkerContext.getLocationContext();
-    const Decl * const decl = locationContext->getDecl();
-    if (IsDisabledBySpecial(decl, checkerName))
-      return true; // Parent declaration disabled
-    return false;
-  }
-
-  bool IsDisabledBySpecial(const Decl * const decl,
-                           const StringRef checkerName) {
-    string commentString = FormDisablerString(checkerName);
-    const StringRef commentStringRef(commentString);
-    return IsCommentedWithString(decl, commentStringRef);
   }
 
   bool IsCommentedWithString(const Decl * const decl,
@@ -175,6 +195,15 @@ namespace {
       return false; // Invalid stmt
     const SourceManager& sourceManager = checkerContext.getSourceManager();
     const SourceLocation stmtLoc = stmt->getLocStart();
+    const string disablerString = FormDisablerString(checkerName);
+    const StringRef disablerStringRef = StringRef(disablerString);
+    return IsDisabledByPreceding(stmtLoc, sourceManager, disablerStringRef);
+  }
+
+  bool IsDisabledByPreceding(const SourceLocation& stmtLoc,
+                             const SourceManager& sourceManager,
+                             const StringRef disablerString)
+  {
     const unsigned stmtLineNum = sourceManager.getSpellingLineNumber(stmtLoc);
     if (stmtLineNum < 2) // FIXME: Uses 2 preceding lines instead of 1.
       return false; // Not enough preceding lines
@@ -205,7 +234,6 @@ namespace {
     if (commentCol == npos)
       return false; // No `//` comment on this line
     const StringRef commentContent = lineStringRef.substr(commentCol + 2);
-    const string disablerString = FormDisablerString(checkerName);
     const size_t disablerCol = commentContent.find(disablerString);
     if (disablerCol != npos)
       return true; // Disabler in comment

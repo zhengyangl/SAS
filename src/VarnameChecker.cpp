@@ -60,9 +60,10 @@ namespace sas {
 
   void VarnameChecker::checkASTDecl(const VarDecl * D,
 				    AnalysisManager& Mgr,
-				    BugReporter& BR) const {
-    if (IsDisabled(D, checkerName))
-      return; // this checker is disabled by a comment
+				    BugReporter& BR) const
+  {
+    if (IsDisabled(D, Mgr, checkerName))
+      return; // Disabled by a comment
     // Name of the declared variable:
     const StringRef Name = D->getName();
     const char * const NameChar = Name.data();

@@ -48,8 +48,8 @@ bool UsingNamespace::isDeclOK (const clang::NamedDecl *D,
 {
   if (!D)
     return true; // Invalid declaration
-  if (IsDisabled(D, checkerName))
-    return true; // Check disabled by a comment
+  if (IsDisabled(D, BR, checkerName))
+    return true; // Disabled by a comment
   if (D->getDeclContext ()->getParent()!=0)
     return true; // Not on top level in AST
   const char *sfile=BR.getSourceManager().getPresumedLoc(D->getLocation ()).getFilename(); // Get filename
