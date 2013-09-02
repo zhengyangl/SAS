@@ -50,7 +50,9 @@ class Foo {
 public:
   Foo(void);
 private:
-  int m_val;
+  int m_val_unsafe;
+  int m_val_safe;
+  int m_val_const;
   static int m_constant;
   static int m_function;
 };
@@ -60,23 +62,36 @@ const static Foo Global_Foo_Before; // May print uninitialized values (zeros)
 const static Integer Global_Integer(1);
 const static int x_constant = 1;
 const static int x_function = get_number(1);
+const static int& x_ref_const = x_constant;
+const static int& x_ref_func = x_function;
 int Foo::m_constant = 1;
 int Foo::m_function = get_number(1);
 
 const static Foo Global_Foo_After;
 
-Foo::Foo(void) : m_val(Global_Integer.get_value()) // bug: static acc in ctor
+Foo::Foo(void) :
+  m_val_unsafe(Global_Integer.get_value()), // bug: static acc in ctor
+  m_val_safe(get_number(1)), // not bug: evaluated in time
+  m_val_const(1) // not bug: evaluated in time (constant)
 {
+  cout << "Initializer: Non-member static class instance:               "
+       << m_val_unsafe << "\n"; // not bug: not static
+  cout << "Initializer: Function:                                       "
+       << m_val_safe << "\n"; // not bug: not static
+  cout << "Initializer: Constant:                                       "
+       << m_val_safe << "\n"; // not bug: not static
   cout << "Non-member static class instance (direct):                   "
        << Global_Integer.get_value() << "\n"; // bug: static acc in ctor
-  cout << "Non-member static class instance (initializer):              "
-       << m_val << "\n";
   cout << "Non-member static built-in instance initialized by constant: "
-       << x_constant << "\n"; // not bug?: x_constant initialized by constant
+       << x_constant << "\n"; // not bug: x_constant initialized by constant
   cout << "Non-member static built-in instance initialized by function: "
        << x_function << "\n"; // bug: static acc in ctor
+  cout << "Non-member static built-in reference of instance initialized by constant: "
+       << x_ref_const << "\n"; // not bug: has constant initializer
+  cout << "Non-member static built-in reference of instance initialized by function: "
+       << x_ref_func << "\n"; // bug: initialized by function
   cout << "Member static built-in instance initialized by constant:     "
-       << m_constant << "\n"; // not bug?: m_constant initialized by constant
+       << m_constant << "\n"; // not bug: m_constant initialized by constant
   cout << "Member static built-in instance initialized by function:     "
        << m_function << "\n"; // bug: static acc in ctor
 }
