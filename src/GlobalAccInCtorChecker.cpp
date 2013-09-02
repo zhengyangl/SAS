@@ -55,9 +55,6 @@ using llvm::OwningPtr;
 #include <llvm/Support/Casting.h>
 using llvm::dyn_cast;
 
-#include "dbgs.h"
-using sas::dbgs;
-
 namespace {
   class SAICVisitor : public ConstStmtVisitor<SAICVisitor> {
   private:
