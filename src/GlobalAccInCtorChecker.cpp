@@ -1,4 +1,4 @@
-// Author: Filip Bartek <filip.bartek@cern.ch> (2013)
+// Author: Filip Bartek (2013)
 
 // Inspiration:
 // LLVMConventionsChecker (StmtVisitor)
@@ -7,6 +7,9 @@
 
 #include <clang/Analysis/AnalysisContext.h>
 using clang::AnalysisDeclContext;
+
+#include <clang/AST/ASTContext.h>
+using clang::ASTContext;
 
 #include <clang/AST/Decl.h>
 using clang::ValueDecl;
@@ -21,6 +24,7 @@ using clang::CXXConstructorDecl;
 
 #include <clang/AST/Expr.h>
 using clang::DeclRefExpr;
+using clang::Expr;
 
 #include <clang/AST/Stmt.h>
 using clang::Stmt;
@@ -71,6 +75,15 @@ namespace {
     void VisitDeclRefExpr(const DeclRefExpr * const DRE);
   };
 
+  void ProcessDeclRefExpr(const DeclRefExpr * const DRE,
+                          const Decl * const DeclWithIssue,
+                          BugReporter& BR,
+                          OwningPtr<BugType>& BT,
+                          AnalysisManager& Mgr);
+
+  bool HasConstantInitializer(const VarDecl * const varDecl);
+  bool IsConstantInitializer(const Expr * const expr, ASTContext& astContext);
+
   void EmitReport(const DeclRefExpr * const DRE,
                   const VarDecl * const varDecl,
                   const Decl * const DeclWithIssue,
@@ -79,74 +92,127 @@ namespace {
                   AnalysisManager& Mgr);
 } // end anonymous namespace
 
-SAICVisitor::SAICVisitor(const Decl * const declWithIssue,
-                         BugReporter &br,
-                         OwningPtr<BugType>& BT,
-                         AnalysisManager& Mgr)
-  : BR(br), DeclWithIssue(declWithIssue), BT(BT), Mgr(Mgr) {}
+
+const char * const
+sas::GlobalAccInCtorChecker::checkerName = "security.GlobalAccInCtor";
 
 void
-SAICVisitor::VisitChildren(const Stmt * const S)
+sas::GlobalAccInCtorChecker::checkASTDecl(const CXXConstructorDecl *D,
+                                          AnalysisManager &Mgr,
+                                          BugReporter &BR) const
 {
-  for (Stmt::const_child_iterator I = S->child_begin(), E = S->child_end();
-       I != E; ++I) {
-    if (const Stmt * const child = *I)
-      Visit(child);
+  if (!D)
+    return; /// Invalid declaration
+  /// `D` is a declaration of a constructor.
+  if (!D->isThisDeclarationADefinition())
+    return; /// No definition attached to declaration
+  /// `D` has a definition attached.
+  assert(D->hasBody());
+  const Stmt * const body = D->getBody();
+  assert(body);
+  /// `body` is the definition of `D`.
+
+  SAICVisitor walker(D, BR, BT, Mgr);
+
+  /// Parse the initializers:
+  typedef CXXConstructorDecl::init_const_iterator init_const_it;
+  for (init_const_it i = D->init_begin(), e = D->init_end(); i != e; ++i) {
+    const Expr * const expr = (*i)->getInit();
+    if (!expr) continue;
+    /// Initializer is an expression.
+    walker.Visit(expr);
   }
+
+  /// Parse the body:
+  walker.Visit(body);
 }
 
-void
-SAICVisitor::VisitStmt(const Stmt * const S)
-{
-  VisitChildren(S);
-}
+namespace {
+  SAICVisitor::SAICVisitor(const Decl * const declWithIssue,
+                           BugReporter &br,
+                           OwningPtr<BugType>& BT,
+                           AnalysisManager& Mgr)
+    : BR(br), DeclWithIssue(declWithIssue), BT(BT), Mgr(Mgr) {}
 
-void
-PrintVarDecl(const VarDecl * const varDecl)
-{
-  dbgs() << "VarDecl: ";
-  if (!varDecl) {
-    dbgs() << "<null>\n";
-    return;
+  void
+  SAICVisitor::VisitChildren(const Stmt * const S)
+  {
+    for (Stmt::const_child_iterator I = S->child_begin(), E = S->child_end();
+         I != E; ++I) {
+      if (const Stmt * const child = *I)
+        Visit(child);
+    }
   }
-  dbgs() << varDecl->getName() << "\n";
-  dbgs() << " isStaticDataMember: " << varDecl->isStaticDataMember() << "\n";
-  dbgs() << " TSCSpec:            " << varDecl->getTSCSpec() << "\n";
-  dbgs() << " TLSKind:            " << varDecl->getTLSKind() << "\n";
-  dbgs() << " hasLocalStorage:    " << varDecl->hasLocalStorage() << "\n";
-  dbgs() << " hasGlobalStorage:   " << varDecl->hasGlobalStorage() << "\n";
-  dbgs() << " hasExternalStorage: " << varDecl->hasExternalStorage() << "\n";
-  dbgs() << " isStaticLocal:      " << varDecl->isStaticLocal() << "\n";
-  dbgs() << " StorageDuration:    " << varDecl->getStorageDuration() << "\n";
-  //dbgs() << " isInitICE:          " << varDecl->isInitICE() << "\n";
-}
 
-void
-SAICVisitor::VisitDeclRefExpr(const DeclRefExpr * const DRE)
-{
-  if (!DRE)
-    return; /// Invalid reference expression
-  /// `DRE` is a reference to a declared variable, function, enum etc.
-  const ValueDecl * const valueDecl = DRE->getDecl();
-  assert(valueDecl); /// `DeclRefExpr` should always have a value declaration
-  if (!valueDecl)
-    return; /// Invalid value declaration
-  /// `valueDecl` is the declaration referred by `DRE`.
-  const VarDecl * const varDecl = dyn_cast<VarDecl>(valueDecl);
-  if (!varDecl)
-    return; /// Not a variable declaration
-  /// `varDecl` (that is `valueDecl`) is a variable delcaration.
-  /// `DRE` refers to a variable.
-  if (varDecl->hasGlobalStorage()) {
+  void
+  SAICVisitor::VisitStmt(const Stmt * const S)
+  {
+    VisitChildren(S);
+  }
+
+  void
+  SAICVisitor::VisitDeclRefExpr(const DeclRefExpr * const DRE)
+  {
+    ProcessDeclRefExpr(DRE, DeclWithIssue, BR, BT, Mgr);
+  }
+
+  void
+  ProcessDeclRefExpr(const DeclRefExpr * const DRE,
+                     const Decl * const DeclWithIssue,
+                     BugReporter& BR,
+                     OwningPtr<BugType>& BT,
+                     AnalysisManager& Mgr)
+  {
+    if (!DRE)
+      return; /// Invalid reference expression
+    /// `DRE` is a reference to a declared variable, function, enum etc.
+    const ValueDecl * const valueDecl = DRE->getDecl();
+    assert(valueDecl); /// `DeclRefExpr` should always have a value declaration
+    if (!valueDecl) // [FB] Just to make sure...
+      return; /// Invalid value declaration
+    /// `valueDecl` is the declaration referred by `DRE`.
+    const VarDecl * const varDecl = dyn_cast<VarDecl>(valueDecl);
+    if (!varDecl)
+      return; /// Not a variable declaration
+    /// `varDecl` (that is `valueDecl`) is a variable delcaration.
+    /// `DRE` refers to a variable.
+    if (!varDecl->hasGlobalStorage())
+      return; // Isn't a global variable
     /// `varDecl` is a global variable.
     /// `DRE` refers to a global variable.
+    if (HasConstantInitializer(varDecl))
+      return; // The variable has constant initializer
     /// Bingo!
     EmitReport(DRE, varDecl, DeclWithIssue, BR, BT, Mgr);
   }
-}
+  
+  bool
+  HasConstantInitializer(const VarDecl * const varDecl)
+  {
+    if (varDecl->hasInit()) {
+      /// An initializer for `varDecl` is known.
+      const Expr * const init = varDecl->getInit();
+      assert(init);
+      /// `init` is the initializer of the variable declared in `varDecl`.
+      ASTContext& Ctx = varDecl->getASTContext();
+      if (IsConstantInitializer(init, Ctx))
+        return true; /// The variable has constant initializer
+    }
+    return false;
+  }
 
+  bool
+  IsConstantInitializer(const Expr * const expr,
+                        ASTContext& astContext)
+  {
+    static const bool ForRef = false;
+    /// [TODO] Confirm that `false` is the correct value for `ForRef` in the
+    ///        following call to `isConstantInitializer`.
+    ///        `isConstantInitializer` documentation:
+    ///        http://clang.llvm.org/doxygen/Expr_8cpp_source.html#l02613
+    return expr->isConstantInitializer(astContext, ForRef);
+  }
 
-namespace {
   void
   EmitReport(const DeclRefExpr * const DRE,
              const VarDecl * const varDecl,
@@ -166,31 +232,10 @@ namespace {
     const PathDiagnosticLocation l =
       PathDiagnosticLocation::createBegin(DRE, SM, lac);
     BugReport * const report = new BugReport(*BT, desc, l);
+    // [FB] Allocation without deallocation (BugReport) - the way it's done in
+    //      Clang.
     report->setDeclWithIssue(DeclWithIssue);
     report->addRange(DRE->getSourceRange());
     BR.emitReport(report);
-    return;
   }
 } // anonymous namespace
-
-const char * const
-sas::GlobalAccInCtorChecker::checkerName = "security.GlobalAccInCtor";
-
-void
-sas::GlobalAccInCtorChecker::checkASTDecl(const CXXConstructorDecl *D,
-                                          AnalysisManager &Mgr,
-                                          BugReporter &BR) const
-{
-  if (!D)
-    return; /// Invalid declaration
-  if (!D->isThisDeclarationADefinition())
-    return; /// No definition attached to declaration
-  /// `D` has a definition attached.
-  assert(D->hasBody());
-  const Stmt * const body = D->getBody();
-  assert(body);
-  /// `body` is the definition of `D`.
-  SAICVisitor walker(D, BR, BT, Mgr);
-  walker.Visit(body);
-  // TODO: Parse the initializers.
-}
