@@ -109,8 +109,8 @@ Typical usage
 
 cd $PROJECT_DIR
 scan-build ./configure
-scan-build -load-plugin $BUILD_DIR/lib/sas.so -enable-plugin sas \
-           -disable-plugin sas.example -o $REPORT_DIR make
+scan-build -load-plugin $BUILD_DIR/lib/sas.so -enable-checker sas \
+           -disable-checker sas.example -o $REPORT_DIR make
 
 where:
 
