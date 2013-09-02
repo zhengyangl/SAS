@@ -1,15 +1,15 @@
 // -*-c++-*-
 
-// Defines a raw_ostream for debug output.
-// Access the ostream as `sas::dbgs()`.
+// Author: Filip Bartek (2013)
+
+// Defines a `raw_ostream` for debug output.
+// Access the `ostream` as `sas::dbgs()`.
 // Use it the same way as (for example) `llvm::outs()`, namely:
 //   dbgs() << "Hello world!\n";
 
 // If the macro NDEBUG is defined, `dbgs` redirects the stream to standard
 // output. Otherwise, it redirects the stream to `nulls`, a null stream (dumping
 // the data).
-
-// Filip Bartek <filip.bartek@cern.ch>
 
 #ifndef SAS_DBGS_H
 #define SAS_DBGS_H
