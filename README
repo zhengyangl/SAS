@@ -166,7 +166,8 @@ To mute a mutable checker on a particular line in target source code, add a
 comment on a preceding line that starts with "//" (two slashes) and contains
 the following text:
 sas[disable_checker : "MyChecker"]
-where MyChecker is a fully qualified name of the checker to be disabled.
+(including the double quotes) where MyChecker is a fully qualified name of
+the checker to be disabled.
 
 Example (source code extract):
 
