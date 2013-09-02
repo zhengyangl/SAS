@@ -2,14 +2,14 @@
 
 // Author: Filip Bartek (2013)
 
-// This header declares several variants of the function IsDisabled. The
+// This header declares several variants of the function `IsDisabled`. The
 // function can be used inside a checker to determine whether the checker
-// is disabled (muted) on a particular Stmt or Decl.
-// See declarations of the variants of IsDisabled below to learn its interface.
-// The top three variants allow easy plugging in Stmt and Decl checkers
-// (i.e. for muting a checker on a Stmt or a Decl).
+// is disabled (muted) on a particular `Stmt` or `Decl`.
+// See declarations of the variants of `IsDisabled` below to learn its
+// interface. The top three variants allow easy plugging in `Stmt` and `Decl`
+// checkers (i.e. for muting a checker on a `Stmt` or a `Decl`).
 
-// To mute a mutable checker on a line, i.e. make IsDisabled return true on
+// To mute a mutable checker on a line, i.e. to make `IsDisabled` return true on
 // a particular line, add a comment on a line directly preceding the line in
 // question (that is the line with the statement or declaration to be muted).
 // The comment must start with two slashes ("//") and must contain the text:
@@ -54,10 +54,12 @@ namespace sas {
                   clang::ento::BugReporter& bugReporter,
                   const llvm::StringRef checkerName);
 
-  // Other / low-level:
+  // Low-level (used by Decl variants):
   bool IsDisabled(const clang::Decl * const decl,
                   const clang::SourceManager& sourceManager,
                   const llvm::StringRef checkerName);
+
+  // Obsolete:
   bool IsDisabledBySpecial(const clang::Decl * const decl,
                   const llvm::StringRef checkerName);
   bool IsDisabledBySpecial(const clang::DeclStmt * const declStmt,

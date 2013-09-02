@@ -60,41 +60,21 @@ using std::ostringstream;
 using std::string;
 
 namespace {
+  // Obsolete
   bool IsCommentedWithString(const Decl * const decl,
                              const StringRef commentString);
+
   string FormDisablerString(const StringRef checkerName);
+
+  // Interface for Stmt checkers
   bool IsDisabledByPreceding(const Stmt * const stmt,
                              CheckerContext& checkerContext,
                              const StringRef checkerName);
+
+  // Implements the main functionality
   bool IsDisabledByPreceding(const SourceLocation& stmtLoc,
                              const SourceManager& sourceManager,
                              const StringRef disablerString);
-}
-
-bool
-sas::IsDisabledBySpecial(const Decl * const decl,
-                const StringRef checkerName)
-{
-  string commentString = FormDisablerString(checkerName);
-  const StringRef commentStringRef(commentString);
-  return IsCommentedWithString(decl, commentStringRef);
-}
-
-bool
-sas::IsDisabledBySpecial(const DeclStmt * const declStmt,
-                const StringRef checkerName)
-{
-  if (!declStmt)
-    return false; // invalid stmt
-  const DeclGroupRef declGroupRef = declStmt->getDeclGroup();
-  typedef DeclGroupRef::const_iterator DeclIterator;
-  DeclIterator b = declGroupRef.begin();
-  DeclIterator e = declGroupRef.end();
-  for (DeclIterator i = b; i != e; ++i) {
-    if (IsDisabledBySpecial(*i, checkerName))
-      return true; // disabled decl
-  }
-  return false;
 }
 
 bool
@@ -137,6 +117,32 @@ sas::IsDisabled(const Decl * const decl,
   const StringRef disablerStringRef = StringRef(disablerString);
   return IsDisabledByPreceding(sourceLocation, sourceManager,
                                disablerStringRef);
+}
+
+bool
+sas::IsDisabledBySpecial(const Decl * const decl,
+                const StringRef checkerName)
+{
+  string commentString = FormDisablerString(checkerName);
+  const StringRef commentStringRef(commentString);
+  return IsCommentedWithString(decl, commentStringRef);
+}
+
+bool
+sas::IsDisabledBySpecial(const DeclStmt * const declStmt,
+                const StringRef checkerName)
+{
+  if (!declStmt)
+    return false; // invalid stmt
+  const DeclGroupRef declGroupRef = declStmt->getDeclGroup();
+  typedef DeclGroupRef::const_iterator DeclIterator;
+  DeclIterator b = declGroupRef.begin();
+  DeclIterator e = declGroupRef.end();
+  for (DeclIterator i = b; i != e; ++i) {
+    if (IsDisabledBySpecial(*i, checkerName))
+      return true; // disabled decl
+  }
+  return false;
 }
 
 namespace {
