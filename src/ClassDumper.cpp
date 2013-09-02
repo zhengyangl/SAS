@@ -12,9 +12,6 @@ namespace sas {
 void ClassDumper::checkASTDecl(const clang::CXXRecordDecl *RD,clang::ento::AnalysisManager& mgr,
                     clang::ento::BugReporter &BR ) const {
 
-	const clang::SourceManager &SM = BR.getSourceManager();
-	clang::ento::PathDiagnosticLocation DLoc =clang::ento::PathDiagnosticLocation::createBegin( RD, SM );
-//	if (  !m_exception.reportClass( DLoc, BR ) ) return;
 //Dump the template name and args
 	if (const ClassTemplateSpecializationDecl *SD = dyn_cast<ClassTemplateSpecializationDecl>(RD))
 		{
@@ -130,7 +127,6 @@ void ClassDumperFT::checkASTDecl(const clang::FunctionTemplateDecl *TD,clang::en
 void ClassDumperInherit::checkASTDecl(const clang::CXXRecordDecl *RD, clang::ento::AnalysisManager& mgr,
                     clang::ento::BugReporter &BR) const {
 
-	const clang::SourceManager &SM = BR.getSourceManager();
 	if (!RD->hasDefinition()) return;
 
 	clang::FileSystemOptions FSO;
