@@ -11,6 +11,7 @@
 #include <clang/AST/ParentMap.h>
 
 #include "SasSupport.h"
+#include "SasException.h"
 #include <iostream>
 using namespace clang;
 using namespace ento;
