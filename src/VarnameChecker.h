@@ -1,9 +1,9 @@
 // -*-c++-*-
 
-// Checks whether the names of the variables start with an uppercase letter.
-// Example variable name checker.
+// Author: Filip Bartek (2013)
 
-// Filip Bartek <filip.bartek@cern.ch>
+// Checks whether the names of the variables start with an uppercase letter.
+// Example checker.
 
 #ifndef SAS_CHECKERS_VARNAMECHECKER_H
 #define SAS_CHECKERS_VARNAMECHECKER_H
@@ -12,6 +12,8 @@
 // `BugReporter.emitReport`. Otherwise, reporting uses the method
 // `BugReporter.EmitBasicReport` (which in turn calls `BugReporter.emitReport`).
 // The first method may be faster as it only defines `BugType` object once.
+// Both possibilities are implemented in `VarnameChecker` for demonstration
+// purpose.
 #define USE_BUGTYPE
 
 #include <clang/StaticAnalyzer/Core/Checker.h>

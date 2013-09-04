@@ -1,12 +1,8 @@
-// Filip Bartek <filip.bartek@cern.ch>
+// Author: Filip Bartek (2013)
 
-// A test case for the checker "sas.NonFiniteMath"
+// Test case for checker sas.security.NonFiniteMath
 
 // Bugs: 2
-
-// Warning: Doesn't work properly on my computer as <math.h> doesn't seem to
-// define isnan and isinf as functions.
-
 
 #include <math.h>
 // isnan

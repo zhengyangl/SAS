@@ -1,8 +1,5 @@
 // Author: Filip Bartek (2013)
 
-// Inspiration:
-// LLVMConventionsChecker (StmtVisitor)
-
 #include "GlobalAccInCtorChecker.h"
 
 #include <clang/Analysis/AnalysisContext.h>
@@ -56,6 +53,9 @@ using llvm::OwningPtr;
 using llvm::dyn_cast;
 
 namespace {
+  // SAICVisitor traverses statements in AST and emits report on each
+  // occurrence of access to a global variable unless the variable is
+  // known to be initialized by a constant expression.
   class SAICVisitor : public ConstStmtVisitor<SAICVisitor> {
   private:
     BugReporter &BR;
@@ -72,15 +72,21 @@ namespace {
     void VisitDeclRefExpr(const DeclRefExpr * const DRE);
   };
 
+  // If DRE refers to a global variable that is not known to be initialized
+  // by a constant expression, emits a report.
   void ProcessDeclRefExpr(const DeclRefExpr * const DRE,
                           const Decl * const DeclWithIssue,
                           BugReporter& BR,
                           OwningPtr<BugType>& BT,
                           AnalysisManager& Mgr);
 
+  // Is varDecl known to have a constant initializer?
   bool HasConstantInitializer(const VarDecl * const varDecl);
+
+  // Is the initializer expr a constant initializer?
   bool IsConstantInitializer(const Expr * const expr, ASTContext& astContext);
 
+  // Emit a report!
   void EmitReport(const DeclRefExpr * const DRE,
                   const VarDecl * const varDecl,
                   const Decl * const DeclWithIssue,
@@ -91,7 +97,7 @@ namespace {
 
 
 const char * const
-sas::GlobalAccInCtorChecker::checkerName = "security.GlobalAccInCtor";
+sas::GlobalAccInCtorChecker::checkerName = "sas.security.GlobalAccInCtor";
 
 void
 sas::GlobalAccInCtorChecker::checkASTDecl(const CXXConstructorDecl *D,
@@ -199,8 +205,7 @@ namespace {
   }
 
   bool
-  IsConstantInitializer(const Expr * const expr,
-                        ASTContext& astContext)
+  IsConstantInitializer(const Expr * const expr, ASTContext& astContext)
   {
     static const bool ForRef = false;
     /// [TODO] Confirm that `false` is the correct value for `ForRef` in the

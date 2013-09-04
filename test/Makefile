@@ -1,5 +1,5 @@
-# dont overwrite this here, otherwise clang can't insert his "custom compiler"
-#CXX = g++#/build/gcc/gcc-4.7.0-bin/bin/g++
+# Authors: <CMS>
+#          Filip Bartek (2013)
 
 all: class_checker.o mutable_member.o const_cast.o const_cast_away.o global_static.o static_local.o global_static_edm.o varname.o finitemath.o usingnamespace.o checkerdisabler.o globalaccinctor.o
 

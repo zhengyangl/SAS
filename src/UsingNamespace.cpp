@@ -1,7 +1,7 @@
 //==-- UsingNamespace.cpp - Checks for using namespace and using std:: in headers --------------*- C++ -*--==//
 //
 // by Shahzad Malik MUZAFFAR [ Shahzad.Malik.MUZAFFAR@cern.ch ]
-//    Filip Bartek [ filip.bartek@cern.ch ]
+//    Filip Bartek (2013)
 //
 //===----------------------------------------------------------------------===//
 

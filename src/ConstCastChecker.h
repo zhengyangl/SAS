@@ -1,7 +1,7 @@
 //== ConstCastChecker.h - Checks for const_cast<> --------------*- C++ -*--==//
 //
 // by Thomas Hauth [ Thomas.Hauth@cern.ch ]
-//    Filip Bartek [ Filip.Bartek@cern.ch ] (2013)
+//    Filip Bartek (2013)
 //
 //===----------------------------------------------------------------------===//
 

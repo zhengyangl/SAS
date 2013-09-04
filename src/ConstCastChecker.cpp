@@ -1,7 +1,7 @@
 //== ConstCastChecker.cpp - Checks for const_cast<> --------------*- C++ -*--==//
 //
 // by Thomas Hauth [ Thomas.Hauth@cern.ch ]
-//    Filip Bartek [ Filip.Bartek@cern.ch ] (2013)
+//    Filip Bartek (2013)
 //
 //===----------------------------------------------------------------------===//
 
@@ -13,7 +13,7 @@ using sas::IsDisabled;
 
 namespace sas {
 
-const char * const ConstCastChecker::checkerName = "threadsafety.ConstCast";
+const char * const ConstCastChecker::checkerName = "sas.threadsafety.ConstCast";
 
 void ConstCastChecker::checkPreStmt(const clang::CXXConstCastExpr *CE,
 		clang::ento::CheckerContext &C) const

@@ -1,12 +1,11 @@
-// Author: Filip Bartek <filip.bartek@cern.ch>
+// Author: Filip Bartek (2013)
 
-// Test case for the checker disabler IsDisabled
+// Test case for the checker disabler
 // Tests selective disabling of the checkers using formatted comments
 // Uses checkers:
 // - sas.example.Varname
 // - sas.CodeRules.UsingNamespace
-
-// Bugs: 10
+// - sas.threadsafety.ConstCast
 
 #include "checkerdisabler.h"
 

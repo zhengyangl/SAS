@@ -1,40 +1,9 @@
-// Filip Bartek <filip.bartek@cern.ch>
+// Author: Filip Bartek (2013)
 
 #include "VarnameChecker.h"
 
-#include <clang/StaticAnalyzer/Core/Checker.h>
-using clang::ento::Checker;
-using clang::ento::check::ASTDecl;
-
-#include <clang/AST/Decl.h>
-using clang::VarDecl;
-
-#include <clang/StaticAnalyzer/Core/PathSensitive/AnalysisManager.h>
-using clang::ento::AnalysisManager;
-
-#include <clang/StaticAnalyzer/Core/BugReporter/BugReporter.h>
-using clang::ento::BugReporter;
-#ifdef USE_BUGTYPE
-using clang::ento::BugReport;
-#endif // USE_BUGTYPE
-
-#include <llvm/ADT/StringRef.h>
-using llvm::StringRef;
-
-#include <clang/StaticAnalyzer/Core/BugReporter/PathDiagnostic.h>
-using clang::ento::PathDiagnosticLocation;
-
-#ifdef USE_BUGTYPE
-#include <clang/StaticAnalyzer/Core/BugReporter/BugType.h>
-using clang::ento::BugType;
-#endif // USE_BUGTYPE
-
 #include <cctype>
 // isupper
-
-#include <clang/AST/DeclBase.h>
-//using clang::Decl;
-typedef clang::Decl::attr_iterator attr_iterator;
 
 #include <clang/AST/ASTContext.h>
 using clang::ASTContext;
@@ -45,6 +14,36 @@ using clang::comments::BlockContentComment;
 using clang::comments::VerbatimLineComment;
 using clang::comments::ParagraphComment;
 using clang::comments::TextComment;
+
+#include <clang/AST/Decl.h>
+using clang::VarDecl;
+
+#include <clang/AST/DeclBase.h>
+typedef clang::Decl::attr_iterator attr_iterator;
+
+#include <clang/StaticAnalyzer/Core/BugReporter/BugReporter.h>
+using clang::ento::BugReporter;
+#ifdef USE_BUGTYPE
+using clang::ento::BugReport;
+#endif // USE_BUGTYPE
+
+#ifdef USE_BUGTYPE
+#include <clang/StaticAnalyzer/Core/BugReporter/BugType.h>
+using clang::ento::BugType;
+#endif // USE_BUGTYPE
+
+#include <clang/StaticAnalyzer/Core/BugReporter/PathDiagnostic.h>
+using clang::ento::PathDiagnosticLocation;
+
+#include <clang/StaticAnalyzer/Core/Checker.h>
+using clang::ento::Checker;
+using clang::ento::check::ASTDecl;
+
+#include <clang/StaticAnalyzer/Core/PathSensitive/AnalysisManager.h>
+using clang::ento::AnalysisManager;
+
+#include <llvm/ADT/StringRef.h>
+using llvm::StringRef;
 
 #include <llvm/ADT/ArrayRef.h>
 using llvm::ArrayRef;
@@ -75,6 +74,9 @@ namespace sas {
     const PathDiagnosticLocation Location =
       PathDiagnosticLocation(D, Mgr.getSourceManager());
     // Emit report:
+    // Here you can see the two basic possible ways of emitting a report.
+    // Either you can use a BugReport object and call emitReport,
+    // or you can call the EmitBasicReport wrapper.
 #ifdef USE_BUGTYPE
     if (!BT)
       BT.reset(new BugType("Variable name doesn't begin with uppercase letter",

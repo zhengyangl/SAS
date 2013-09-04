@@ -1,4 +1,8 @@
-// Author: Filip Bartek <filip.bartek@cern.ch>
+// -*-c++-*-
+
+// Author: Filip Bartek (2013)
+
+// See "checkerdisabler.cpp" for documentation.
 
 // Bugs: 2
 

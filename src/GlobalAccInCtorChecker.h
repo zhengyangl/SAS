@@ -1,20 +1,19 @@
 // -*-c++-*-
 
-// Author: Filip Bartek <filip.bartek@cern.ch> (2013)
+// Author: Filip Bartek (2013)
 
 // Clang Static Analyzer checker
-// Reports a bug when a static global variable is accessed from constructor.
+// Reports a bug when a static global variable is accessed from constructor
+// and the variable can't be proven to be initialized by a constant expression.
 
 #ifndef SAS_CHECKERS_GLOBALACCINCTORCHECKER_H
 #define SAS_CHECKERS_GLOBALACCINCTORCHECKER_H
 
+// Forward declarations:
 
-//#include <clang/StaticAnalyzer/Core/BugReporter/BugType.h>
 namespace clang {
   namespace ento {
-    class BugType; // forward declaration
-    // [FB] Assuming OwningPtr doesn't require a complete type as its template
-    // parameter.
+    class BugType;
   }
 }
 

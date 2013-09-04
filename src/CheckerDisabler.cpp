@@ -1,7 +1,4 @@
-// Author: Filip Bartek <filip.bartek@cern.ch> (2013)
-
-// TODO: Clean up the file.
-// TODO: Add comments.
+// Author: Filip Bartek (2013)
 
 #include "CheckerDisabler.h"
 
@@ -66,7 +63,7 @@ namespace {
 
   string FormDisablerString(const StringRef checkerName);
 
-  // Interface for Stmt checkers
+  // Interface
   bool IsDisabledByPreceding(const Stmt * const stmt,
                              CheckerContext& checkerContext,
                              const StringRef checkerName);
@@ -238,11 +235,12 @@ namespace {
     const StringRef lineStringRef = StringRef(lineString);
     const size_t commentCol = lineStringRef.find("//");
     if (commentCol == npos)
-      return false; // No `//` comment on this line
+      return false; /// No `//` comment on this line
     const StringRef commentContent = lineStringRef.substr(commentCol + 2);
     const size_t disablerCol = commentContent.find(disablerString);
-    if (disablerCol != npos)
-      return true; // Disabler in comment
-    return false;
+    if (disablerCol == npos)
+      return false; /// No disabler in this comment
+    /// Bingo!
+    return true;
   }
 } // anonymous namespace

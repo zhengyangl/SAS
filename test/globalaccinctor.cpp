@@ -1,4 +1,4 @@
-// Author: Filip Bartek <filip.bartek@cern.ch> (2013)
+// Author: Filip Bartek (2013)
 
 // Test case for checker GlobalAccInCtor
 
