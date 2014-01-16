@@ -20,6 +20,11 @@ project (sas CXX)
 set(LLVM_SRC_DIR "" CACHE FILEPATH "LLVM source directory")
 set(LLVM_SRC_BUILD_DIR "" CACHE FILEPATH "LLVM build directory")
 
+if (LLVM_DEV_DIR)
+   set(LLVM_SRC_DIR ${LLVM_DEV_DIR})
+   set(LLVM_SRC_BUILD_DIR ${LLVM_DEV_DIR})
+endif()
+
 # Require LLVM_SRC_DIR
 if(NOT LLVM_SRC_DIR)
   message(FATAL_ERROR "You must set LLVM_SRC_DIR (`cmake -D LLVM_SRC_DIR=$LLVM_SRC_DIR`).")
@@ -29,7 +34,7 @@ endif()
 if(NOT LLVM_SRC_BUILD_DIR)
   message(FATAL_ERROR "You must set LLVM_SRC_BUILD_DIR (`cmake -D LLVM_SRC_BUILD_DIR=$LLVM_SRC_BUILD_DIR`).")
 endif()
-
+# /usr/lib/llvm-3.5/
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin )
 set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib )
 set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib )
@@ -81,7 +86,7 @@ set (USER_LIBS
 # Add new checkers to the plugin by adding their source files as arguments to
 # the following call.
 # The first argument is the plugin name.
-add_clang_plugin(sas
+add_clang_plugin(libSas
 	src/ClangSasCheckerPluginRegister.cpp
 	src/SasException.cpp
 	src/ConstCastChecker.cpp
