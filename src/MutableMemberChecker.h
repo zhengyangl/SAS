@@ -16,16 +16,16 @@
 #include "SasException.h"
 
 namespace sas {
-class MutableMemberChecker : public clang::ento::Checker< clang::ento::check::ASTDecl< clang::FieldDecl> > {
-  mutable clang::OwningPtr< clang::ento::BuiltinBug> BT;
+   class MutableMemberChecker : public clang::ento::Checker< clang::ento::check::ASTDecl< clang::FieldDecl> > {
+      mutable std::unique_ptr< clang::ento::BuiltinBug> BT;
 
-public:
-  void checkASTDecl(const clang::FieldDecl *D,
-                      clang::ento::AnalysisManager &Mgr,
-                      clang::ento::BugReporter &BR) const;
-private:
-  SasException m_exception;
-};  
+   public:
+      void checkASTDecl(const clang::FieldDecl *D,
+                        clang::ento::AnalysisManager &Mgr,
+                        clang::ento::BugReporter &BR) const;
+   private:
+      SasException m_exception;
+   };
 }
 
 #endif

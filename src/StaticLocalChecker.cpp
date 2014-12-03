@@ -12,29 +12,34 @@
 namespace sas {
 
 
-void StaticLocalChecker::checkASTDecl(const clang::VarDecl *D,
-                    clang::ento::AnalysisManager &Mgr,
-                    clang::ento::BugReporter &BR) const
+   void StaticLocalChecker::checkASTDecl(const clang::VarDecl *D,
+                                         clang::ento::AnalysisManager &Mgr,
+                                         clang::ento::BugReporter &BR) const
 {
-	clang::QualType t =  D->getType();
+      clang::QualType t =  D->getType();
 
-	if ( D->isStaticLocal() && ! support::isConst( t ) )
-	{
-	    clang::ento::PathDiagnosticLocation DLoc = clang::ento::PathDiagnosticLocation::createBegin(D, BR.getSourceManager());
+     if (((D->isStaticLocal() || D->isStaticDataMember())  &&
+           D->getTSCSpec() != clang::ThreadStorageClassSpecifier::TSCS_thread_local) &&
+           !support::isConst(t) ){
 
-	    if ( ! m_exception.reportGlobalStaticForType( t, DLoc, BR ) )
-			return;
+         clang::ento::PathDiagnosticLocation DLoc = clang::ento::PathDiagnosticLocation::createBegin(D, BR.getSourceManager());
 
-	    std::string buf;
-	    llvm::raw_string_ostream os(buf);
-	    os << "Non-const variable '" << *D << "' is local static and might be thread-unsafe";
+         if (! m_exception.reportGlobalStaticForType(t, DLoc, BR))
+            return;
 
-	    BR.EmitBasicReport(D, "Possibly Thread-Unsafe: non-const static local variable",
-	    					"ThreadSafety",
-	                       os.str(), DLoc);
-	    return;
-	}
-}
+         std::string buf;
+         llvm::raw_string_ostream os(buf);
+         os << "Non-const variable '" << *D << "' is local static and might be thread-unsafe";
+
+         BR.EmitBasicReport(D,
+                            this,
+                            "Possibly Thread-Unsafe: non-const static local variable",
+                            "ThreadSafety",
+                            os.str(),
+                            DLoc);
+         return;
+      }
+   }
 
 
 

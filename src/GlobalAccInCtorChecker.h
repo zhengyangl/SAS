@@ -12,9 +12,9 @@
 // Forward declarations:
 
 namespace clang {
-  namespace ento {
-    class BugType;
-  }
+   namespace ento {
+      class BugType;
+   }
 }
 
 #include <clang/StaticAnalyzer/Core/Checker.h>
@@ -23,21 +23,18 @@ namespace clang {
 // clang::ento::AnalysisManager
 // clang::ento::BugReporter
 
-#include <llvm/ADT/OwningPtr.h>
-// clang::OwningPtr
-
 namespace sas {
-  class GlobalAccInCtorChecker : public clang::ento::Checker<
-    clang::ento::check::ASTDecl<clang::CXXConstructorDecl> > {
-  public:
-    void checkASTDecl(const clang::CXXConstructorDecl *D,
-                      clang::ento::AnalysisManager &Mgr,
-                      clang::ento::BugReporter &BR) const;
-  private:
-    mutable clang::OwningPtr<clang::ento::BugType> BT;
-  private:
-    static const char * const checkerName;
-  };
+   class GlobalAccInCtorChecker : public clang::ento::Checker <
+         clang::ento::check::ASTDecl<clang::CXXConstructorDecl> > {
+   public:
+      void checkASTDecl(const clang::CXXConstructorDecl *D,
+                        clang::ento::AnalysisManager &Mgr,
+                        clang::ento::BugReporter &BR) const;
+   private:
+      mutable std::unique_ptr<clang::ento::BugType> BT;
+   private:
+      static const char *const checkerName;
+   };
 } // end namespace sas
 
 #endif

@@ -21,16 +21,17 @@
 
 namespace sas {
 
-class ConstCastChecker: public clang::ento::Checker< clang::ento::check::PreStmt< clang::CXXConstCastExpr> > {
-public:
-	mutable clang::OwningPtr<clang::ento::BugType> BT;
-	void checkPreStmt(const clang::CXXConstCastExpr *CE, clang::ento::CheckerContext &C) const;
+   class ConstCastChecker: public clang::ento::Checker< clang::ento::check::PreStmt< clang::CXXConstCastExpr> > {
+   public:
+      mutable std::unique_ptr<clang::ento::BugType> BT;
+      void checkPreStmt(const clang::CXXConstCastExpr *CE, clang::ento::CheckerContext &C) const;
 
-private:
-  SasException m_exception;
-private:
-  static const char * const checkerName;
-};
-} 
+   private:
+      SasException m_exception;
+   private:
+      static const char *const checkerName;
+   };
+}
 
 #endif
+

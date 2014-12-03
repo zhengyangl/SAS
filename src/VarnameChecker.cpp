@@ -55,46 +55,48 @@ using llvm::dyn_cast;
 using sas::IsDisabled;
 
 namespace sas {
-  const char * const VarnameChecker::checkerName = "sas.example.Varname";
+   const char *const VarnameChecker::checkerName = "sas.example.Varname";
 
-  void VarnameChecker::checkASTDecl(const VarDecl * D,
-				    AnalysisManager& Mgr,
-				    BugReporter& BR) const
-  {
-    if (IsDisabled(D, Mgr, checkerName))
-      return; // Disabled by a comment
-    // Name of the declared variable:
-    const StringRef Name = D->getName();
-    const char * const NameChar = Name.data();
-    // First letter of the name:
-    const char FirstLetter = NameChar[0];
-    // Don't emit report if FirstLetter is uppercase:
-    if (isupper(FirstLetter)) return;
-    // Location of the bug:
-    const PathDiagnosticLocation Location =
-      PathDiagnosticLocation(D, Mgr.getSourceManager());
-    // Emit report:
-    // Here you can see the two basic possible ways of emitting a report.
-    // Either you can use a BugReport object and call emitReport,
-    // or you can call the EmitBasicReport wrapper.
+   void VarnameChecker::checkASTDecl(const VarDecl *D,
+                                     AnalysisManager &Mgr,
+                                     BugReporter &BR) const
+   {
+      if (IsDisabled(D, Mgr, checkerName))
+         return; // Disabled by a comment
+      // Name of the declared variable:
+      const StringRef Name = D->getName();
+      const char *const NameChar = Name.data();
+      // First letter of the name:
+      const char FirstLetter = NameChar[0];
+      // Don't emit report if FirstLetter is uppercase:
+      if (isupper(FirstLetter)) return;
+      // Location of the bug:
+      const PathDiagnosticLocation Location =
+         PathDiagnosticLocation(D, Mgr.getSourceManager());
+      // Emit report:
+      // Here you can see the two basic possible ways of emitting a report.
+      // Either you can use a BugReport object and call emitReport,
+      // or you can call the EmitBasicReport wrapper.
 #ifdef USE_BUGTYPE
-    if (!BT)
-      BT.reset(new BugType("Variable name doesn't begin with uppercase letter",
-			   "SAS"));
-    BugReport * Report = new BugReport(*BT,
-				       "Variable name doesn't begin with an "
-				       "uppercase letter "
-				       "(example variable name checker)",
-				       Location);
-    Report->setDeclWithIssue(D);
-    BR.emitReport(Report);
+      if (!BT)
+         BT.reset(new BugType(this,
+                              "Variable name doesn't begin with uppercase letter",
+                              "SAS"));
+      BugReport *Report = new BugReport(*BT,
+                                        "Variable name doesn't begin with an "
+                                        "uppercase letter "
+                                        "(example variable name checker)",
+                                        Location);
+      Report->setDeclWithIssue(D);
+      BR.emitReport(Report);
 #else
-    BR.EmitBasicReport(D,
-		       "Variable name doesn't begin with uppercase letter",
-		       "SAS",
-		       "Variable name doesn't begin with an uppercase letter "
-		       "(example variable name checker)",
-		       Location);
+      BR.EmitBasicReport(D,
+                         "Variable name doesn't begin with uppercase letter",
+                         "SAS",
+                         "Variable name doesn't begin with an uppercase letter "
+                         "(example variable name checker)",
+                         Location);
 #endif // USE_BUGTYPE
-  }
+   }
 } // end namespace sas
+

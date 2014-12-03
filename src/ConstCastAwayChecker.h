@@ -14,20 +14,20 @@
 #include <clang/StaticAnalyzer/Core/Checker.h>
 #include <clang/StaticAnalyzer/Core/PathSensitive/CheckerContext.h>
 #include <clang/StaticAnalyzer/Core/BugReporter/BugType.h>
-#include "SasException.h" 
+#include "SasException.h"
 
 namespace sas {
 
-class ConstCastAwayChecker: public clang::ento::Checker< clang::ento::check::PreStmt< clang::ExplicitCastExpr> > {
-public:
-	mutable clang::OwningPtr<clang::ento::BugType> BT;
-	void checkPreStmt(const clang::ExplicitCastExpr *CE, clang::ento::CheckerContext &C) const;
+   class ConstCastAwayChecker: public clang::ento::Checker< clang::ento::check::PreStmt< clang::ExplicitCastExpr> > {
+   public:
+      mutable std::unique_ptr<clang::ento::BugType> BT;
+      void checkPreStmt(const clang::ExplicitCastExpr *CE, clang::ento::CheckerContext &C) const;
 
-private:
-  SasException m_exception;
+   private:
+      SasException m_exception;
 
-};
+   };
 
-} 
+}
 
 #endif

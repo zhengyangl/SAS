@@ -17,16 +17,16 @@
 
 
 namespace sas {
-class StaticLocalChecker : public clang::ento::Checker< clang::ento::check::ASTDecl< clang::VarDecl> > {
-  mutable clang::OwningPtr<clang::ento::BuiltinBug> BT;
+   class StaticLocalChecker : public clang::ento::Checker< clang::ento::check::ASTDecl< clang::VarDecl> > {
+      mutable std::unique_ptr<clang::ento::BuiltinBug> BT;
 
-public:
-  void checkASTDecl(const clang::VarDecl *D,
-                      clang::ento::AnalysisManager &Mgr,
-                      clang::ento::BugReporter &BR) const;
-private:
-  SasException m_exception;
-};  
+   public:
+      void checkASTDecl(const clang::VarDecl *D,
+                        clang::ento::AnalysisManager &Mgr,
+                        clang::ento::BugReporter &BR) const;
+   private:
+      SasException m_exception;
+   };
 }
 
 #endif

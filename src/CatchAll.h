@@ -14,13 +14,14 @@
 #include <clang/AST/StmtCXX.h>
 
 namespace sas {
-  class CatchAll : public clang::ento::Checker< clang::ento::check::ASTCodeBody >
-  {
-  public:
-    void checkASTCodeBody(const clang::Decl*& D, clang::ento::AnalysisManager&, clang::ento::BugReporter& BR) const;
-  private:
-    const clang::Stmt* process(const clang::Stmt* S) const;
-    inline bool checkCatchAll(const clang::CXXCatchStmt* S) const {return S->getCaughtType().isNull();}
-  };
-} 
+   class CatchAll : public clang::ento::Checker< clang::ento::check::ASTCodeBody > {
+   public:
+      void checkASTCodeBody(const clang::Decl *&D, clang::ento::AnalysisManager &, clang::ento::BugReporter &BR) const;
+   private:
+      const clang::Stmt *process(const clang::Stmt *S) const;
+      inline bool checkCatchAll(const clang::CXXCatchStmt *S) const {
+         return S->getCaughtType().isNull();
+      }
+   };
+}
 #endif

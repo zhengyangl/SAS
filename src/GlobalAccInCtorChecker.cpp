@@ -46,8 +46,8 @@ using clang::ento::LocationOrAnalysisDeclContext;
 #include <clang/StaticAnalyzer/Core/PathSensitive/AnalysisManager.h>
 using clang::ento::AnalysisManager;
 
-#include <llvm/ADT/OwningPtr.h>
-using llvm::OwningPtr;
+// #include <unique_ptr.h>
+using std::unique_ptr;
 
 #include <llvm/Support/Casting.h>
 using llvm::dyn_cast;
@@ -60,12 +60,12 @@ namespace {
   private:
     BugReporter &BR;
     const Decl * const DeclWithIssue;
-    OwningPtr<BugType>& BT;
+    std::unique_ptr<BugType>& BT;
     AnalysisManager& Mgr;
   public:
     SAICVisitor(const Decl * const declWithIssue,
                 BugReporter &br,
-                OwningPtr<BugType>& BT,
+                std::unique_ptr<BugType>& BT,
                 AnalysisManager& Mgr);
     void VisitChildren(const Stmt * const S);
     void VisitStmt(const Stmt * const S);
@@ -77,7 +77,7 @@ namespace {
   void ProcessDeclRefExpr(const DeclRefExpr * const DRE,
                           const Decl * const DeclWithIssue,
                           BugReporter& BR,
-                          OwningPtr<BugType>& BT,
+                          std::unique_ptr<BugType>& BT,
                           AnalysisManager& Mgr);
 
   // Is varDecl known to have a constant initializer?
@@ -91,7 +91,7 @@ namespace {
                   const VarDecl * const varDecl,
                   const Decl * const DeclWithIssue,
                   BugReporter& BR,
-                  OwningPtr<BugType>& BT,
+                  std::unique_ptr<BugType>& BT,
                   AnalysisManager& Mgr);
 } // end anonymous namespace
 
@@ -133,7 +133,7 @@ sas::GlobalAccInCtorChecker::checkASTDecl(const CXXConstructorDecl *D,
 namespace {
   SAICVisitor::SAICVisitor(const Decl * const declWithIssue,
                            BugReporter &br,
-                           OwningPtr<BugType>& BT,
+                           std::unique_ptr<BugType>& BT,
                            AnalysisManager& Mgr)
     : BR(br), DeclWithIssue(declWithIssue), BT(BT), Mgr(Mgr) {}
 
@@ -163,7 +163,7 @@ namespace {
   ProcessDeclRefExpr(const DeclRefExpr * const DRE,
                      const Decl * const DeclWithIssue,
                      BugReporter& BR,
-                     OwningPtr<BugType>& BT,
+                     std::unique_ptr<BugType>& BT,
                      AnalysisManager& Mgr)
   {
     if (!DRE)
@@ -220,7 +220,7 @@ namespace {
              const VarDecl * const varDecl,
              const Decl * const DeclWithIssue,
              BugReporter& BR,
-             OwningPtr<BugType>& BT,
+             std::unique_ptr<BugType>& BT,
              AnalysisManager& Mgr)
   {
     static const char * const desc = "Global variable accessed in constructor";

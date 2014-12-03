@@ -31,26 +31,22 @@
 
 #ifdef USE_BUGTYPE
 #include <clang/StaticAnalyzer/Core/BugReporter/BugType.h>
-// clang::ento::BugType
-
-#include <llvm/ADT/OwningPtr.h>
-// clang::OwningPtr
 #endif // USE_BUGTYPE
 
 namespace sas {
-  class VarnameChecker : public clang::ento::Checker<
-    clang::ento::check::ASTDecl<clang::VarDecl> > {
-  public:
-    void checkASTDecl(const clang::VarDecl *D,
-                      clang::ento::AnalysisManager &Mgr,
-                      clang::ento::BugReporter &BR) const;
+   class VarnameChecker : public clang::ento::Checker <
+         clang::ento::check::ASTDecl<clang::VarDecl> > {
+   public:
+      void checkASTDecl(const clang::VarDecl *D,
+                        clang::ento::AnalysisManager &Mgr,
+                        clang::ento::BugReporter &BR) const;
 #ifdef USE_BUGTYPE
-  private:
-    mutable clang::OwningPtr<clang::ento::BugType> BT;
+   private:
+      mutable std::unique_ptr<clang::ento::BugType> BT;
 #endif // USE_BUGTYPE
-  private:
-    static const char * const checkerName;
-  };
+   private:
+      static const char *const checkerName;
+   };
 } // end namespace sas
 
 #endif
