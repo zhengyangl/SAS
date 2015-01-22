@@ -1,231 +1,101 @@
-+++++++++++++++++++++++++++
- + Static Analysis Suite +
-+++++++++++++++++++++++++++
+# SAS Static Analysis Suite
 
-Developed by:
-<sas-dev@cern.ch>
-Filip Bartek (2013)
+## Introduction
+The Static Analysis Suite (SAS) allows to easily create checkers for static analysis with clang. This is achieved creating a plugin (dynamic shared object library), loadable by the compiler. SAS is shipped with a set of custom checkers and allows easy extension with new checkers. See [Credit and History](#creditAndHistory)
 
-
-Introduction
-============
-
-Static Analysis Suite (SAS) is a plugin (dynamic shared object library) for
-Clang Static Analyzer. SAS provides additional checkers for Clang Static
-Analyzer and allows easy extension with new checkers.
-
-Requirements
-============
-
-To use SAS, you need [Clang Static Analyzer], namely including the
-[scan-build] script.
-
-To get the SAS source code, you need [Git].
-
-To build SAS from source code, you need the following:
-- [CMake] (executable "cmake" - version 2.6 or later)
-- make (executable)
-- [Clang] (headers)
-- [LLVM] (headers)
-- pthread (library)
-[TODO: Check dependency on pthread.]
-
-Links:
-Clang Static Analyzer: http://clang-analyzer.llvm.org/
-scan-build:            http://clang-analyzer.llvm.org/scan-build.html
-Git:                   http://git-scm.com/
-CMake:                 http://www.cmake.org/
-Clang:                 http://clang.llvm.org/
-LLVM:                  http://llvm.org/
-
-How to build SAS plugin
-=======================
-
-1. Get SAS source code
-----------------------
-
-Important:
-You need to be in "ph-dep-sft" CERN e-group to access the SAS Git repository.
-
-You can get the SAS source code from its Git repository simply by running one
-of the following commands:
-
-git clone https://:@git.cern.ch/kerberos/sas
-git clone https://[user]@git.cern.ch/reps/sas
-
-The first one uses Kerberos authentication, the latter uses LDAP
-authentication.
-Please replace [user] in the latter command with your ph-dep-sft username.
-
-This command will create "sas" directory in the current working directory and
-checkout the latest stable ("master" branch) version of SAS into it.
-
-In the rest of this document, this "sas" directory will be referred to as
-$SAS_DIR.
-
-Note that you can also download a snapshot of SAS from [SAS Git page].
-
-Links:
-SAS Git page: https://git.cern.ch/web/?p=sas.git
-
-2. Prepare the working environment
-----------------------------------
-
-Download LLVM and Clang and build Clang. You can find the instructions in
-[Building LLVM and Clang].
-
-In the rest of this document, the LLVM main directory will be referred to as
-$LLVM_SRC_DIR and the LLVM build directory will be referred to as
-$LLVM_SRC_BUILD_DIR.
-
-Links:
-Building LLVM and Clang: http://clang.llvm.org/get_started.html#build
-
-3. Build the plugin
--------------------
-
-The build process of the plugin shared object "sas.so" consists of two steps:
-
-1. Create a build directory ($BUILD_DIR), enter it and run:
-   `cmake -D LLVM_SRC_DIR=$LLVM_SRC_DIR \
-          -D LLVM_SRC_BUILD_DIR=$LLVM_SRC_BUILD_DIR $SAS_DIR`
-
-2. Enter $BUILD_DIR and run `make`.
+## How to build and use the SAS plugin
+Clone the SAS repository and then:
+```
+export SASBUILDDIR=SASbuild
+mkdir $SASBUILDDIR;cd $SASBUILDDIR
+cmake -D LLVM_DEV_DIR=<location of clang> ../SAS
+make -j 4
+```
 
 Having performed these steps, you should have the library ready in
-"$BUILD_DIR/lib/sas.so".
+"$SASBUILDDIR/lib/libSas.so".
 
-How to run the SAS
-==================
+There are two ways of using the plugin: directly with clang and in combination with scan-build
 
-Requirements
-------------
+# With Clang
+You can invoke the static analyzer with your own checkers with this command:
+```
+clang++ <all the options to compile the unit>  -Xclang -analyze -Xclang -analyzer-output=text -Xclang -load -Xclang $SASBUILDDIR/lib/libSas.so -Xclang -analyzer-checker=MyAnalyzer1 -Xclang -analyzer-checker=MyAnalyzer2 ... -analyzer-checker=MyAnalyzerN
+```
 
-scan-build : scan-build script
-sas.so     : SAS plugin
-
-Typical usage
--------------
-
-cd $PROJECT_DIR
-scan-build ./configure
-scan-build -load-plugin $BUILD_DIR/lib/sas.so -enable-checker sas \
+# Scan-build
+To invoke scan-build prepended to make, a possible command could be:
+```
+scan-build -load-plugin $BUILD_DIR/lib/libSas.so -enable-checker sas \
            -disable-checker sas.example -disable-checker sas.optional \
-           -o $REPORT_DIR make
+           -o MyReportDir make
+```
 
-where:
+## Requirements
+To start using SAS, you need cmake (at least version 2.6), clang, llvm and their development files. The required version for Clang is 3.5.
 
-- $PROJECT_DIR is a directory of a project that uses a "configure" script and
-  a "Makefile" for building
-- $BUILD_DIR is SAS build directory
-- $REPORT_DIR is the target directory for static analysis reports (for
-  example "./report")
+## Available checkers
+*SAS*
+1. security
+   1. NonFiniteMath
+2. threadsafety
+   1. ConstCast *
+   2. ConstCastAway
+   3. GlobalStatic
+   4. StaticLocal
+   5. MutableMember
+3. performance
+   1. ArgSize
+4. CodeRules
+   1. UsingNamespace *
+   2. CatchAll
+5. optional
+   1. ClassDumperCT
+   2. ClassDumperFT
+   3. ClassDumperInherit
+6. example
+   1. Varname *
 
-Advanced usage
---------------
+Checkers marked with an asterisk can be disabled using comments (see next section for details).
 
-Consult [scan-build instructions] for advanced instructions on using
-scan-build.
+## How to add a new checker
+To add a new checker to the library, you need to define a checker class derived from `clang::ento::Checker` and register the checker in the library.
 
-Links:
-scan-build instructions: http://clang-analyzer.llvm.org/scan-build.html
+## Details about the implementation
+You can find the source code of the existing SAS checkers in the files *src/*Checker.**. Feel free to inspect the source code to get basic understanding of how checkers are implemented. Note that `VarnameChecker` and `GlobalAccInCtorChecker` are expected to have more comprehensive documentation. Please consult the [Checker Developer Manual] for more information about checker development.
+Useful links:
+* Checker Developer Manual: http://clang-analyzer.llvm.org/checker_dev_manual.html
+* Clang API Documentation:  http://clang.llvm.org/doxygen/
 
-Available checkers
-==================
+## Registration in SAS plugin
+Once you've created a new checker class, you need to register it in the SAS library. To do that, edit the files *src/ClangSasCheckerPluginRegister.cpp* and *CMakeLists.txt*. The comments in the files explain the steps to be taken in order to add a checker to the library.
+After this step is performed, configure SAS build again with `cmake` to propagate the changes in the build files and re-build SAS.
 
-sas
-  security
-    GlobalAccInCtor
-    NonFiniteMath
-  threadsafety
-    ConstCast *
-    ConstCastAway
-    GlobalStatic
-    StaticLocal
-    MutableMember
-  performance
-    ArgSize
-  CodeRules
-    UsingNamespace *
-    CatchAll
-  optional
-    ClassDumperCT
-    ClassDumperFT
-    ClassDumperInherit
-  example
-    Varname *
-
-Checkers marked with an asterisk ('*') are mutable by comments (see next
-section for details).
-
-How to mute a checker
-=====================
-
-Checker muting mechanism is provided for suppressing false positives.
-
-To mute a mutable checker on a particular line in target source code, add a
-comment on a preceding line that starts with "//" (two slashes) and contains
-the following text:
+# How to disable a checker from within the source code
+A checker disabling mechanism is provided for suppressing false positives.
+To disable a checker on a particular line in target source code, add a comment on a preceding line that starts with "//" (two slashes) and contains the following text:
+```
 sas[disable_checker : "MyChecker"]
-(including the double quotes) where MyChecker is a fully qualified name of
-the checker to be disabled.
+```
+(including the double quotes) where MyChecker is a full name of the checker to be disabled.
 
 Example (source code extract):
-
+```
 // sas[disable_checker : "sas.example.Varname"]
 int varLowercase; // not bug (Varname): lowercase, but disabled by comment
+```
 
-For more examples see the file "test/checkerdisabler.cpp".
+For more examples see the file *test/checkerdisabler.cpp*.
 
-Note that checker muting is only supported by some of the SAS checkers. See
-previous section (Available checkers) to learn which checkers support muting.
+## How to allow a checker to be disable
+Consult the file *src/CheckerDisabler.h* for instructions on how to disable your checker.
 
-How to add a new checker
-========================
+# <a id="creditAndHistory"></a> Credit and History
+SAS originates from an effort within athe CMS collaboration at CERN, based on a first implementation by T. Hauth and D. Piparo. The credit to single developers is preserved within the single source files. The first version of SAS was created by F. Bartek, D. Piparo and T. Hauth.
 
-To add a new checker to the library, you need to define a checker class
-derived from `clang::ento::Checker` and register the checker in the library.
-
-Implementation
---------------
-
-You can find the source code of the existing SAS checkers in the files
-"src/*Checker.*". Feel free to inspect the source code to get basic
-understanding of how checkers are implemented. Note that `VarnameChecker` and
-`GlobalAccInCtorChecker` are expected to have more comprehensive
-documentation.
-Please consult the [Checker Developer Manual] for more information about
-checker development.
-
-Links:
-Checker Developer Manual: http://clang-analyzer.llvm.org/checker_dev_manual.html
-clang API Documentation:  http://clang.llvm.org/doxygen/
-
-Registration in SAS plugin
---------------------------
-
-Once you've created a new checker class, you need to register it in the SAS
-library. To do that, edit the files "src/ClangSasCheckerPluginRegister.cpp"
-and "CMakeLists.txt". The comments in the files explain the steps to be taken
-in order to add a checker to the library.
-
-After this, configure SAS build again with `cmake` to project the changes in
-"CMakeLists.txt" into "Makefile" and then you are ready to build the library
-with the new checker using the `make` command.
-
-How to make the checker mutable
--------------------------------
-
-Consult the file "src/CheckerDisabler.h" for instructions on how to make your
-checker mutable.
-
-How to build a single file
-==========================
-
-Example:
-
-$(CXX) -c -I $LLVM_SRC_DIR/include -I $LLVM_SRC_BUILD_DIR/include \
-  -I $LLVM_SRC_DIR/tools/clang/include \
-  -I $LLVM_SRC_BUILD_DIR/tools/clang/include -D __STDC_LIMIT_MACROS \
-  -D __STDC_CONSTANT_MACROS MyChecker.cpp
-
+# Useful Links:
+o LLVM:                  http://llvm.org/
+o Clang:                 http://clang.llvm.org/
+o Clang Static Analyzer: http://clang-analyzer.llvm.org/
+o scan-build:            http://clang-analyzer.llvm.org/scan-build.html
+o CMake:                 http://www.cmake.org/
