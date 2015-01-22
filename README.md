@@ -35,7 +35,8 @@ scan-build -load-plugin $BUILD_DIR/lib/libSas.so -enable-checker sas \
 To start using SAS, you need cmake (at least version 2.6), clang, llvm and their development files. The required version for Clang is 3.5.
 
 ## Available checkers
-*SAS*
+**sas**
+
 1. security
    1. NonFiniteMath
 2. threadsafety
