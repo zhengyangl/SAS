@@ -18,18 +18,23 @@ def CompareFiles(filename, clangFormatOutput):
     '''
     Compare the formatted version of the file with the existing one.
     '''
-    diffInstance = difflib.Differ()
-    fileContent = open(filename,"r").readlines()
-    diffLinesGen = diffInstance.compare(fileContent, clangFormatOutput)
+    fileContentLines = open(filename,"r").read().splitlines()
+    clangFormatOutputLines = clangFormatOutput.splitlines()
+
+    diffLinesGen = difflib.context_diff(fileContentLines,
+                                        clangFormatOutputLines,
+                                        fromfile='Original File (%s)' %filename,
+                                        tofile='Formatted File')
     diffLines = list(diffLinesGen)
-    nViolations = sum(1 for line in diffLines if line[0] == '?')
+    nViolations = sum(1 for line in diffLines if line[0] == '!')
+
     # Here we should put some mechanism to display violations as warnings to
     # integrate this script in CI systems, think to the jenkins warning parsers.
     # In addition if nViolations is greater than some number we could just print
     # an error.
-    if nViolations >0:
+    if nViolations >0 :
         print 'warning: %s violations detected.' %nViolations
-    print '\n'.join(diffLines)
+        print '\n'.join(diffLines)
     return nViolations
 
 def RunClangFormat(filename):
@@ -38,7 +43,7 @@ def RunClangFormat(filename):
     '''
     process = subprocess.Popen([gClangFormatExeName,filename], stdout=subprocess.PIPE)
     result = process.communicate()[0]
-    return result.splitlines()
+    return result
 
 def CheckFormattingRules(filename):
     '''
