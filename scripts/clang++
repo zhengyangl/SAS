@@ -1,0 +1,17 @@
+#! /usr/bin/env python
+
+'''
+EXPERIMENTAL: this is a demonstrator and not the final product!
+Tested with ROOT
+'''
+
+import sys
+import common
+
+SA_CLANG_CPP = "/usr/bin/clang++" #note: this is system specific
+
+if __name__ == "__main__":
+   command = sys.argv
+   command[0] = SA_CLANG_CPP #avoid infinite recursion
+   retCode = common.Analyze(command,SA_CLANG_CPP)
+   sys.exit(retCode)
