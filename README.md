@@ -50,7 +50,7 @@ To start using SAS, you need cmake (at least version 2.6), clang, llvm and their
 4. CodeRules
    1. UsingNamespace *
    2. CatchAll
-5. optional
+5. optional (disabled)
    1. ClassDumperCT
    2. ClassDumperFT
    3. ClassDumperInherit
