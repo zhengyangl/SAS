@@ -11,8 +11,10 @@
 
 // Forward declarations:
 
-namespace clang {
-   namespace ento {
+namespace clang
+{
+   namespace ento
+   {
       class BugType;
    }
 }
@@ -23,17 +25,18 @@ namespace clang {
 // clang::ento::AnalysisManager
 // clang::ento::BugReporter
 
-namespace sas {
-   class GlobalAccInCtorChecker : public clang::ento::Checker <
-         clang::ento::check::ASTDecl<clang::CXXConstructorDecl> > {
-   public:
-      void checkASTDecl(const clang::CXXConstructorDecl *D,
-                        clang::ento::AnalysisManager &Mgr,
-                        clang::ento::BugReporter &BR) const;
-   private:
+namespace sas
+{
+   class GlobalAccInCtorChecker : public clang::ento::Checker<clang::ento::check::ASTDecl<clang::CXXConstructorDecl>>
+   {
+    public:
+      void checkASTDecl(const clang::CXXConstructorDecl* D, clang::ento::AnalysisManager& Mgr, clang::ento::BugReporter& BR) const;
+
+    private:
       mutable std::unique_ptr<clang::ento::BugType> BT;
-   private:
-      static const char *const checkerName;
+
+    private:
+      static const char* const checkerName;
    };
 } // end namespace sas
 

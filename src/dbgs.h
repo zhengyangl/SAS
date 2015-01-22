@@ -19,8 +19,9 @@
 #include <llvm/Support/raw_ostream.h>
 // llvm::raw_ostream
 
-namespace sas {
-  static llvm::raw_ostream& dbgs();
+namespace sas
+{
+   static llvm::raw_ostream& dbgs();
 } // end namespace sas
 
 // Definitions:
@@ -29,11 +30,12 @@ namespace sas {
 // llvm::outs
 // llvm::nulls
 
-llvm::raw_ostream& sas::dbgs() {
+llvm::raw_ostream& sas::dbgs()
+{
 #ifdef NDEBUG
-  return llvm::nulls();
+   return llvm::nulls();
 #else
-  return llvm::outs();
+   return llvm::outs();
 #endif // NDEBUG
 }
 

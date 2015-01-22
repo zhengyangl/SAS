@@ -19,61 +19,54 @@
 #include "SasException.h"
 #include "SasSupport.h"
 
-namespace sas {
+namespace sas
+{
 
-   class ClassDumper : public clang::ento::Checker<clang::ento::check::ASTDecl<clang::CXXRecordDecl> > {
-      mutable std::unique_ptr< clang::ento::BugType> BT;
+   class ClassDumper : public clang::ento::Checker<clang::ento::check::ASTDecl<clang::CXXRecordDecl>>
+   {
+      mutable std::unique_ptr<clang::ento::BugType> BT;
 
-   public:
-      void checkASTDecl(const clang::CXXRecordDecl *CRD, clang::ento::AnalysisManager &mgr,
-                        clang::ento::BugReporter &BR) const ;
+    public:
+      void checkASTDecl(const clang::CXXRecordDecl* CRD, clang::ento::AnalysisManager& mgr, clang::ento::BugReporter& BR) const;
 
-   private:
+    private:
       SasException m_exception;
-
    };
 
-// Dumps class info
-   class ClassDumperCT : public clang::ento::Checker<clang::ento::check::ASTDecl<clang::ClassTemplateDecl> > {
-      mutable std::unique_ptr< clang::ento::BugType> BT;
+   // Dumps class info
+   class ClassDumperCT : public clang::ento::Checker<clang::ento::check::ASTDecl<clang::ClassTemplateDecl>>
+   {
+      mutable std::unique_ptr<clang::ento::BugType> BT;
 
-   public:
+    public:
+      void checkASTDecl(const clang::ClassTemplateDecl* TD, clang::ento::AnalysisManager& mgr, clang::ento::BugReporter& BR) const;
 
-      void checkASTDecl(const clang::ClassTemplateDecl *TD, clang::ento::AnalysisManager &mgr,
-                        clang::ento::BugReporter &BR) const ;
-
-   private:
+    private:
       SasException m_exception;
-
    };
 
-// Dumps class info
-   class ClassDumperFT : public clang::ento::Checker<clang::ento::check::ASTDecl<clang::FunctionTemplateDecl> > {
-      mutable std::unique_ptr< clang::ento::BugType> BT;
+   // Dumps class info
+   class ClassDumperFT : public clang::ento::Checker<clang::ento::check::ASTDecl<clang::FunctionTemplateDecl>>
+   {
+      mutable std::unique_ptr<clang::ento::BugType> BT;
 
-   public:
+    public:
+      void checkASTDecl(const clang::FunctionTemplateDecl* TD, clang::ento::AnalysisManager& mgr, clang::ento::BugReporter& BR) const;
 
-      void checkASTDecl(const clang::FunctionTemplateDecl *TD, clang::ento::AnalysisManager &mgr,
-                        clang::ento::BugReporter &BR) const ;
-
-   private:
+    private:
       SasException m_exception;
-
    };
 
-// Dumps class inheritance info
-   class ClassDumperInherit : public clang::ento::Checker<clang::ento::check::ASTDecl<clang::CXXRecordDecl> > {
-      mutable std::unique_ptr< clang::ento::BugType> BT;
+   // Dumps class inheritance info
+   class ClassDumperInherit : public clang::ento::Checker<clang::ento::check::ASTDecl<clang::CXXRecordDecl>>
+   {
+      mutable std::unique_ptr<clang::ento::BugType> BT;
 
-   public:
-      void checkASTDecl(const clang::CXXRecordDecl *CRD, clang::ento::AnalysisManager &mgr,
-                        clang::ento::BugReporter &BR) const ;
+    public:
+      void checkASTDecl(const clang::CXXRecordDecl* CRD, clang::ento::AnalysisManager& mgr, clang::ento::BugReporter& BR) const;
 
-   private:
+    private:
       SasException m_exception;
-
    };
-
-
 }
 #endif

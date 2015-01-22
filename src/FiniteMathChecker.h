@@ -9,11 +9,14 @@
 
 #include "SasException.h"
 
-namespace sas {
-   class FiniteMathChecker : public clang::ento::Checker<clang::ento::check::PreStmt<clang::CallExpr> > {
+namespace sas
+{
+   class FiniteMathChecker : public clang::ento::Checker<clang::ento::check::PreStmt<clang::CallExpr>>
+   {
       mutable std::unique_ptr<clang::ento::BugType> BT;
-   public:
-      void checkPreStmt(const clang::CallExpr *ref, clang::ento::CheckerContext &C) const;
+
+    public:
+      void checkPreStmt(const clang::CallExpr* ref, clang::ento::CheckerContext& C) const;
    };
 }
 

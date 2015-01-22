@@ -23,47 +23,41 @@
 
 // Forward declarations:
 
-namespace clang {
+namespace clang
+{
    class Decl;
    class DeclStmt;
    class SourceManager;
    class Stmt;
-   namespace ento {
+   namespace ento
+   {
       class AnalysisManager;
       class BugReporter;
       class CheckerContext;
    }
 }
-namespace llvm {
+namespace llvm
+{
    class StringRef;
 }
 
 // Declarations:
 
-namespace sas {
+namespace sas
+{
    // For Stmt checkers:
-   bool IsDisabled(const clang::Stmt *const stmt,
-                   clang::ento::CheckerContext &checkerContext,
-                   const llvm::StringRef checkerName);
+   bool IsDisabled(const clang::Stmt* const stmt, clang::ento::CheckerContext& checkerContext, const llvm::StringRef checkerName);
 
    // For Decl checkers:
-   bool IsDisabled(const clang::Decl *const decl,
-                   clang::ento::AnalysisManager &analysisMgr,
-                   const llvm::StringRef checkerName);
-   bool IsDisabled(const clang::Decl *const decl,
-                   clang::ento::BugReporter &bugReporter,
-                   const llvm::StringRef checkerName);
+   bool IsDisabled(const clang::Decl* const decl, clang::ento::AnalysisManager& analysisMgr, const llvm::StringRef checkerName);
+   bool IsDisabled(const clang::Decl* const decl, clang::ento::BugReporter& bugReporter, const llvm::StringRef checkerName);
 
    // Low-level (used by Decl variants):
-   bool IsDisabled(const clang::Decl *const decl,
-                   const clang::SourceManager &sourceManager,
-                   const llvm::StringRef checkerName);
+   bool IsDisabled(const clang::Decl* const decl, const clang::SourceManager& sourceManager, const llvm::StringRef checkerName);
 
    // Obsolete:
-   bool IsDisabledBySpecial(const clang::Decl *const decl,
-                            const llvm::StringRef checkerName);
-   bool IsDisabledBySpecial(const clang::DeclStmt *const declStmt,
-                            const llvm::StringRef checkerName);
+   bool IsDisabledBySpecial(const clang::Decl* const decl, const llvm::StringRef checkerName);
+   bool IsDisabledBySpecial(const clang::DeclStmt* const declStmt, const llvm::StringRef checkerName);
 } // end namespace sas
 
 #endif

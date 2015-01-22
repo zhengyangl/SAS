@@ -17,10 +17,10 @@ using namespace clang;
 using namespace ento;
 using namespace llvm;
 
-namespace sas {
+namespace sas
+{
 
-
-   void ArgSizeChecker::checkPreStmt(const CXXConstructExpr *E, CheckerContext &ctx) const
+   void ArgSizeChecker::checkPreStmt(const CXXConstructExpr* E, CheckerContext& ctx) const
    {
 
       SasException m_exception;
@@ -28,28 +28,26 @@ namespace sas {
       LangOpts.CPlusPlus = true;
       clang::PrintingPolicy Policy(LangOpts);
 
-      const clang::ento::PathDiagnosticLocation ELoc =
-         clang::ento::PathDiagnosticLocation::createBegin(E, ctx.getSourceManager(), ctx.getLocationContext());
+      const clang::ento::PathDiagnosticLocation ELoc = clang::ento::PathDiagnosticLocation::createBegin(E, ctx.getSourceManager(), ctx.getLocationContext());
 
-      if (! m_exception.reportGeneral(ELoc, ctx.getBugReporter()))  return;
+      if (!m_exception.reportGeneral(ELoc, ctx.getBugReporter())) return;
       llvm::SmallString<100> buf;
       llvm::raw_svector_ostream os(buf);
 
       for (clang::Stmt::const_child_iterator I = E->child_begin(), F = E->child_end(); I != F; ++I) {
-         const Expr *child = llvm::dyn_cast<Expr>(*I);
-         if (! child) continue;
+         const Expr* child = llvm::dyn_cast<Expr>(*I);
+         if (!child) continue;
          if (llvm::isa<DeclRefExpr>(child->IgnoreImpCasts())) {
 
-            const NamedDecl *ND = llvm::cast<DeclRefExpr>(child->IgnoreImpCasts())->getFoundDecl();
+            const NamedDecl* ND = llvm::cast<DeclRefExpr>(child->IgnoreImpCasts())->getFoundDecl();
             if (llvm::isa<ParmVarDecl>(ND)) {
-               const ParmVarDecl *PVD = llvm::cast<ParmVarDecl>(ND);
+               const ParmVarDecl* PVD = llvm::cast<ParmVarDecl>(ND);
                QualType QT = PVD->getOriginalType();
                if (QT->isIncompleteType() || QT->isDependentType()) continue;
                clang::QualType PQT = QT.getCanonicalType();
                PQT.removeLocalConst();
-               if (PQT->isReferenceType() || PQT->isPointerType()
-                     || PQT->isMemberFunctionPointerType() || PQT->isArrayType()
-                     || PQT->isBuiltinType() || PQT->isUnionType() || PQT->isVectorType()) continue;
+               if (PQT->isReferenceType() || PQT->isPointerType() || PQT->isMemberFunctionPointerType() || PQT->isArrayType() || PQT->isBuiltinType() || PQT->isUnionType() || PQT->isVectorType())
+                  continue;
                uint64_t size_param = ctx.getASTContext().getTypeSize(PQT);
                uint64_t max_bits = 128;
                if (size_param <= max_bits) continue;
@@ -58,11 +56,8 @@ namespace sas {
                std::string bpname = "class boost::";
                std::string cbpname = "const class boost::";
                std::string sfname = "class std::function<";
-               const CXXMethodDecl *MD = llvm::dyn_cast<CXXMethodDecl>(ctx.getCurrentAnalysisDeclContext()->getDecl()) ;
-               os << "Function parameter copied by value with size '" << size_param
-                  << "' bits > max size '" << max_bits
-                  << "' bits parameter type '" << pname
-                  << "' function '";
+               const CXXMethodDecl* MD = llvm::dyn_cast<CXXMethodDecl>(ctx.getCurrentAnalysisDeclContext()->getDecl());
+               os << "Function parameter copied by value with size '" << size_param << "' bits > max size '" << max_bits << "' bits parameter type '" << pname << "' function '";
                std::string fname = MD->getNameAsString();
                if (MD) {
                   os << fname << "' class '" << MD->getParent()->getNameAsString();
@@ -70,13 +65,12 @@ namespace sas {
                os << "'\n";
 
                std::string oname = "operator";
-//          if ( fname.substr(0,oname.length()) == oname ) continue;
+               //          if ( fname.substr(0,oname.length()) == oname ) continue;
 
-               const clang::ento::PathDiagnosticLocation DLoc =
-                  clang::ento::PathDiagnosticLocation::createBegin(PVD, ctx.getSourceManager());
+               const clang::ento::PathDiagnosticLocation DLoc = clang::ento::PathDiagnosticLocation::createBegin(PVD, ctx.getSourceManager());
 
-               BugType *BT = new BugType(this, "Function parameter copied by value with size > max", "ArgSize");
-               BugReport *report = new BugReport(*BT, os.str() , DLoc);
+               BugType* BT = new BugType(this, "Function parameter copied by value with size > max", "ArgSize");
+               BugReport* report = new BugReport(*BT, os.str(), DLoc);
                report->addRange(PVD->getSourceRange());
                ctx.emitReport(report);
             }
@@ -84,15 +78,13 @@ namespace sas {
       }
    }
 
-
-   void ArgSizeChecker::checkASTDecl(const CXXMethodDecl *MD, AnalysisManager &mgr,
-                                     BugReporter &BR) const
+   void ArgSizeChecker::checkASTDecl(const CXXMethodDecl* MD, AnalysisManager& mgr, BugReporter& BR) const
    {
-      const SourceManager &SM = BR.getSourceManager();
+      const SourceManager& SM = BR.getSourceManager();
       SasException m_exception;
       PathDiagnosticLocation DLoc = PathDiagnosticLocation::createBegin(MD, SM);
 
-      if (! m_exception.reportGeneral(DLoc, BR))  return;
+      if (!m_exception.reportGeneral(DLoc, BR)) return;
 
       for (CXXMethodDecl::param_const_iterator I = MD->param_begin(), E = MD->param_end(); I != E; I++) {
          llvm::SmallString<100> buf;
@@ -101,8 +93,7 @@ namespace sas {
          if (QT->isIncompleteType() || QT->isDependentType()) continue;
          clang::QualType PQT = QT.getCanonicalType();
          PQT.removeLocalConst();
-         if (PQT->isReferenceType() || PQT->isPointerType() || PQT->isMemberFunctionPointerType()
-               || PQT->isArrayType() || PQT->isBuiltinType() || PQT->isUnionType() || PQT->isVectorType()) continue;
+         if (PQT->isReferenceType() || PQT->isPointerType() || PQT->isMemberFunctionPointerType() || PQT->isArrayType() || PQT->isBuiltinType() || PQT->isUnionType() || PQT->isVectorType()) continue;
          uint64_t size_param = mgr.getASTContext().getTypeSize(PQT);
          uint64_t max_bits = 128;
          if (size_param <= max_bits) continue;
@@ -113,19 +104,13 @@ namespace sas {
          std::string sfname = "class std::function<";
 
          std::string fname = MD->getNameAsString();
-         os << "Function parameter passed by value with size of parameter '" << size_param
-            << "' bits > max size '" << max_bits
-            << "' bits parameter type '" << pname
-            << "' function '" << fname
-            << "' class '" << MD->getParent()->getNameAsString()
-            << "'\n";
+         os << "Function parameter passed by value with size of parameter '" << size_param << "' bits > max size '" << max_bits << "' bits parameter type '" << pname << "' function '" << fname
+            << "' class '" << MD->getParent()->getNameAsString() << "'\n";
          std::string oname = "operator";
 
-         BugType *BT = new BugType(this, "Function parameter with size > max", "ArgSize");
-         BugReport *report = new BugReport(*BT, os.str() , DLoc);
+         BugType* BT = new BugType(this, "Function parameter with size > max", "ArgSize");
+         BugReport* report = new BugReport(*BT, os.str(), DLoc);
          BR.emitReport(report);
       }
    }
-
-
 }

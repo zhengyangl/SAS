@@ -33,19 +33,18 @@
 #include <clang/StaticAnalyzer/Core/BugReporter/BugType.h>
 #endif // USE_BUGTYPE
 
-namespace sas {
-   class VarnameChecker : public clang::ento::Checker <
-         clang::ento::check::ASTDecl<clang::VarDecl> > {
-   public:
-      void checkASTDecl(const clang::VarDecl *D,
-                        clang::ento::AnalysisManager &Mgr,
-                        clang::ento::BugReporter &BR) const;
+namespace sas
+{
+   class VarnameChecker : public clang::ento::Checker<clang::ento::check::ASTDecl<clang::VarDecl>>
+   {
+    public:
+      void checkASTDecl(const clang::VarDecl* D, clang::ento::AnalysisManager& Mgr, clang::ento::BugReporter& BR) const;
 #ifdef USE_BUGTYPE
-   private:
+    private:
       mutable std::unique_ptr<clang::ento::BugType> BT;
 #endif // USE_BUGTYPE
-   private:
-      static const char *const checkerName;
+    private:
+      static const char* const checkerName;
    };
 } // end namespace sas
 

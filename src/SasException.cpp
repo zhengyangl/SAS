@@ -5,20 +5,19 @@
 //
 //===----------------------------------------------------------------------===//
 
-
 #include "SasException.h"
 
-namespace sas {
+namespace sas
+{
 
-   bool SasException::reportGeneral(clang::ento::PathDiagnosticLocation const &path,
-                                    clang::ento::BugReporter &BR) const
+   bool SasException::reportGeneral(clang::ento::PathDiagnosticLocation const& path, clang::ento::BugReporter& BR) const
    {
       clang::SourceLocation SL = path.asLocation();
       if (SL.isMacroID()) {
          return false;
       }
 
-      const clang::SourceManager &SM = BR.getSourceManager();
+      const clang::SourceManager& SM = BR.getSourceManager();
       clang::PresumedLoc PL = SM.getPresumedLoc(SL);
 
       llvm::StringRef FN = llvm::StringRef((PL.getFilename()));
@@ -30,8 +29,8 @@ namespace sas {
       found += FN.count("/lcg/");
       found += FN.count("/test/");
       found += FN.count("/sas/");
-//   found += FN.count("/FWCore/");
-      if (found != 0)  {
+      //   found += FN.count("/FWCore/");
+      if (found != 0) {
          return false;
       }
 
@@ -39,57 +38,29 @@ namespace sas {
          return false;
       }
       return true;
-
    }
 
-   bool SasException::reportConstCast(const clang::ento::BugReport &R,
-                                      clang::ento::CheckerContext &C) const
+   bool SasException::reportConstCast(const clang::ento::BugReport& R, clang::ento::CheckerContext& C) const
    {
-      clang::ento::BugReporter &BR = C.getBugReporter();
-      const clang::SourceManager &SM = BR.getSourceManager();
-      clang::ento::PathDiagnosticLocation const &path = R.getLocation(SM);
+      clang::ento::BugReporter& BR = C.getBugReporter();
+      const clang::SourceManager& SM = BR.getSourceManager();
+      clang::ento::PathDiagnosticLocation const& path = R.getLocation(SM);
       return reportGeneral(path, BR);
    }
 
-
-   bool SasException::reportConstCastAway(const clang::ento::BugReport &R,
-                                          clang::ento::CheckerContext &C) const
+   bool SasException::reportConstCastAway(const clang::ento::BugReport& R, clang::ento::CheckerContext& C) const
    {
-      clang::ento::BugReporter &BR = C.getBugReporter();
-      const clang::SourceManager &SM = BR.getSourceManager();
-      clang::ento::PathDiagnosticLocation const &path = R.getLocation(SM);
-      return reportGeneral(path, BR);
-
-   }
-
-   bool SasException::reportGlobalStatic(clang::QualType const &t,
-                                         clang::ento::PathDiagnosticLocation const &path,
-                                         clang::ento::BugReporter &BR) const
-   {
+      clang::ento::BugReporter& BR = C.getBugReporter();
+      const clang::SourceManager& SM = BR.getSourceManager();
+      clang::ento::PathDiagnosticLocation const& path = R.getLocation(SM);
       return reportGeneral(path, BR);
    }
 
-   bool SasException::reportMutableMember(clang::QualType const &t,
-                                          clang::ento::PathDiagnosticLocation const &path,
-                                          clang::ento::BugReporter &BR) const
-   {
-      return reportGeneral(path, BR);
-   }
+   bool SasException::reportGlobalStatic(clang::QualType const& t, clang::ento::PathDiagnosticLocation const& path, clang::ento::BugReporter& BR) const { return reportGeneral(path, BR); }
 
-   bool SasException::reportClass(
-      clang::ento::PathDiagnosticLocation const &path,
-      clang::ento::BugReporter &BR) const
-   {
-      return reportGeneral(path, BR);
-   }
+   bool SasException::reportMutableMember(clang::QualType const& t, clang::ento::PathDiagnosticLocation const& path, clang::ento::BugReporter& BR) const { return reportGeneral(path, BR); }
 
+   bool SasException::reportClass(clang::ento::PathDiagnosticLocation const& path, clang::ento::BugReporter& BR) const { return reportGeneral(path, BR); }
 
-   bool SasException::reportGlobalStaticForType(clang::QualType const &t,
-         clang::ento::PathDiagnosticLocation const &path,
-         clang::ento::BugReporter &BR) const
-   {
-      return reportGeneral(path, BR);
-   }
+   bool SasException::reportGlobalStaticForType(clang::QualType const& t, clang::ento::PathDiagnosticLocation const& path, clang::ento::BugReporter& BR) const { return reportGeneral(path, BR); }
 }
-
-

@@ -14,39 +14,25 @@
 #include "clang/StaticAnalyzer/Core/BugReporter/BugReporter.h"
 #include "clang/StaticAnalyzer/Core/PathSensitive/CheckerContext.h"
 
+namespace sas
+{
 
-namespace sas {
+   class SasException
+   {
+    public:
+      bool reportGlobalStaticForType(clang::QualType const& t, clang::ento::PathDiagnosticLocation const& path, clang::ento::BugReporter& BR) const;
 
-   class SasException {
-   public:
-      bool reportGlobalStaticForType(clang::QualType const &t,
-                                     clang::ento::PathDiagnosticLocation const &path,
-                                     clang::ento::BugReporter &BR) const;
+      bool reportGlobalStatic(clang::QualType const& t, clang::ento::PathDiagnosticLocation const& path, clang::ento::BugReporter& BR) const;
 
-      bool reportGlobalStatic(clang::QualType const &t,
-                              clang::ento::PathDiagnosticLocation const &path,
-                              clang::ento::BugReporter &BR) const;
+      bool reportMutableMember(clang::QualType const& t, clang::ento::PathDiagnosticLocation const& path, clang::ento::BugReporter& BR) const;
+      bool reportClass(clang::ento::PathDiagnosticLocation const& path, clang::ento::BugReporter& BR) const;
 
-      bool reportMutableMember(clang::QualType const &t,
-                               clang::ento::PathDiagnosticLocation const &path,
-                               clang::ento::BugReporter &BR) const;
-      bool reportClass(
-         clang::ento::PathDiagnosticLocation const &path,
-         clang::ento::BugReporter &BR) const;
+      bool reportConstCast(const clang::ento::BugReport& R, clang::ento::CheckerContext& C) const;
 
+      bool reportConstCastAway(const clang::ento::BugReport& R, clang::ento::CheckerContext& C) const;
 
-      bool reportConstCast(const clang::ento::BugReport &R,
-                           clang::ento::CheckerContext &C) const;
-
-      bool reportConstCastAway(const clang::ento::BugReport &R,
-                               clang::ento::CheckerContext &C) const;
-
-
-      bool reportGeneral(clang::ento::PathDiagnosticLocation const &path,
-                         clang::ento::BugReporter &BR) const;
-
+      bool reportGeneral(clang::ento::PathDiagnosticLocation const& path, clang::ento::BugReporter& BR) const;
    };
-
 }
 
 #endif

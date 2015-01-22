@@ -15,19 +15,18 @@
 
 #include "SasException.h"
 
+namespace sas
+{
+   class GlobalStaticChecker : public clang::ento::Checker<clang::ento::check::ASTDecl<clang::VarDecl>>
+   {
+      mutable std::unique_ptr<clang::ento::BuiltinBug> BT;
 
-namespace sas {
-   class GlobalStaticChecker : public clang::ento::Checker< clang::ento::check::ASTDecl< clang::VarDecl> > {
-      mutable std::unique_ptr< clang::ento::BuiltinBug> BT;
+    public:
+      void checkASTDecl(const clang::VarDecl* D, clang::ento::AnalysisManager& Mgr, clang::ento::BugReporter& BR) const;
 
-   public:
-      void checkASTDecl(const clang::VarDecl *D,
-                        clang::ento::AnalysisManager &Mgr,
-                        clang::ento::BugReporter &BR) const;
-   private:
+    private:
       SasException m_exception;
    };
-
 }
 
 #endif
