@@ -17,13 +17,13 @@ Having performed these steps, you should have the library ready in
 
 There are two ways of using the plugin: directly with clang and in combination with scan-build
 
-# With Clang
+### With Clang
 You can invoke the static analyzer with your own checkers with this command:
 ```
 clang++ <all the options to compile the unit>  -Xclang -analyze -Xclang -analyzer-output=text -Xclang -load -Xclang $SASBUILDDIR/lib/libSas.so -Xclang -analyzer-checker=MyAnalyzer1 -Xclang -analyzer-checker=MyAnalyzer2 ... -analyzer-checker=MyAnalyzerN
 ```
 
-# Scan-build
+### Scan-build
 To invoke scan-build prepended to make, a possible command could be:
 ```
 scan-build -load-plugin $BUILD_DIR/lib/libSas.so -enable-checker sas \
@@ -72,7 +72,7 @@ Useful links:
 Once you've created a new checker class, you need to register it in the SAS library. To do that, edit the files *src/ClangSasCheckerPluginRegister.cpp* and *CMakeLists.txt*. The comments in the files explain the steps to be taken in order to add a checker to the library.
 After this step is performed, configure SAS build again with `cmake` to propagate the changes in the build files and re-build SAS.
 
-# How to disable a checker from within the source code
+## How to disable a checker from within the source code
 A checker disabling mechanism is provided for suppressing false positives.
 To disable a checker on a particular line in target source code, add a comment on a preceding line that starts with "//" (two slashes) and contains the following text:
 ```
@@ -88,15 +88,15 @@ int varLowercase; // not bug (Varname): lowercase, but disabled by comment
 
 For more examples see the file *test/checkerdisabler.cpp*.
 
-## How to allow a checker to be disable
+## How to allow a checker to be disabled
 Consult the file *src/CheckerDisabler.h* for instructions on how to disable your checker.
 
-# <a id="creditAndHistory"></a> Credit and History
+## <a id="creditAndHistory"></a> Credit and History
 SAS originates from an effort within athe CMS collaboration at CERN, based on a first implementation by T. Hauth and D. Piparo. The credit to single developers is preserved within the single source files. The first version of SAS was created by F. Bartek, D. Piparo and T. Hauth.
 
-# Useful Links:
-o LLVM:                  http://llvm.org/
-o Clang:                 http://clang.llvm.org/
-o Clang Static Analyzer: http://clang-analyzer.llvm.org/
-o scan-build:            http://clang-analyzer.llvm.org/scan-build.html
-o CMake:                 http://www.cmake.org/
+## Useful Links:
+* LLVM:                  http://llvm.org
+* Clang:                 http://clang.llvm.org
+* Clang Static Analyzer: http://clang-analyzer.llvm.org
+* scan-build:            http://clang-analyzer.llvm.org/scan-build.html
+* CMake:                 http://www.cmake.org
