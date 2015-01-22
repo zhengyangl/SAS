@@ -94,13 +94,13 @@ add_clang_plugin(libSas
    src/StaticLocalChecker.cpp
    src/GlobalStaticChecker.cpp
    src/MutableMemberChecker.cpp
-   src/ClassDumper.cpp
+#    src/ClassDumper.cpp
    src/FiniteMathChecker.cc
    src/CatchAll.cpp
    src/UsingNamespace.cpp
    src/ArgSizeChecker.cpp
    src/VarnameChecker.cpp
-        src/CheckerDisabler.cpp
+   src/CheckerDisabler.cpp
 #         src/GlobalAccInCtorChecker.cpp
         # Add your checker here!
 )

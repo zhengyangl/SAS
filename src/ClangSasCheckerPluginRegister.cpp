@@ -42,11 +42,11 @@ extern "C" void clang_registerCheckers(clang::ento::CheckerRegistry& registry)
 
    registry.addChecker<sas::GlobalStaticChecker>("sas.threadsafety.GlobalStatic", "Check for global non-const static variables");
 
-   registry.addChecker<sas::ClassDumperCT>("sas.optional.ClassDumperCT", "Dump class info");
+//    registry.addChecker<sas::ClassDumperCT>("sas.optional.ClassDumperCT", "Dump class info");
 
-   registry.addChecker<sas::ClassDumperFT>("sas.optional.ClassDumperFT", "Dump class info");
+//    registry.addChecker<sas::ClassDumperFT>("sas.optional.ClassDumperFT", "Dump class info");
 
-   registry.addChecker<sas::ClassDumperInherit>("sas.optional.ClassDumperInherit", "Dump class inheritance info");
+//    registry.addChecker<sas::ClassDumperInherit>("sas.optional.ClassDumperInherit", "Dump class inheritance info");
 
    registry.addChecker<sas::FiniteMathChecker>("sas.security.NonFiniteMath", "Check for usage of isnan and isinf");
 
