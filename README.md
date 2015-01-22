@@ -1,4 +1,12 @@
 # SAS Static Analysis Suite
+Static analysis of your code and check of coding conventions: easier than ever
+```
+SA_PLUGIN=$SASBUILDDIR/lib/libSas.so SA_FORMATTING=1 SA_CHECKERS="sas.threadsafety" clang++ ... -c myFile.cpp ....
+```
+* Easy to build
+* Easy to integrate in your CI system
+* Easy to extend
+* Free and open-source
 
 ## Introduction
 The Static Analysis Suite (SAS) allows to easily create checkers for static analysis with clang. This is achieved creating a plugin (dynamic shared object library), loadable by the compiler. SAS is shipped with a set of custom checkers and allows easy extension with new checkers. See [Credit and History](#creditAndHistory)
@@ -29,6 +37,30 @@ To invoke scan-build prepended to make, a possible command could be:
 scan-build -load-plugin $BUILD_DIR/lib/libSas.so -enable-checker sas \
            -disable-checker sas.example -disable-checker sas.optional \
            -o MyReportDir make
+```
+
+## Combining static analysis and formatting rules checking
+Many projects often require to impose coding conventions. This can be achieved using SAS. Rules that require an AST analysis can be implemented as clang checkers while rules relative to formatting can be checked with `clang-format`. SAS takes care of the gory details and offers some script to ease this job.
+1. `sasFormattingChecker.py`: this script allows to check the formatting of a file and emit warning is formatting rules are violated
+2. `clang++` and `clang`: these two scripts are meant to be a wrapper around the compiler
+
+### Steering static analysis with environment variables: the clang and clang++ scripts
+This is a bit experimental at the moment, but basically all you need to check your code are these two scripts. You can use them like this.
+Just forward the commands to `clang(++)`
+```
+clang++ ... -c myFile.cpp ....
+```
+Forward the commands to the compiler and check formatting
+```
+SA_FORMATTING=1 clang++ ... -c myFile.cpp ....
+```
+Forward the commands to the compiler, check formatting and select some checkers
+```
+SA_FORMATTING=1 SA_CHECKERS="core.uninitialized:alpha" clang++ ... -c myFile.cpp ....
+```
+Forward the commands to the compiler, check formatting, load a plugin (why ot the SAS one?) and select some checkers
+```
+SA_PLUGIN=$SASBUILDDIR/lib/libSas.so SA_FORMATTING=1 SA_CHECKERS="sas.threadsafety" clang++ ... -c myFile.cpp ....
 ```
 
 ## Requirements
