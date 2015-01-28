@@ -60,7 +60,8 @@ macro(add_clang_plugin name)
    include_directories( "${LLVM_SRC_DIR}/include"
       "${LLVM_SRC_BUILD_DIR}/include"
       "${CLANG_SRC_DIR}/include"
-      "${CLANG_BUILD_DIR}/include" )
+      "${CLANG_BUILD_DIR}/include" 
+      "${CMAKE_CURRENT_SOURCE_DIR}/src")
    link_directories( "${LLVM_BUILD_DIR}/lib" )
 
    add_library( ${name} SHARED ${srcs} )
@@ -101,6 +102,7 @@ add_clang_plugin(libSas
    src/ArgSizeChecker.cpp
    src/VarnameChecker.cpp
    src/CheckerDisabler.cpp
+   src/CodingConventions/ROOT/RuleNumber3.cpp
 #         src/GlobalAccInCtorChecker.cpp
         # Add your checker here!
 )
