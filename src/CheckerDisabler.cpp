@@ -176,11 +176,11 @@ namespace
       // or `getCharacterData` (see further in this file).
       // [FB] Reason: unknown. (Clang bug?)
       // TODO: Investigate.
-      const unsigned beginLine = stmtLineNum - 2;
+      const unsigned beginLine = stmtLineNum == 2 ? 1 : stmtLineNum-2;
       // FIXME: Uses 2 preceding lines instead of just one.
       // [FB] hasn't found a way to use just one.
-      const unsigned beginCol = 0;
-      const unsigned endLine = stmtLineNum - 1;
+      const unsigned beginCol = 1;
+      const unsigned endLine = stmtLineNum == 2 ? 1 : stmtLineNum - 1;
       const unsigned endCol = 0;
       // Warning: Column argument of `translateLineCol` has no effect on resulting
       // `char *` pointers (`begin`, `end`).
