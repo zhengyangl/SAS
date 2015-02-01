@@ -26,8 +26,7 @@
 #include "VarnameChecker.h"
 #include "GlobalAccInCtorChecker.h"
 // ROOT CodingConventions
-#include "CodingConventions/ROOT/RuleNumber3.h"
-#include "CodingConventions/ROOT/RuleNumber9.h"
+#include "CodingConventions/ROOT/Rules.h"
 
 #include <clang/StaticAnalyzer/Core/CheckerRegistry.h>
 
@@ -52,7 +51,7 @@ extern "C" void clang_registerCheckers(clang::ento::CheckerRegistry& registry)
 
    // ROOT Coding Conventions
    registry.addChecker<sas::CodingConventions::ROOT::RN3Checker>("sas.CodingConventions.ROOT.RN3", "Check if classes name begin with uppercase T (RN3)");
-   registry.addChecker<sas::CodingConventions::ROOT::RN9Checker>("sas.CodingConventions.ROOT.RN9", "Types begin with a capital letter and end with '_t' (RN9)");
+   //registry.addChecker<sas::CodingConventions::ROOT::RN9Checker>("sas.CodingConventions.ROOT.RN9", "Types begin with a capital letter and end with '_t' (RN9)");
 
 }
 
