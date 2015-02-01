@@ -2,19 +2,23 @@
 #         Filip Bartek (2013)
 
 # Requirements:
-# LLVM_SRC_DIR
-# LLVM_SRC_BUILD_DIR
+# LLVM_DEV_DIR
 
 # Usage:
-# cmake -D LLVM_SRC_DIR=$LLVM_SRC_DIR LLVM_SRC_BUILD_DIR=$LLVM_SRC_BUILD_DIR $SAS_DIR
+# cmake -D LLVM_DEV_DIR=$LLVM_DEV_DIR $SAS_DIR
 
 # To register a new checker class in the SAS library, add an argument
 # "src/MyChecker.cpp" (replacing "MyChecker" with the actual name of the
 # checker file) to the `add_clang_plugin` call further in this file.
 
 
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required (VERSION 2.8)
 project (sas CXX)
+
+# Check if this is an out-of-source build
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
+   message(FATAL_ERROR "In source build is not supported. Please build in a different directory.")
+endif()
 
 # Initialize input variables
 set(LLVM_SRC_DIR "" CACHE FILEPATH "LLVM source directory")
@@ -23,6 +27,8 @@ set(LLVM_SRC_BUILD_DIR "" CACHE FILEPATH "LLVM build directory")
 if (LLVM_DEV_DIR)
    set(LLVM_SRC_DIR ${LLVM_DEV_DIR})
    set(LLVM_SRC_BUILD_DIR ${LLVM_DEV_DIR})
+else()
+   message(FATAL_ERROR "You must set LLVM_DEV_DIR (`cmake -D LLVM_DEV_DIR=$LLVM_DEV_DIR`).")
 endif()
 
 # Require LLVM_SRC_DIR
@@ -103,7 +109,14 @@ add_clang_plugin(libSas
    src/VarnameChecker.cpp
    src/CheckerDisabler.cpp
    src/CodingConventions/ROOT/RuleNumber3.cpp
-   src/CodingConventions/ROOT/RuleNumber9.cpp
+#   src/CodingConventions/ROOT/RuleNumber9.cpp
 #         src/GlobalAccInCtorChecker.cpp
         # Add your checker here!
 )
+
+file(COPY scripts DESTINATION ${CMAKE_BINARY_DIR}/)
+if (TESTING)
+file(COPY test DESTINATION ${CMAKE_BINARY_DIR}/)
+endif()
+
+
