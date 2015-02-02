@@ -108,13 +108,16 @@ add_clang_plugin(libSas
    src/ArgSizeChecker.cpp
    src/VarnameChecker.cpp
    src/CheckerDisabler.cpp
-   src/CodingConventions/ROOT/RuleNumber3.cpp
-#   src/CodingConventions/ROOT/RuleNumber9.cpp
+   src/CodingConventions/ROOT/RN3Checker.cpp
+   src/CodingConventions/ROOT/RN4Checker.cpp
+   src/CodingConventions/ROOT/RN6Checker.cpp
+   src/CodingConventions/ROOT/RN13Checker.cpp
 #         src/GlobalAccInCtorChecker.cpp
         # Add your checker here!
 )
 
-file(COPY scripts DESTINATION ${CMAKE_BINARY_DIR}/)
+file(COPY scripts USE_SOURCE_PERMISSIONS DESTINATION ${CMAKE_BINARY_DIR}/)
+file(COPY config USE_SOURCE_PERMISSIONS DESTINATION ${CMAKE_BINARY_DIR}/)
 if (TESTING)
 file(COPY test DESTINATION ${CMAKE_BINARY_DIR}/)
 endif()
