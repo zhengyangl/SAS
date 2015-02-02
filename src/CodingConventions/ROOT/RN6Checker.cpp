@@ -20,8 +20,8 @@ namespace sas
          {
             auto declName=D->getName();
             if (declName.size()<2 || 
-               (declName.startswith("E") && !std::isupper(declName[1]))) return;
-            Report(D, "RN6: Enumerations names must start with \"E\" and the second letter must be lowercase.", BR);
+               (declName.startswith("E")) return;
+            Report(D, "RN6: Enumerations names must start with \"E\".", BR);
          }
       }
    }
