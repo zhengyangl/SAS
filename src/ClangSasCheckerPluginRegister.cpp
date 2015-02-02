@@ -32,6 +32,12 @@
 
 // register all custom checkers with clang
 // add new entries here if you want to create a new checker
+
+template<class CHECKER>
+void AddToRegistry(clang::ento::CheckerRegistry& registry){
+   registry.addChecker<CHECKER>(CHECKER::GetName(),CHECKER::GetDescription());
+}
+
 extern "C" void clang_registerCheckers(clang::ento::CheckerRegistry& registry)
 {
    registry.addChecker<sas::ConstCastAwayChecker>("sas.threadsafety.ConstCastAway", "Check for casts which remove const qualifier");
@@ -50,9 +56,15 @@ extern "C" void clang_registerCheckers(clang::ento::CheckerRegistry& registry)
    registry.addChecker<sas::GlobalAccInCtorChecker>("sas.security.GlobalAccInCtor", "Check for access to global variable in constructor");
 
    // ROOT Coding Conventions
-   registry.addChecker<sas::CodingConventions::ROOT::RN3Checker>("sas.CodingConventions.ROOT.RN3", "Check if classes name begin with uppercase T (RN3)");
-   //registry.addChecker<sas::CodingConventions::ROOT::RN9Checker>("sas.CodingConventions.ROOT.RN9", "Types begin with a capital letter and end with '_t' (RN9)");
+   { using namespace sas::CodingConventions::ROOT;
+   AddToRegistry<RN3Checker>(registry);
+   AddToRegistry<RN4Checker>(registry);
+   AddToRegistry<RN6Checker>(registry);
+   AddToRegistry<RN13Checker>(registry);
 
+   
+
+   }
 }
 
 extern "C" const char clang_analyzerAPIVersionString[] = CLANG_ANALYZER_API_VERSION_STRING;
