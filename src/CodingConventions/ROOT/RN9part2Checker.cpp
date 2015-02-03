@@ -18,7 +18,6 @@ namespace sas
       {
          void RN9part2Checker::checkASTDecl(const clang::FunctionDecl* D, clang::ento::AnalysisManager& Mgr, clang::ento::BugReporter& BR) const
          {
-            auto declName=D->getName();
             auto firstChar = D->getName()[0];
             if ( std::isupper(firstChar) ) return;
             Report(D, "RN9part2: Ill formed function name. The first letter must be capital letter.", BR);
