@@ -16,7 +16,7 @@ Clone the SAS repository and then:
 ```
 export SASBUILDDIR=SASbuild
 mkdir $SASBUILDDIR;cd $SASBUILDDIR
-cmake -D LLVM_DEV_DIR=<location of clang> ../SAS
+cmake -D LLVM_DEV_DIR=<location of llvm> ../SAS
 make -j 4
 ```
 
