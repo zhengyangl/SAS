@@ -1,6 +1,6 @@
-// Author: Danilo Piparo (2015)
+// Author: Aditya Kale (2015)
 
-#include "RN6Checker.h"
+#include "RN9FunctionsChecker.h"
 
 #include <clang/StaticAnalyzer/Core/BugReporter/BugReporter.h>
 #include <clang/StaticAnalyzer/Core/BugReporter/PathDiagnostic.h>
@@ -16,12 +16,11 @@ namespace sas
    {
       namespace ROOT
       {
-         void RN6Checker::checkASTDecl(const clang::EnumDecl* D, clang::ento::AnalysisManager& Mgr, clang::ento::BugReporter& BR) const
+         void RN9FunctionsChecker::checkASTDecl(const clang::FunctionDecl* D, clang::ento::AnalysisManager& Mgr, clang::ento::BugReporter& BR) const
          {
-            auto declName=D->getName();
-            if (declName.size()<2 || 
-               declName.startswith("E")) return;
-            Report(D, "RN6: Enumerations names must start with \"E\".", BR);
+            auto firstChar = D->getName()[0];
+            if ( std::isupper(firstChar) ) return;
+            Report(D, "RN9Functions: Ill formed function name. The first letter must be capital letter.", BR);
          }
       }
    }

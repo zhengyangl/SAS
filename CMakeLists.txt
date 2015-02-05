@@ -112,6 +112,7 @@ add_clang_plugin(libSas
    src/CodingConventions/ROOT/RN4Checker.cpp
    src/CodingConventions/ROOT/RN6Checker.cpp
    src/CodingConventions/ROOT/RN13Checker.cpp
+   src/CodingConventions/ROOT/RN9FunctionsChecker.cpp
 #         src/GlobalAccInCtorChecker.cpp
         # Add your checker here!
 )
