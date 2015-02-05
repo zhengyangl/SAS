@@ -3,3 +3,4 @@
 #include "RN6Checker.h"
 #include "RN13Checker.h"
 #include "RN9FunctionsChecker.h"
+#include "PtrCastWinChecker.h"

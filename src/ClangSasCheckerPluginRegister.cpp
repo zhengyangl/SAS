@@ -56,14 +56,14 @@ extern "C" void clang_registerCheckers(clang::ento::CheckerRegistry& registry)
    registry.addChecker<sas::GlobalAccInCtorChecker>("sas.security.GlobalAccInCtor", "Check for access to global variable in constructor");
 
    // ROOT Coding Conventions
-   { using namespace sas::CodingConventions::ROOT;
+   {
+   using namespace sas::CodingConventions::ROOT;
    AddToRegistry<RN3Checker>(registry);
    AddToRegistry<RN4Checker>(registry);
    AddToRegistry<RN6Checker>(registry);
    AddToRegistry<RN13Checker>(registry);
    AddToRegistry<RN9FunctionsChecker>(registry);
-   
-
+   AddToRegistry<PtrCastWinChecker>(registry);
    }
 }
 

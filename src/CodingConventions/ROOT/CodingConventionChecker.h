@@ -7,9 +7,11 @@ EXPERIMENTAL
 #define SAS_CHECKERS_CODINGCONVENTIONCHECKER_H
 
 #include <clang/StaticAnalyzer/Core/BugReporter/BugReporter.h>
+#include <clang/StaticAnalyzer/Core/BugReporter/BugType.h>
 #include <clang/StaticAnalyzer/Core/Checker.h>
 #include <clang/Basic/SourceManager.h>
 #include <clang/AST/DeclCXX.h>
+#include <clang/StaticAnalyzer/Core/PathSensitive/CheckerContext.h>
 
 // What is the meaning of these?
 class CommonCCTraits {
@@ -19,6 +21,7 @@ public:
 };
 
 template<class Traits, class WHAT>
+
 class CodingConventionChecker : public clang::ento::Checker<WHAT>{
 public:
 	// Used for registration
@@ -31,7 +34,19 @@ public:
 		auto DLoc = clang::ento::PathDiagnosticLocation::createBegin(D, BR.getSourceManager());
 		// Here filter if comment on line above present or if path is blacklisted
 		// ...
+// 		auto sm=BR.getSourceManager();
+// 		printf ("The filename is %s\n",sm.getFilename(DLoc).str.c_str());
 		BR.EmitBasicReport(D, this, Traits::BugName, Traits::BugCategory, msg, DLoc);
 	}
+        void Report(const clang::Stmt* E, const char* msg, clang::ento::CheckerContext& C) const {
+           if (auto errorNode = C.addTransition()) {
+              auto bt = new clang::ento::BugType (this, Traits::BugName, Traits::BugCategory);
+              auto br = new clang::ento::BugReport(*bt, msg, errorNode);
+              br->addRange(E->getSourceRange());
+              C.emitReport(br);
+           }
+       }
+
 };
 #endif
+
