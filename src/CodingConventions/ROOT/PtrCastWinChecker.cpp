@@ -14,7 +14,7 @@ namespace sas
    {
       namespace ROOT
       {
-         void PtrCastWinChecker::checkPreStmt(const clang::ExplicitCastExpr* CE, clang::ento::CheckerContext& C) const
+         void PtrCastWinChecker::checkPreStmt(const clang::CStyleCastExpr* CE, clang::ento::CheckerContext& C) const
          {
             auto subExpr = CE->getSubExpr();
             auto& Ctx = C.getASTContext();
@@ -24,6 +24,7 @@ namespace sas
                auto toType = toQType.getTypePtr();
                // Case one: the toType is a builtin and not a long long
                if (llvm::isa<clang::BuiltinType>(toType) &&
+                   !toType->isSpecificBuiltinType(clang::BuiltinType::Bool) &&
                    !(toType->isSpecificBuiltinType(clang::BuiltinType::ULongLong) ||
                      toType->isSpecificBuiltinType(clang::BuiltinType::LongLong)) ){
                    Report(CE, "Casting pointers to integer types which are not long long is wrong on Windows 64 bits.", C);

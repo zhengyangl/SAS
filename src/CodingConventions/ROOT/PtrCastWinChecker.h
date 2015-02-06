@@ -18,9 +18,9 @@ namespace sas {
       static constexpr const char* Description="Pointers should be casted to integer types which are wide enough.";
     };
 
-    class PtrCastWinChecker : public CodingConventionChecker<PtrCastWinTraits, clang::ento::check::PreStmt<clang::ExplicitCastExpr>>{
+    class PtrCastWinChecker : public CodingConventionChecker<PtrCastWinTraits, clang::ento::check::PreStmt<clang::CStyleCastExpr>>{
     public:
-      void checkPreStmt(const clang::ExplicitCastExpr* CE, clang::ento::CheckerContext& C) const;
+      void checkPreStmt(const clang::CStyleCastExpr* CE, clang::ento::CheckerContext& C) const;
     };
   }
  }
