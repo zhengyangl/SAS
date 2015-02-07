@@ -7,18 +7,18 @@
 #ifndef SAS_CHECKERS_PTRCASTWIN_H
 #define SAS_CHECKERS_PTRCASTWIN_H
 
-#include "CodingConventionChecker.h"
+#include "SasChecker.h"
 
 namespace sas {
  namespace CodingConventions{
   namespace ROOT {
-    class PtrCastWinTraits : public CommonCCTraits{
+    class PtrCastWinTraits : public CommonCheckerTraits{
     public:
       static constexpr const char* Name="sas.CodingConventions.ROOT.PtrCastWin";
       static constexpr const char* Description="Pointers should be casted to integer types which are wide enough.";
     };
 
-    class PtrCastWinChecker : public CodingConventionChecker<PtrCastWinTraits, clang::ento::check::PreStmt<clang::CStyleCastExpr>>{
+    class PtrCastWinChecker : public SasChecker<PtrCastWinTraits, clang::ento::check::PreStmt<clang::CStyleCastExpr>>{
     public:
       void checkPreStmt(const clang::CStyleCastExpr* CE, clang::ento::CheckerContext& C) const;
     };

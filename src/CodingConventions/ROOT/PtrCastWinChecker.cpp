@@ -16,6 +16,7 @@ namespace sas
       {
          void PtrCastWinChecker::checkPreStmt(const clang::CStyleCastExpr* CE, clang::ento::CheckerContext& C) const
          {
+            if (clang::CK_PointerToIntegral != CE->getCastKind()) return;
             auto subExpr = CE->getSubExpr();
             auto& Ctx = C.getASTContext();
             clang::QualType fromQType = Ctx.getCanonicalType(subExpr->getType());

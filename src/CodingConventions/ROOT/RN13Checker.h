@@ -5,18 +5,18 @@
 #ifndef SAS_CHECKERS_ROOTCCRN13_H
 #define SAS_CHECKERS_ROOTCCRN13_H
 
-#include "CodingConventionChecker.h"
+#include "SasChecker.h"
 
 namespace sas {
  namespace CodingConventions{
   namespace ROOT {
-    class RN13Traits : public CommonCCTraits{
+    class RN13Traits : public CommonCheckerTraits{
     public:
       static constexpr const char* Name="sas.CodingConventions.ROOT.RN13";
       static constexpr const char* Description="Enumeration constants start with \"k\".";
     };
 
-    class RN13Checker : public CodingConventionChecker<RN13Traits, clang::ento::check::ASTDecl<clang::EnumConstantDecl>>
+    class RN13Checker : public SasChecker<RN13Traits, clang::ento::check::ASTDecl<clang::EnumConstantDecl>>
     {
     public:
       void checkASTDecl(const clang::EnumConstantDecl* D, 
