@@ -2,6 +2,7 @@
 //
 // by Thomas Hauth [ Thomas.Hauth@cern.ch ]
 //    Filip Bartek (2013)
+//    Danilo Piparo (2015)
 //
 //===----------------------------------------------------------------------===//
 
@@ -32,7 +33,6 @@
 
 // register all custom checkers with clang
 // add new entries here if you want to create a new checker
-
 template<class CHECKER>
 void AddToRegistry(clang::ento::CheckerRegistry& registry){
    registry.addChecker<CHECKER>(CHECKER::GetName(),CHECKER::GetDescription());
@@ -61,8 +61,10 @@ extern "C" void clang_registerCheckers(clang::ento::CheckerRegistry& registry)
    AddToRegistry<RN3Checker>(registry);
    AddToRegistry<RN4Checker>(registry);
    AddToRegistry<RN6Checker>(registry);
+   AddToRegistry<RN9Checker>(registry);
+   AddToRegistry<RN10Checker>(registry);
+   AddToRegistry<RN11Checker>(registry);
    AddToRegistry<RN13Checker>(registry);
-   AddToRegistry<RN9FunctionsChecker>(registry);
    AddToRegistry<PtrCastWinChecker>(registry);
    }
 }
