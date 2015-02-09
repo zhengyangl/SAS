@@ -20,9 +20,9 @@ public:
       static constexpr const char* BugCategory="";
 };
 
-template<class Traits, class WHAT>
+template<class Traits, class... WHAT>
 
-class SasChecker : public clang::ento::Checker<WHAT>{
+class SasChecker : public clang::ento::Checker<WHAT...>{
 public:
    // Used for registration
    static const char * GetName(){return Traits::Name;}
@@ -31,6 +31,7 @@ public:
    static const char * GetBugName(){return Traits::BugName;}
    static const char * GetBugCategory(){return Traits::BugCategory;}
 private:
+
    bool SkipReport(const clang::SourceLocation& sLoc, const clang::SourceManager& mgr) const{
       // Skip if invalid
    	  if (sLoc.isInvalid()) return true;
