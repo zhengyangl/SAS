@@ -25,6 +25,15 @@ namespace sas
             if ( std::isupper(firstChar) ) return;
             Report(D, "RN9Functions: Ill formed function name. The first letter must be capital letter.", BR);
          }
+         void RN9FunctionsChecker::checkASTDecl(const clang::FieldDecl* D, clang::ento::AnalysisManager& Mgr, clang::ento::BugReporter& BR) const
+         {
+            auto name = D->getName();
+            if (2 >= name.size()) return;
+            auto firstChar = name[0];
+            auto secondChar = name[1];
+            if ( firstChar == 'f' && std::isupper(secondChar) ) return;
+            Report(D, "RN9Fields: Ill formed field name. The first letter must be f and the second a capital letter.", BR);
+         }
       }
    }
 } // end namespace sas

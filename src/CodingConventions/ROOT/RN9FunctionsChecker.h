@@ -16,10 +16,15 @@ namespace sas {
       static constexpr const char* Description="Function name must begin with capital letter.";
     };
 
-    class RN9FunctionsChecker : public SasChecker<RN9FunctionsTraits, clang::ento::check::ASTDecl<clang::FunctionDecl>>
+    class RN9FunctionsChecker : public SasChecker<RN9FunctionsTraits, 
+                                                  clang::ento::check::ASTDecl<clang::FunctionDecl>,
+                                                  clang::ento::check::ASTDecl<clang::FieldDecl>>
     {
     public:
       void checkASTDecl(const clang::FunctionDecl* D, 
+                        clang::ento::AnalysisManager& Mgr, 
+                        clang::ento::BugReporter& BR) const;
+      void checkASTDecl(const clang::FieldDecl* D, 
                         clang::ento::AnalysisManager& Mgr, 
                         clang::ento::BugReporter& BR) const;
     };
