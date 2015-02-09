@@ -1,6 +1,6 @@
 // Author: Aditya Kale (2015)
 
-#include "RN9FunctionsChecker.h"
+#include "RN9Checker.h"
 
 #include <clang/StaticAnalyzer/Core/BugReporter/BugReporter.h>
 #include <clang/StaticAnalyzer/Core/BugReporter/PathDiagnostic.h>
@@ -16,16 +16,7 @@ namespace sas
    {
       namespace ROOT
       {
-         void RN9FunctionsChecker::checkASTDecl(const clang::FunctionDecl* D, clang::ento::AnalysisManager& Mgr, clang::ento::BugReporter& BR) const
-         {
-            auto name = D->getName();
-            if (0 == name.size()) return;
-            if (name == "main") return;
-            auto firstChar = name[0];
-            if ( std::isupper(firstChar) ) return;
-            Report(D, "RN9Functions: Ill formed function name. The first letter must be capital letter.", BR);
-         }
-         void RN9FunctionsChecker::checkASTDecl(const clang::FieldDecl* D, clang::ento::AnalysisManager& Mgr, clang::ento::BugReporter& BR) const
+         void RN9Checker::checkASTDecl(const clang::FieldDecl* D, clang::ento::AnalysisManager& Mgr, clang::ento::BugReporter& BR) const
          {
             auto name = D->getName();
             if (2 >= name.size()) return;
@@ -33,6 +24,15 @@ namespace sas
             auto secondChar = name[1];
             if ( firstChar == 'f' && std::isupper(secondChar) ) return;
             Report(D, "RN9Fields: Ill formed field name. The first letter must be f and the second a capital letter.", BR);
+         }
+         void RN9Checker::checkASTDecl(const clang::FunctionDecl* D, clang::ento::AnalysisManager& Mgr, clang::ento::BugReporter& BR) const
+         {
+            auto name = D->getName();
+            if (0 == name.size()) return;
+            if (name == "main") return;
+            auto firstChar = name[0];
+            if ( std::isupper(firstChar) ) return;
+            Report(D, "RN9Functions: Ill formed function name. The first letter must be capital letter.", BR);
          }
       }
    }
