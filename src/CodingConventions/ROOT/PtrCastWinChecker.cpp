@@ -21,14 +21,15 @@ namespace sas
             auto& Ctx = C.getASTContext();
             clang::QualType fromQType = Ctx.getCanonicalType(subExpr->getType());
             clang::QualType toQType = Ctx.getCanonicalType(CE->getType());
-            if (fromQType->isPointerType()) {
+            if (fromQType->isPointerType() || fromQType->isArrayType()) {
                auto toType = toQType.getTypePtr();
                // Case one: the toType is a builtin and not a long long
-               if (llvm::isa<clang::BuiltinType>(toType) &&
-                   !toType->isSpecificBuiltinType(clang::BuiltinType::Bool) &&
-                   !(toType->isSpecificBuiltinType(clang::BuiltinType::ULongLong) ||
-                     toType->isSpecificBuiltinType(clang::BuiltinType::LongLong)) ){
-                   Report(CE, "Casting pointers to integer types which are not long long is wrong on Windows 64 bits.", C);
+               if (toType->isSpecificBuiltinType(clang::BuiltinType::Long) ||
+                   toType->isSpecificBuiltinType(clang::BuiltinType::ULong)){
+                   std::string r = "Casting pointers to integer types which are not (unsigned) long long (in this case a ";
+                   r+=toQType.getAsString ();
+                   r+=") is wrong on Windows 64 bits. ";
+                   Report(CE, r.c_str(), C);
                }
             }
          }
