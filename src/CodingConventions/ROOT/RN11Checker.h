@@ -12,7 +12,7 @@ namespace sas {
   namespace ROOT {
     class RN11Traits : public CommonCheckerTraits{
     public:
-      static constexpr const char* Name="sas.CodingConventions.ROOT.RN10";
+      static constexpr const char* Name="sas.CodingConventions.ROOT.RN11";
       static constexpr const char* Description="Static global variables names start with \"g\".";
     };
 
