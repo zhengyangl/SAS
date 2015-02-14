@@ -113,6 +113,7 @@ add_clang_plugin(libSas
    src/CodingConventions/ROOT/RN9Checker.cpp
    src/CodingConventions/ROOT/RN10Checker.cpp
    src/CodingConventions/ROOT/RN11Checker.cpp
+   src/CodingConventions/ROOT/RN12Checker.cpp
    src/CodingConventions/ROOT/RN13Checker.cpp
    src/CodingConventions/ROOT/PtrCastWinChecker.cpp
    src/ClangSasCheckerPluginRegister.cpp

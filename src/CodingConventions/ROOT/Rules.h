@@ -4,5 +4,6 @@
 #include "RN9Checker.h"
 #include "RN10Checker.h"
 #include "RN11Checker.h"
+#include "RN12Checker.h"
 #include "RN13Checker.h"
 #include "PtrCastWinChecker.h"

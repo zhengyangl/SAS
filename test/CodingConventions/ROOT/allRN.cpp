@@ -20,6 +20,12 @@ int Fun2()
   return 0;
 }
 
+int Fun3(){
+	int correctName=0;
+	int IncorrectName=0;
+	return 0;
+}
+
 int main(){
 double myDouble=123.;
 auto ul = (unsigned long) &myDouble;

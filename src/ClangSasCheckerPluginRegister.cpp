@@ -64,6 +64,7 @@ extern "C" void clang_registerCheckers(clang::ento::CheckerRegistry& registry)
    AddToRegistry<RN9Checker>(registry);
    AddToRegistry<RN10Checker>(registry);
    AddToRegistry<RN11Checker>(registry);
+   AddToRegistry<RN12Checker>(registry);
    AddToRegistry<RN13Checker>(registry);
    AddToRegistry<PtrCastWinChecker>(registry);
    }
