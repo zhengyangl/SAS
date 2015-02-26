@@ -22,10 +22,12 @@
 #include "ClassDumper.h"
 #include "FiniteMathChecker.h"
 #include "CatchAll.h"
-#include "UsingNamespace.h"
 #include "ArgSizeChecker.h"
 #include "VarnameChecker.h"
 #include "GlobalAccInCtorChecker.h"
+// General CodingConventions
+#include "CodingConventions/General/Rules.h"
+
 // ROOT CodingConventions
 #include "CodingConventions/ROOT/Rules.h"
 
@@ -49,11 +51,16 @@ extern "C" void clang_registerCheckers(clang::ento::CheckerRegistry& registry)
 //    registry.addChecker<sas::ClassDumperFT>("sas.optional.ClassDumperFT", "Dump class info");
 //    registry.addChecker<sas::ClassDumperInherit>("sas.optional.ClassDumperInherit", "Dump class inheritance info");
    registry.addChecker<sas::FiniteMathChecker>("sas.security.NonFiniteMath", "Check for usage of isnan and isinf");
-   registry.addChecker<sas::UsingNamespace>("sas.CodeRules.UsingNamespace", "Check for 'using namespace' or 'using std::' in header files");
    registry.addChecker<sas::CatchAll>("sas.CodeRules.CatchAll", "Check for 'catch(...)' in source files");
    registry.addChecker<sas::ArgSizeChecker>("sas.performance.ArgSize", "Check for arguments passed by value with size over 4 KB");
    registry.addChecker<sas::VarnameChecker>("sas.example.Varname", "Report variables whose names don't start with an uppercase letter");
    registry.addChecker<sas::GlobalAccInCtorChecker>("sas.security.GlobalAccInCtor", "Check for access to global variable in constructor");
+
+   // General Coding Conventions and Code Cleanliness
+   {
+      using namespace sas::CodingConventions::General;
+      AddToRegistry<NoUsingNamespaceInHeaders>(registry);
+   }
 
    // ROOT Coding Conventions
    {

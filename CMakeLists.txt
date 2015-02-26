@@ -48,7 +48,7 @@ set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib )
 
 # the rest should work automatically
 
-# assumes for clang to be under llvm/tools/, as suggested by the clang website 
+# assumes for clang to be under llvm/tools/, as suggested by the clang website
 # http://clang.llvm.org/get_started.html#build
 set (CLANG_SRC_DIR  ${LLVM_SRC_DIR}/tools/clang)
 set (CLANG_BUILD_DIR ${LLVM_SRC_BUILD_DIR}/tools/clang)
@@ -66,7 +66,7 @@ macro(add_clang_plugin name)
    include_directories( "${LLVM_SRC_DIR}/include"
       "${LLVM_SRC_BUILD_DIR}/include"
       "${CLANG_SRC_DIR}/include"
-      "${CLANG_BUILD_DIR}/include" 
+      "${CLANG_BUILD_DIR}/include"
       "${CMAKE_CURRENT_SOURCE_DIR}/src")
    link_directories( "${LLVM_BUILD_DIR}/lib" )
 
@@ -103,10 +103,11 @@ add_clang_plugin(libSas
 #    src/ClassDumper.cpp
    src/FiniteMathChecker.cc
    src/CatchAll.cpp
-   src/UsingNamespace.cpp
    src/ArgSizeChecker.cpp
    src/VarnameChecker.cpp
    src/CheckerDisabler.cpp
+   # New Structure
+   src/CodingConventions/General/UsingNamespace.cpp
    src/CodingConventions/ROOT/RN3Checker.cpp
    src/CodingConventions/ROOT/RN4Checker.cpp
    src/CodingConventions/ROOT/RN6Checker.cpp
