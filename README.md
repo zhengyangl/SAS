@@ -58,7 +58,7 @@ Forward the commands to the compiler, check formatting and select some checkers
 ```
 SA_FORMATTING=1 SA_CHECKERS="core.uninitialized:alpha" clang++ ... -c myFile.cpp ....
 ```
-Forward the commands to the compiler, check formatting, load a plugin (why ot the SAS one?) and select some checkers
+Forward the commands to the compiler, check formatting, load a plugin (why not the SAS one?) and select some checkers
 ```
 SA_PLUGIN=$SASBUILDDIR/lib/libSas.so SA_FORMATTING=1 SA_CHECKERS="sas.threadsafety" clang++ ... -c myFile.cpp ....
 ```
