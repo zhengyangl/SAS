@@ -14,17 +14,15 @@
 // available in this file by #including the corresponding header file
 // (`#include "MyChecker.h"`).
 
-#include "ConstCastChecker.h"
-#include "ConstCastAwayChecker.h"
-#include "GlobalStaticChecker.h"
-#include "StaticLocalChecker.h"
-#include "MutableMemberChecker.h"
 #include "ClassDumper.h"
 #include "FiniteMathChecker.h"
 #include "CatchAll.h"
 #include "ArgSizeChecker.h"
 #include "VarnameChecker.h"
 #include "GlobalAccInCtorChecker.h"
+// ThreadSafety
+#include "ThreadSafety/Rules.h"
+
 // General CodingConventions
 #include "CodingConventions/General/Rules.h"
 
@@ -42,11 +40,6 @@ void AddToRegistry(clang::ento::CheckerRegistry& registry){
 
 extern "C" void clang_registerCheckers(clang::ento::CheckerRegistry& registry)
 {
-   registry.addChecker<sas::ConstCastAwayChecker>("sas.threadsafety.ConstCastAway", "Check for casts which remove const qualifier");
-   registry.addChecker<sas::ConstCastChecker>("sas.threadsafety.ConstCast", "Check for casts which remove const qualifier");
-   registry.addChecker<sas::StaticLocalChecker>("sas.threadsafety.StaticLocal", "Check for non-const method local static variables");
-   registry.addChecker<sas::MutableMemberChecker>("sas.threadsafety.MutableMember", "Check for members with the mutable keyword");
-   registry.addChecker<sas::GlobalStaticChecker>("sas.threadsafety.GlobalStatic", "Check for global non-const static variables");
 //    registry.addChecker<sas::ClassDumperCT>("sas.optional.ClassDumperCT", "Dump class info");
 //    registry.addChecker<sas::ClassDumperFT>("sas.optional.ClassDumperFT", "Dump class info");
 //    registry.addChecker<sas::ClassDumperInherit>("sas.optional.ClassDumperInherit", "Dump class inheritance info");
@@ -56,6 +49,15 @@ extern "C" void clang_registerCheckers(clang::ento::CheckerRegistry& registry)
    registry.addChecker<sas::VarnameChecker>("sas.example.Varname", "Report variables whose names don't start with an uppercase letter");
    registry.addChecker<sas::GlobalAccInCtorChecker>("sas.security.GlobalAccInCtor", "Check for access to global variable in constructor");
 
+   // ThreadSafety
+   {
+   using namespace sas::ThreadSafety;
+   AddToRegistry<ConstCastChecker>(registry);
+   AddToRegistry<ConstCastAwayChecker>(registry);
+   AddToRegistry<GlobalStaticChecker>(registry);
+   AddToRegistry<StaticLocalChecker>(registry);
+   AddToRegistry<MutableMemberChecker>(registry);
+   }
    // General Coding Conventions and Code Cleanliness
    {
       using namespace sas::CodingConventions::General;
