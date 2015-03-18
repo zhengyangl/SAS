@@ -25,7 +25,7 @@ namespace sas
    namespace ThreadSafety {
       class ConstCastTraits : public CommonCheckerTraits{
       public:
-         static constexpr const char* Name="sas.ThreadSafetyConstCast";
+         static constexpr const char* Name="sas.ThreadSafety.ConstCast";
          static constexpr const char* Description="Casts which remove const qualifer might result in thread-unsafe code";
       };
       class ConstCastChecker :
