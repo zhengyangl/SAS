@@ -21,7 +21,7 @@ namespace sas
    namespace ThreadSafety{
       class MutableMemberTraits : public CommonCheckerTraits{
       public:
-         static constexpr const char* Name="sas.ThreadSafety.MultableMember";
+         static constexpr const char* Name="sas.ThreadSafety.MutableMember";
          static constexpr const char* Description="Members with the mutable keyword which might not be thread-safe";
       };
 
