@@ -6,20 +6,20 @@ all: class_checker.o mutable_member.o const_cast.o const_cast_away.o global_stat
 mutable_member.o: mutable_member.cpp
 	$(CXX) mutable_member.cpp
 
-const_cast.o: const_cast.cpp
-	$(CXX) const_cast.cpp
+const_cast.o: ThreadSafety/const_cast.cpp
+	$(CXX) ThreadSafety/const_cast.cpp
 
-const_cast_away.o: const_cast_away.cpp
-	$(CXX) const_cast_away.cpp
+const_cast_away.o: ThreadSafety/const_cast_away.cpp
+	$(CXX) ThreadSafety/const_cast_away.cpp
 
-global_static.o: global_static.cpp
-	$(CXX) global_static.cpp
+global_static.o: ThreadSafety/global_static.cpp
+	$(CXX) ThreadSafety/global_static.cpp
 
-global_static_edm.o: global_static_edm.cpp
-	$(CXX) global_static_edm.cpp
+global_static_edm.o: ThreadSafety/global_static_edm.cpp
+	$(CXX) ThreadSafety/global_static_edm.cpp
 
-static_local.o: static_local.cpp
-	$(CXX) static_local.cpp
+static_local.o: ThreadSafety/static_local.cpp
+	$(CXX) ThreadSafety/static_local.cpp
 
 class_checker.o: class_checker.cpp
 	$(CXX) -std=c++0x class_checker.cpp

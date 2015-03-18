@@ -95,11 +95,6 @@ set (USER_LIBS
 # The first argument is the plugin name.
 add_clang_plugin(libSas
    src/SasException.cpp
-   src/ConstCastChecker.cpp
-   src/ConstCastAwayChecker.cpp
-   src/StaticLocalChecker.cpp
-   src/GlobalStaticChecker.cpp
-   src/MutableMemberChecker.cpp
 #    src/ClassDumper.cpp
    src/FiniteMathChecker.cc
    src/CatchAll.cpp
@@ -117,6 +112,11 @@ add_clang_plugin(libSas
    src/CodingConventions/ROOT/RN12Checker.cpp
    src/CodingConventions/ROOT/RN13Checker.cpp
    src/CodingConventions/ROOT/PtrCastWinChecker.cpp
+   src/ThreadSafety/ConstCastChecker.cpp
+   src/ThreadSafety/ConstCastAwayChecker.cpp
+   src/ThreadSafety/GlobalStaticChecker.cpp
+   src/ThreadSafety/StaticLocalChecker.cpp
+   src/ThreadSafety/MutableMemberChecker.cpp
    src/ClangSasCheckerPluginRegister.cpp
 #         src/GlobalAccInCtorChecker.cpp
         # Add your checker here!
