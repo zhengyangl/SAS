@@ -26,7 +26,7 @@ namespace sas {
 
          const char* msg = "The function isnan/isinf does not work when fast-math is enabled. Please check the bits of the floating point number instead.";
 
-         Report(CE, msg.c_str(), C);
+         Report(CE, msg, C);
       }
    }
 }
