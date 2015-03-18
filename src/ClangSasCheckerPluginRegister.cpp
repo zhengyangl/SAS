@@ -15,9 +15,7 @@
 // (`#include "MyChecker.h"`).
 
 #include "ClassDumper.h"
-#include "FiniteMathChecker.h"
 #include "CatchAll.h"
-#include "ArgSizeChecker.h"
 #include "VarnameChecker.h"
 #include "GlobalAccInCtorChecker.h"
 // ThreadSafety
@@ -28,6 +26,9 @@
 
 // ROOT CodingConventions
 #include "CodingConventions/ROOT/Rules.h"
+
+// Performance
+#include "Performance/Checkers.h"
 
 #include <clang/StaticAnalyzer/Core/CheckerRegistry.h>
 
@@ -43,9 +44,7 @@ extern "C" void clang_registerCheckers(clang::ento::CheckerRegistry& registry)
 //    registry.addChecker<sas::ClassDumperCT>("sas.optional.ClassDumperCT", "Dump class info");
 //    registry.addChecker<sas::ClassDumperFT>("sas.optional.ClassDumperFT", "Dump class info");
 //    registry.addChecker<sas::ClassDumperInherit>("sas.optional.ClassDumperInherit", "Dump class inheritance info");
-   registry.addChecker<sas::FiniteMathChecker>("sas.security.NonFiniteMath", "Check for usage of isnan and isinf");
    registry.addChecker<sas::CatchAll>("sas.CodeRules.CatchAll", "Check for 'catch(...)' in source files");
-   registry.addChecker<sas::ArgSizeChecker>("sas.performance.ArgSize", "Check for arguments passed by value with size over 4 KB");
    registry.addChecker<sas::VarnameChecker>("sas.example.Varname", "Report variables whose names don't start with an uppercase letter");
    registry.addChecker<sas::GlobalAccInCtorChecker>("sas.security.GlobalAccInCtor", "Check for access to global variable in constructor");
 
@@ -77,6 +76,14 @@ extern "C" void clang_registerCheckers(clang::ento::CheckerRegistry& registry)
    AddToRegistry<RN13Checker>(registry);
    AddToRegistry<PtrCastWinChecker>(registry);
    }
+
+   // Performance
+   {
+   using namespace sas::Performance;
+   AddToRegistry<FiniteMathChecker>(registry);
+   AddToRegistry<ArgSizeChecker>(registry);
+   }
+
 }
 
 extern "C" const char clang_analyzerAPIVersionString[] = CLANG_ANALYZER_API_VERSION_STRING;

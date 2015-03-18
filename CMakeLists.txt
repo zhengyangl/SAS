@@ -96,9 +96,7 @@ set (USER_LIBS
 add_clang_plugin(libSas
    src/SasException.cpp
 #    src/ClassDumper.cpp
-   src/FiniteMathChecker.cc
    src/CatchAll.cpp
-   src/ArgSizeChecker.cpp
    src/VarnameChecker.cpp
    src/CheckerDisabler.cpp
    # New Structure
@@ -117,6 +115,8 @@ add_clang_plugin(libSas
    src/ThreadSafety/GlobalStaticChecker.cpp
    src/ThreadSafety/StaticLocalChecker.cpp
    src/ThreadSafety/MutableMemberChecker.cpp
+   src/Performance/ArgSizeChecker.cpp
+   src/Performance/FiniteMathChecker.cpp
    src/ClangSasCheckerPluginRegister.cpp
 #         src/GlobalAccInCtorChecker.cpp
         # Add your checker here!
@@ -128,4 +128,12 @@ if (TESTING)
 file(COPY test DESTINATION ${CMAKE_BINARY_DIR}/)
 endif()
 
+#--------------------------
+# CTEST BASED TESTING
+# Add tests in this form
+# add_test(NAME <name> [CONFIGURATIONS [Debug|Release|...]]
+#            [WORKING_DIRECTORY dir]
+#            COMMAND <command> [arg1 [arg2 ...]])
 
+enable_testing()
+add_test("dummy" COMMAND="SA_PLUGIN=lib/libSas.so SA_CHECKERS=\"sas.CodingConventions.ROOT\" ls ")
