@@ -21,24 +21,29 @@ if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
 endif()
 
 # Initialize input variables
-set(LLVM_SRC_DIR "" CACHE FILEPATH "LLVM source directory")
-set(LLVM_SRC_BUILD_DIR "" CACHE FILEPATH "LLVM build directory")
+set(LLVM_INCLUDE_DIR "" CACHE FILEPATH "LLVM include directory")
+set(LLVM_LIB_DIR "" CACHE FILEPATH "LLVM lib directory")
+set(CLANG_INCLUDE_DIRS "" CACHE FILEPATH "Clang include directory")
 
-if (LLVM_DEV_DIR)
-   set(LLVM_SRC_DIR ${LLVM_DEV_DIR})
-   set(LLVM_SRC_BUILD_DIR ${LLVM_DEV_DIR})
+INCLUDE(cmake/FindLLVM.cmake)
+INCLUDE(cmake/FindClang.cmake)
+
+# Require LLVM_INCLUDE_DIR
+if (LLVM_INCLUDE_DIR)
+   set(LLVM_INCLUDE_DIR ${LLVM_INCLUDE_DIR})
 else()
-   message(FATAL_ERROR "You must set LLVM_DEV_DIR (`cmake -D LLVM_DEV_DIR=$LLVM_DEV_DIR`).")
+   message(FATAL_ERROR "Could not find LLVM headers. Install LLVM headers please")
 endif()
 
-# Require LLVM_SRC_DIR
-if(NOT LLVM_SRC_DIR)
-  message(FATAL_ERROR "You must set LLVM_SRC_DIR (`cmake -D LLVM_SRC_DIR=$LLVM_SRC_DIR`).")
+# Require LLVM_LIB_DIR
+if(LLVM_LIB_DIR)
+else()
+   message(FATAL_ERROR "Could not find LLVM lib. Install LLVM lib please")
 endif()
 
-# Require LLVM_SRC_BUILD_DIR
-if(NOT LLVM_SRC_BUILD_DIR)
-  message(FATAL_ERROR "You must set LLVM_SRC_BUILD_DIR (`cmake -D LLVM_SRC_BUILD_DIR=$LLVM_SRC_BUILD_DIR`).")
+# Require CLANG_FOUND
+if(NOT CLANG_FOUND)
+   message(FATAL_ERROR "Could not find Clang headers. Install Clang please")
 endif()
 # /usr/lib/llvm-3.5/
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin )
@@ -50,8 +55,6 @@ set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib )
 
 # assumes for clang to be under llvm/tools/, as suggested by the clang website
 # http://clang.llvm.org/get_started.html#build
-set (CLANG_SRC_DIR  ${LLVM_SRC_DIR}/tools/clang)
-set (CLANG_BUILD_DIR ${LLVM_SRC_BUILD_DIR}/tools/clang)
 
 add_definitions (-D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS)
 add_definitions (-D_GNU_SOURCE -DHAVE_CLANG_CONFIG_H)
@@ -63,12 +66,11 @@ set (CMAKE_MODULE_LINKER_FLAGS "-Wl,-flat_namespace -Wl,-undefined -Wl,suppress"
 macro(add_clang_plugin name)
    set (srcs ${ARGN})
 
-   include_directories( "${LLVM_SRC_DIR}/include"
-      "${LLVM_SRC_BUILD_DIR}/include"
-      "${CLANG_SRC_DIR}/include"
-      "${CLANG_BUILD_DIR}/include"
+   include_directories(
+      "${LLVM_INLCUDE_DIR}/"
+      "${CLANG_INCLUDE_DIRS}"
       "${CMAKE_CURRENT_SOURCE_DIR}/src")
-   link_directories( "${LLVM_BUILD_DIR}/lib" )
+   link_directories( "${LLVM_LIB_DIR}/" )
 
    add_library( ${name} SHARED ${srcs} )
 
