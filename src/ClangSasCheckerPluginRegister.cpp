@@ -19,7 +19,7 @@
 #include "VarnameChecker.h"
 #include "GlobalAccInCtorChecker.h"
 // ThreadSafety
-#include "ThreadSafety/Rules.h"
+#include "ThreadSafety/Checkers.h"
 
 // General CodingConventions
 #include "CodingConventions/General/Rules.h"

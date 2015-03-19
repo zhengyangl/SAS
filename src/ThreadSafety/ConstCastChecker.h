@@ -34,7 +34,6 @@ namespace sas
          mutable std::unique_ptr<clang::ento::BugType> BT;
          void checkPreStmt(const clang::CXXConstCastExpr* CE, clang::ento::CheckerContext& C) const;
       private:
-         SasException m_exception;
          static const char* const checkerName;
       };
    }
