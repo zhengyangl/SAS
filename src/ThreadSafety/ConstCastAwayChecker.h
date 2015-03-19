@@ -29,8 +29,6 @@ namespace sas {
       public:
          mutable std::unique_ptr<clang::ento::BugType> BT;
          void checkPreStmt(const clang::ExplicitCastExpr* CE, clang::ento::CheckerContext& C) const;
-      private:
-         SasException m_exception;
       };
    }
 }

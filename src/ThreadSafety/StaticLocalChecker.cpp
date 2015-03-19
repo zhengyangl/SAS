@@ -26,7 +26,7 @@ namespace sas
             llvm::raw_string_ostream os(buf);
             os << "Non-const variable '" << *D << "' is local static and might be thread-unsafe";
 
-            BR.EmitBasicReport(D, this, "Possibly Thread-Unsafe: non-const static local variable", "ThreadSafety", os.str(), DLoc);
+            Report(D, os.str().c_str(), BR);
             return;
          }
       }

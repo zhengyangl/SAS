@@ -21,7 +21,7 @@ namespace sas
             llvm::raw_string_ostream os(buf);
             os << "Mutable member'" << *D << "' in class, might be thread-unsafe when accessing via a const handle.";
 
-            BR.EmitBasicReport(D, this, "Possibly Thread-Unsafe: Mutable member", "ThreadSafety", os.str(), DLoc);
+            Report(D, os.str().c_str(), BR);
             return;
          }
       }
