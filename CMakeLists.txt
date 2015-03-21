@@ -25,25 +25,32 @@ set(LLVM_INCLUDE_DIR "" CACHE FILEPATH "LLVM include directory")
 set(LLVM_LIB_DIR "" CACHE FILEPATH "LLVM lib directory")
 set(CLANG_INCLUDE_DIRS "" CACHE FILEPATH "Clang include directory")
 
-INCLUDE(cmake/FindLLVM.cmake)
-INCLUDE(cmake/FindClang.cmake)
-
-# Require LLVM_INCLUDE_DIR
-if (LLVM_INCLUDE_DIR)
-   set(LLVM_INCLUDE_DIR ${LLVM_INCLUDE_DIR})
+if (LLVM_DEV_DIR)
+   message(STATUS "Manually set LLVM_DEV_DIR: ${LLVM_DEV_DIR}")
+   set(LLVM_INLCUDE_DIR "${LLVM_DEV_DIR}/include")
+   set(LLVM_LIB_DIR "${LLVM_DEV_DIR}/lib")
+   set(CLANG_INCLUDE_DIRS "${LLVM_DEV_DIR}/include")
 else()
-   message(FATAL_ERROR "Could not find LLVM headers. Install LLVM headers please")
-endif()
+   INCLUDE(cmake/FindLLVM.cmake)
+   INCLUDE(cmake/FindClang.cmake)
 
-# Require LLVM_LIB_DIR
-if(LLVM_LIB_DIR)
-else()
-   message(FATAL_ERROR "Could not find LLVM lib. Install LLVM lib please")
-endif()
+   # Require LLVM_INCLUDE_DIR
+   if (LLVM_INCLUDE_DIR)
+      set(LLVM_INCLUDE_DIR ${LLVM_INCLUDE_DIR})
+   else()
+      message(FATAL_ERROR "Could not find LLVM headers. Install LLVM headers please")
+   endif()
 
-# Require CLANG_FOUND
-if(NOT CLANG_FOUND)
-   message(FATAL_ERROR "Could not find Clang headers. Install Clang please")
+   # Require LLVM_LIB_DIR
+   if(LLVM_LIB_DIR)
+   else()
+      message(FATAL_ERROR "Could not find LLVM lib. Install LLVM lib please")
+   endif()
+
+   # Require CLANG_FOUND
+   if(NOT CLANG_FOUND)
+      message(FATAL_ERROR "Could not find Clang headers. Install Clang please")
+   endif()
 endif()
 # /usr/lib/llvm-3.5/
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin )
