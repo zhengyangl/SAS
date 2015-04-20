@@ -18,7 +18,7 @@ namespace sas
              if (!D->hasLocalStorage()) return;
              auto varName = D->getName();
              if (varName.size()!=0 && std::islower(varName[0])) return;
-             Report(D, "RN12: The names local variables must start with a lowercase letter.", BR);
+             Report(D, "[sas.CodingConventions.ROOT.RN12] RN12: The names local variables must start with a lowercase letter.", BR);
          }
       }
    }

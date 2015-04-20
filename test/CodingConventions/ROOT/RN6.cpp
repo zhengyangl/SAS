@@ -1,0 +1,3 @@
+
+enum EmyEnum{};
+enum myEnum{};

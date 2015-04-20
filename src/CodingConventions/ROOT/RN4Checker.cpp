@@ -29,7 +29,7 @@ namespace sas
             auto secondChar = D->getName()[1];
             auto thirdChar = D->getName()[2];
             if ('T' == firstChar && std::isupper(secondChar) && !std::isupper(thirdChar)) return;
-            Report(D, "RN4: Ill formed class/struct name. The first letter must be a \"T\", the second uppercase and the third lowercase.", BR);
+            Report(D, "[sas.CodingConventions.ROOT.RN4] RN4: Ill formed class/struct name. The first letter must be a \"T\", the second uppercase and the third lowercase.", BR);
          }
       }
    }

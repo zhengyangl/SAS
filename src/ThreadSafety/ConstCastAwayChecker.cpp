@@ -24,7 +24,7 @@ namespace sas
          if (support::isConst(OrigTy) && !support::isConst(ToTy)) {
             clang::ento::ExplodedNode* errorNode = C.addTransition();
             if (errorNode) {
-               const char* msg = "const qualifier was removed via a cast, this may result in thread-unsafe code.";
+               const char* msg = "[sas.ThreadSafety.ConstCastAwayChecker]const qualifier was removed via a cast, this may result in thread-unsafe code.";
                Report(CE, msg, C);
             }
          }

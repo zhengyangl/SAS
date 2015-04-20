@@ -1,3 +1,3 @@
-#include <iostream>
 
-class a{};
+typedef int time;  // bug
+typedef int time_t;

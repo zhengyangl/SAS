@@ -22,7 +22,7 @@ namespace sas
                return ; 
             }
             if (declName.endswith("_t")) return;
-            Report(D, "RN3: Typedefs and aliases names must end with a \"_t\".", BR);
+            Report(D, "[sas.CodingConventions.ROOT.RN3] RN3: Typedefs and aliases names must end with a \"_t\".", BR);
          }
       }
    }

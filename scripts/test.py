@@ -8,6 +8,7 @@ if __name__ == "__main__":
    compile_env = {"SA_PLUGIN": sas_binary, "SA_CHECKERS": checkers}
    process = subprocess.Popen([cc, "-c", "-std=c++11", src], stderr=subprocess.PIPE, env=compile_env)
    analyze_output = process.communicate()[1]
+   print analyze_output
    if sample_output in analyze_output:
       sys.exit(0)
    else:

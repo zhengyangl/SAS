@@ -20,7 +20,7 @@ namespace sas
          if (IsDisabled(CE, C, checkerName)) return; // Disabled by comment
          clang::ento::ExplodedNode* errorNode = C.addTransition();
          if (errorNode) {
-            const char* msg = "const_cast was used, this may result in thread-unsafe code.";
+            const char* msg = "[sas.ThreadSafety.ConstCastChecker] const_cast was used, this may result in thread-unsafe code.";
             Report(CE, msg, C);
          }
       }

@@ -31,8 +31,6 @@ namespace sas
 
       public:
          void checkASTDecl(const clang::FieldDecl* D, clang::ento::AnalysisManager& Mgr, clang::ento::BugReporter& BR) const;
-      private:
-         SasException m_exception;
       };
    }
 }

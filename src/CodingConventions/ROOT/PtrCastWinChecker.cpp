@@ -26,7 +26,7 @@ namespace sas
                // Case one: the toType is a builtin and not a long long
                if (toType->isSpecificBuiltinType(clang::BuiltinType::Long) ||
                    toType->isSpecificBuiltinType(clang::BuiltinType::ULong)){
-                   std::string r = "Casting pointers to integer types which are not (unsigned) long long (in this case a ";
+                   std::string r = "[sas.CodingConventions.ROOT.PtrCastWinChecker] Casting pointers to integer types which are not (unsigned) long long (in this case a ";
                    r+=toQType.getAsString ();
                    r+=") is wrong on Windows 64 bits. ";
                    Report(CE, r.c_str(), C);

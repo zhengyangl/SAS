@@ -21,7 +21,7 @@ namespace sas
              if (!isGlobalStatic) return;
              auto varName = D->getName();
              if (varName.size()!=0 && varName.startswith("g")) return;
-             Report(D, "RN10: The names of static global variables must begin with \"g\".", BR);
+             Report(D, "[sas.CodingConventions.ROOT.RN10] RN10: The names of static global variables must begin with \"g\".", BR);
          }
       }
    }
