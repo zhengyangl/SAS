@@ -28,9 +28,6 @@ namespace sas
       class StaticLocalChecker : public SasChecker<StaticLocalTraits, clang::ento::check::ASTDecl<clang::VarDecl>>{
       public:
          void checkASTDecl(const clang::VarDecl* D, clang::ento::AnalysisManager& Mgr, clang::ento::BugReporter& BR) const;
-
-      private:
-         SasException m_exception;
       };
    }
 }

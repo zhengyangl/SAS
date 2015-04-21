@@ -21,7 +21,7 @@ namespace sas
             auto declName=D->getName();
             if (declName.size()<2 || 
                declName.startswith("E")) return;
-            Report(D, "RN6: Enumerations names must start with \"E\".", BR);
+            Report(D, "[sas.CodingConventions.ROOT.RN6] RN6: Enumerations names must start with \"E\".", BR);
          }
       }
    }

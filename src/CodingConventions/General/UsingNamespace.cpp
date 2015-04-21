@@ -16,7 +16,7 @@ namespace sas {
          void NoUsingNamespaceInHeaders::checkASTDecl(const clang::UsingDirectiveDecl *D, clang::ento::AnalysisManager &Mgr, clang::ento::BugReporter &BR) const
          {
             if (isDeclOK(D, BR)) return;
-            Report(D, "Detected usage of 'using namespac ' in a header.", BR);
+            Report(D, "[sas.CodingConventions.General.NoUsingNamespaceInHeaders] Detected usage of 'using namespac ' in a header.", BR);
          }
 
 // using std::*

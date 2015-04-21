@@ -20,7 +20,7 @@ namespace sas
             if (!isMemberStatic) return;
             auto varName = D->getName();
             if (varName.size() > 1 && varName.startswith("fg")) return;
-            Report(D, "RN11: The names of static data members must begin with \"fg\".", BR);
+            Report(D, "[sas.CodingConventions.ROOT.RN11] RN11: The names of static data members must begin with \"fg\".", BR);
          }
       }
    }

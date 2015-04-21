@@ -56,7 +56,8 @@ using sas::IsDisabled;
 
 namespace sas
 {
-   const char* const VarnameChecker::checkerName = "sas.example.Varname";
+namespace Example{
+   const char* const VarnameChecker::checkerName = "sas.Example.Varname";
 
    void VarnameChecker::checkASTDecl(const VarDecl* D, AnalysisManager& Mgr, BugReporter& BR) const
    {
@@ -68,28 +69,7 @@ namespace sas
       const char FirstLetter = NameChar[0];
       // Don't emit report if FirstLetter is uppercase:
       if (isupper(FirstLetter)) return;
-      // Location of the bug:
-      const PathDiagnosticLocation Location = PathDiagnosticLocation(D, Mgr.getSourceManager());
-// Emit report:
-// Here you can see the two basic possible ways of emitting a report.
-// Either you can use a BugReport object and call emitReport,
-// or you can call the EmitBasicReport wrapper.
-#ifdef USE_BUGTYPE
-      if (!BT) BT.reset(new BugType(this, "Variable name doesn't begin with uppercase letter", "SAS"));
-      BugReport* Report = new BugReport(*BT,
-                                        "Variable name doesn't begin with an "
-                                        "uppercase letter "
-                                        "(example variable name checker)",
-                                        Location);
-      Report->setDeclWithIssue(D);
-      BR.emitReport(Report);
-#else
-      BR.EmitBasicReport(D,
-                         "Variable name doesn't begin with uppercase letter",
-                         "SAS",
-                         "Variable name doesn't begin with an uppercase letter "
-                         "(example variable name checker)",
-                         Location);
-#endif // USE_BUGTYPE
+      Report(D, "[sas.Example.Varname] Variable name doesn't begin with an upper case letter", BR);
    }
+} // end namespace Example
 } // end namespace sas

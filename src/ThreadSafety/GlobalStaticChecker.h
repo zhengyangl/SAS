@@ -13,7 +13,6 @@
 #include <clang/StaticAnalyzer/Core/PathSensitive/CheckerContext.h>
 #include <clang/StaticAnalyzer/Core/BugReporter/BugType.h>
 
-#include "SasException.h"
 #include "SasChecker.h"
 
 namespace sas
@@ -29,8 +28,6 @@ namespace sas
          public SasChecker<GlobalStaticTraits, clang::ento::check::ASTDecl<clang::VarDecl>>{
       public:
          void checkASTDecl(const clang::VarDecl* D, clang::ento::AnalysisManager& Mgr, clang::ento::BugReporter& BR) const;
-      private:
-         SasException m_exception;
       };
    }
 }

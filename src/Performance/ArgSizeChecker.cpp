@@ -43,7 +43,7 @@ namespace sas {
                   std::string qname = QT.getAsString();
                   std::string pname = PQT.getAsString();
                   const CXXMethodDecl *MD = llvm::dyn_cast<CXXMethodDecl>(C.getCurrentAnalysisDeclContext()->getDecl());
-                  os << "Function parameter copied by value with size '" << size_param << "' bits > max size '" << max_bits << "' bits parameter type '" << pname << "' function '";
+                  os << "[sas.Performance.ArgSizeChecker] Function parameter copied by value with size '" << size_param << "' bits > max size '" << max_bits << "' bits parameter type '" << pname << "' function '";
                   std::string fname = MD->getNameAsString();
                   if (MD) {
                      os << fname << "' class '" << MD->getParent()->getNameAsString();
@@ -75,7 +75,7 @@ namespace sas {
             std::string pname = PQT.getAsString();
 
             std::string fname = MD->getNameAsString();
-            os << "Function parameter passed by value with size of parameter '" << size_param << "' bits > max size '" << max_bits << "' bits parameter type '" << pname << "' function '" << fname
+            os << "[sas.Performance.ArgSizeChecker] Function parameter passed by value with size of parameter '" << size_param << "' bits > max size '" << max_bits << "' bits parameter type '" << pname << "' function '" << fname
                << "' class '" << MD->getParent()->getNameAsString() << "'\n";
 
             Report(MD, os.str().str().c_str(), BR);
