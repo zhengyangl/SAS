@@ -133,6 +133,12 @@ add_clang_plugin(libSas
 
 file(COPY scripts USE_SOURCE_PERMISSIONS DESTINATION ${CMAKE_BINARY_DIR}/)
 file(COPY config USE_SOURCE_PERMISSIONS DESTINATION ${CMAKE_BINARY_DIR}/)
+
+#modify script clang path to the real one
+exec_program("sed" ARGS "-i" "\"s|/usr/bin/clang|${LLVM_BIN_DIR}/clang|g\"" "${CMAKE_BINARY_DIR}/scripts/clang")
+exec_program("sed" ARGS "-i" "\"s|/usr/bin/clang++|${LLVM_BIN_DIR}/clang++|g\"" "${CMAKE_BINARY_DIR}/scripts/clang++")
+exec_program("sed" ARGS "-i" "\"s|/usr/bin/clang-format|${LLVM_BIN_DIR}/clang-format|g\"" "${CMAKE_BINARY_DIR}/scripts/common/__init__.py")
+
 if (TESTING)
 file(COPY test DESTINATION ${CMAKE_BINARY_DIR}/)
 endif()
