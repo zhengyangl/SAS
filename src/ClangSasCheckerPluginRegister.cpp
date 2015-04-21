@@ -16,7 +16,6 @@
 
 #include "ClassDumper.h"
 #include "CatchAll.h"
-#include "VarnameChecker.h"
 #include "GlobalAccInCtorChecker.h"
 // ThreadSafety
 #include "ThreadSafety/Checkers.h"
@@ -29,6 +28,9 @@
 
 // Performance
 #include "Performance/Checkers.h"
+
+// Example
+#include "Example/Checkers.h"
 
 #include <clang/StaticAnalyzer/Core/CheckerRegistry.h>
 
@@ -45,7 +47,6 @@ extern "C" void clang_registerCheckers(clang::ento::CheckerRegistry& registry)
 //    registry.addChecker<sas::ClassDumperFT>("sas.optional.ClassDumperFT", "Dump class info");
 //    registry.addChecker<sas::ClassDumperInherit>("sas.optional.ClassDumperInherit", "Dump class inheritance info");
    registry.addChecker<sas::CatchAll>("sas.CodeRules.CatchAll", "Check for 'catch(...)' in source files");
-   registry.addChecker<sas::VarnameChecker>("sas.example.Varname", "Report variables whose names don't start with an uppercase letter");
    registry.addChecker<sas::GlobalAccInCtorChecker>("sas.security.GlobalAccInCtor", "Check for access to global variable in constructor");
 
    // ThreadSafety
@@ -82,6 +83,11 @@ extern "C" void clang_registerCheckers(clang::ento::CheckerRegistry& registry)
    using namespace sas::Performance;
    AddToRegistry<FiniteMathChecker>(registry);
    AddToRegistry<ArgSizeChecker>(registry);
+   }
+   // Example
+   {
+   using namespace sas::Example;
+   AddToRegistry<VarnameChecker>(registry);
    }
 
 }

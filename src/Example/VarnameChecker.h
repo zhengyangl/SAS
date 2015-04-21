@@ -32,20 +32,29 @@
 #ifdef USE_BUGTYPE
 #include <clang/StaticAnalyzer/Core/BugReporter/BugType.h>
 #endif // USE_BUGTYPE
+#include "SasChecker.h"
 
 namespace sas
 {
-   class VarnameChecker : public clang::ento::Checker<clang::ento::check::ASTDecl<clang::VarDecl>>
-   {
-    public:
-      void checkASTDecl(const clang::VarDecl* D, clang::ento::AnalysisManager& Mgr, clang::ento::BugReporter& BR) const;
+   namespace Example{
+      class VarnameTraits : public CommonCheckerTraits{
+	  public:
+		 static constexpr const char* Name="sas.Example.Varname";
+         static constexpr const char* Description="Checks whether the names of the variable start with an uppercase letter.";
+      };
+      class VarnameChecker :
+		   public SasChecker<VarnameTraits, clang::ento::check::ASTDecl<clang::VarDecl>>
+      {
+      public:
+         void checkASTDecl(const clang::VarDecl* D, clang::ento::AnalysisManager& Mgr, clang::ento::BugReporter& BR) const;
 #ifdef USE_BUGTYPE
-    private:
-      mutable std::unique_ptr<clang::ento::BugType> BT;
+      private:
+         mutable std::unique_ptr<clang::ento::BugType> BT;
 #endif // USE_BUGTYPE
-    private:
-      static const char* const checkerName;
-   };
-} // end namespace sas
+      private:
+         static const char* const checkerName;
+      };
+   } // end namespace Example
+}
 
 #endif

@@ -106,7 +106,6 @@ add_clang_plugin(libSas
    src/SasException.cpp
 #    src/ClassDumper.cpp
    src/CatchAll.cpp
-   src/VarnameChecker.cpp
    src/CheckerDisabler.cpp
    # New Structure
    src/CodingConventions/General/UsingNamespace.cpp
@@ -126,6 +125,7 @@ add_clang_plugin(libSas
    src/ThreadSafety/MutableMemberChecker.cpp
    src/Performance/ArgSizeChecker.cpp
    src/Performance/FiniteMathChecker.cpp
+   src/Example/VarnameChecker.cpp
    src/ClangSasCheckerPluginRegister.cpp
 #         src/GlobalAccInCtorChecker.cpp
         # Add your checker here!
@@ -160,3 +160,4 @@ add_test(NAME "sas.ThreadSafety.StaticLocalChecker"  COMMAND "python" "${SAS_TES
 add_test(NAME "sas.ThreadSafety.MutableMemberChecker"  COMMAND "python" "${SAS_TEST_SCRIPT}" "${SAS_CLANGXX}" "${CMAKE_SOURCE_DIR}/test/ThreadSafety/mutable_member.cpp" "${SAS_BINARY}" "sas.ThreadSafety" "[sas.ThreadSafety.MutableMemberChecker]")
 add_test(NAME "sas.Performance.ArgSizeChecker"  COMMAND "python" "${SAS_TEST_SCRIPT}" "${SAS_CLANGXX}" "${CMAKE_SOURCE_DIR}/test/Performance/arg_size.cpp" "${SAS_BINARY}" "sas.Performance" "[sas.Performance.ArgSizeChecker]")
 add_test(NAME "sas.Performance.FiniteMathChecker"  COMMAND "python" "${SAS_TEST_SCRIPT}" "${SAS_CLANGXX}" "${CMAKE_SOURCE_DIR}/test/Performance/finite_math.cpp" "${SAS_BINARY}" "sas.Performance" "[sas.Performance.FiniteMathChecker]")
+add_test(NAME "sas.Example.Varname"  COMMAND "python" "${SAS_TEST_SCRIPT}" "${SAS_CLANGXX}" "${CMAKE_SOURCE_DIR}/test/Example/varname.cpp" "${SAS_BINARY}" "sas.Example" "[sas.Example.Varname]")
