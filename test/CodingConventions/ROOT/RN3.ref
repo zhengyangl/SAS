@@ -1,0 +1,5 @@
+/test/CodingConventions/ROOT/RN3.cpp:2:1: warning: [sas.CodingConventions.ROOT.RN3] RN3: Typedefs and aliases names must end with a "_t"
+typedef int time;  // bug
+^
+/test/CodingConventions/ROOT/RN3.cpp:2:1: note: [sas.CodingConventions.ROOT.RN3] RN3: Typedefs and aliases names must end with a "_t"
+1 warning generated.

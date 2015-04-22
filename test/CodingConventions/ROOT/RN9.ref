@@ -1,0 +1,5 @@
+/test/CodingConventions/ROOT/RN9.cpp:2:1: warning: [sas.CodingConventions.ROOT.RN9] RN9Functions: Ill formed function name. The first letter must be capital letter
+int fun1() //bug
+^
+/test/CodingConventions/ROOT/RN9.cpp:2:1: note: [sas.CodingConventions.ROOT.RN9] RN9Functions: Ill formed function name. The first letter must be capital letter
+1 warning generated.

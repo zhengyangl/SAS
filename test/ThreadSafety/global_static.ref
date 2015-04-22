@@ -1,0 +1,9 @@
+/test/ThreadSafety/global_static.cpp:13:1: warning: [sas.ThreadSafety.GlobalStaticChecker] Non-const variable 'g_static' is static and might be thread-unsafe
+static int g_static;
+^
+/test/ThreadSafety/global_static.cpp:13:1: note: [sas.ThreadSafety.GlobalStaticChecker] Non-const variable 'g_static' is static and might be thread-unsafe
+/test/ThreadSafety/global_static.cpp:14:1: warning: [sas.ThreadSafety.GlobalStaticChecker] Non-const variable 'g_ptr_static' is static and might be thread-unsafe
+static int * g_ptr_static = &g_static;
+^
+/test/ThreadSafety/global_static.cpp:14:1: note: [sas.ThreadSafety.GlobalStaticChecker] Non-const variable 'g_ptr_static' is static and might be thread-unsafe
+2 warnings generated.

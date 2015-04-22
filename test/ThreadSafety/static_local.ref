@@ -1,0 +1,17 @@
+/test/ThreadSafety/static_local.cpp:10:9: warning: [sas.ThreadSafety.StaticLocalChecker] Non-const variable 'evilStaticLocal' is local static and might be thread-unsafe
+        static int evilStaticLocal = 0;
+        ^
+/test/ThreadSafety/static_local.cpp:10:9: note: [sas.ThreadSafety.StaticLocalChecker] Non-const variable 'evilStaticLocal' is local static and might be thread-unsafe
+/test/ThreadSafety/static_local.cpp:11:9: warning: [sas.ThreadSafety.StaticLocalChecker] Non-const variable 'intRef' is local static and might be thread-unsafe
+        static int & intRef = evilStaticLocal;
+        ^
+/test/ThreadSafety/static_local.cpp:11:9: note: [sas.ThreadSafety.StaticLocalChecker] Non-const variable 'intRef' is local static and might be thread-unsafe
+/test/ThreadSafety/static_local.cpp:12:2: warning: [sas.ThreadSafety.StaticLocalChecker] Non-const variable 'intPtr' is local static and might be thread-unsafe
+        static int * intPtr = & evilStaticLocal;
+        ^
+/test/ThreadSafety/static_local.cpp:12:2: note: [sas.ThreadSafety.StaticLocalChecker] Non-const variable 'intPtr' is local static and might be thread-unsafe
+/test/ThreadSafety/static_local.cpp:20:9: warning: [sas.ThreadSafety.StaticLocalChecker] Non-const variable 'threadLocal' is local static and might be thread-unsafe
+        static int threadLocal = 0;
+        ^
+/test/ThreadSafety/static_local.cpp:20:9: note: [sas.ThreadSafety.StaticLocalChecker] Non-const variable 'threadLocal' is local static and might be thread-unsafe
+4 warnings generated.

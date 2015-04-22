@@ -1,0 +1,5 @@
+/test/CodingConventions/ROOT/RN12.cpp:4:4: warning: [sas.CodingConventions.ROOT.RN12] RN12: The names local variables must start with a lowercase letter
+   int IncorrectName = 0;
+   ^
+/test/CodingConventions/ROOT/RN12.cpp:4:4: note: [sas.CodingConventions.ROOT.RN12] RN12: The names local variables must start with a lowercase letter
+1 warning generated.
