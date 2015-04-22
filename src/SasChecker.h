@@ -82,7 +82,6 @@ public:
       auto &srcMgr = C.getSourceManager();
       auto sLoc = E->getLocStart();
       if (MustSkipReport(sLoc, srcMgr)) return;
-      printf("in report after skip\n");
       if (auto errorNode = C.addTransition()) {
          auto bt = new clang::ento::BugType(this, Traits::BugName, Traits::BugCategory);
          auto br = new clang::ento::BugReport(*bt, msg, errorNode);
