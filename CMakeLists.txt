@@ -1,11 +1,11 @@
 # Author: <CMS>
 #         Filip Bartek (2013)
 
-# Requirements:
+# Optional:
 # LLVM_DEV_DIR
 
 # Usage:
-# cmake -D LLVM_DEV_DIR=$LLVM_DEV_DIR $SAS_DIR
+# cmake [-D LLVM_DEV_DIR=$LLVM_DEV_DIR] $SAS_DIR
 
 # To register a new checker class in the SAS library, add an argument
 # "src/MyChecker.cpp" (replacing "MyChecker" with the actual name of the
@@ -133,31 +133,10 @@ add_clang_plugin(libSas
 
 file(COPY scripts USE_SOURCE_PERMISSIONS DESTINATION ${CMAKE_BINARY_DIR}/)
 file(COPY config USE_SOURCE_PERMISSIONS DESTINATION ${CMAKE_BINARY_DIR}/)
-if (TESTING)
-file(COPY test DESTINATION ${CMAKE_BINARY_DIR}/)
-endif()
 
-# CTEST BASED TESTING
+#modify script clang path to the real one
+exec_program("sed" ARGS "-i" "\"s|/usr/bin/clang|${LLVM_BIN_DIR}/clang|g\"" "${CMAKE_BINARY_DIR}/scripts/clang")
+exec_program("sed" ARGS "-i" "\"s|/usr/bin/clang++|${LLVM_BIN_DIR}/clang++|g\"" "${CMAKE_BINARY_DIR}/scripts/clang++")
+exec_program("sed" ARGS "-i" "\"s|/usr/bin/clang-format|${LLVM_BIN_DIR}/clang-format|g\"" "${CMAKE_BINARY_DIR}/scripts/common/__init__.py")
 
-set(SAS_TEST_SCRIPT "${CMAKE_SOURCE_DIR}/scripts/test.py")
-set(SAS_CLANG "${CMAKE_BINARY_DIR}/scripts/clang")
-set(SAS_CLANGXX "${CMAKE_BINARY_DIR}/scripts/clang++")
-set(SAS_BINARY "${CMAKE_BINARY_DIR}/lib/libSas.so")
-enable_testing()
-add_test(NAME "sas.CodingConventions.ROOT.RN3"  COMMAND "python" "${SAS_TEST_SCRIPT}" "${SAS_CLANGXX}" "${CMAKE_SOURCE_DIR}/test/CodingConventions/ROOT/RN3.cpp" "${SAS_BINARY}" "sas.CodingConventions.ROOT" "[sas.CodingConventions.ROOT.RN3]")
-add_test(NAME "sas.CodingConventions.ROOT.RN4"  COMMAND "python" "${SAS_TEST_SCRIPT}" "${SAS_CLANGXX}" "${CMAKE_SOURCE_DIR}/test/CodingConventions/ROOT/RN4.cpp" "${SAS_BINARY}" "sas.CodingConventions.ROOT" "[sas.CodingConventions.ROOT.RN4]")
-add_test(NAME "sas.CodingConventions.ROOT.RN6"  COMMAND "python" "${SAS_TEST_SCRIPT}" "${SAS_CLANGXX}" "${CMAKE_SOURCE_DIR}/test/CodingConventions/ROOT/RN6.cpp" "${SAS_BINARY}" "sas.CodingConventions.ROOT" "[sas.CodingConventions.ROOT.RN6]")
-add_test(NAME "sas.CodingConventions.ROOT.RN9"  COMMAND "python" "${SAS_TEST_SCRIPT}" "${SAS_CLANGXX}" "${CMAKE_SOURCE_DIR}/test/CodingConventions/ROOT/RN9.cpp" "${SAS_BINARY}" "sas.CodingConventions.ROOT" "[sas.CodingConventions.ROOT.RN9]")
-add_test(NAME "sas.CodingConventions.ROOT.RN10"  COMMAND "python" "${SAS_TEST_SCRIPT}" "${SAS_CLANGXX}" "${CMAKE_SOURCE_DIR}/test/CodingConventions/ROOT/RN10.cpp" "${SAS_BINARY}" "sas.CodingConventions.ROOT" "[sas.CodingConventions.ROOT.RN10]")
-add_test(NAME "sas.CodingConventions.ROOT.RN11"  COMMAND "python" "${SAS_TEST_SCRIPT}" "${SAS_CLANGXX}" "${CMAKE_SOURCE_DIR}/test/CodingConventions/ROOT/RN11.cpp" "${SAS_BINARY}" "sas.CodingConventions.ROOT" "[sas.CodingConventions.ROOT.RN11]")
-add_test(NAME "sas.CodingConventions.ROOT.RN12"  COMMAND "python" "${SAS_TEST_SCRIPT}" "${SAS_CLANGXX}" "${CMAKE_SOURCE_DIR}/test/CodingConventions/ROOT/RN12.cpp" "${SAS_BINARY}" "sas.CodingConventions.ROOT" "[sas.CodingConventions.ROOT.RN12]")
-add_test(NAME "sas.CodingConventions.ROOT.PtrCastWinChecker"  COMMAND "python" "${SAS_TEST_SCRIPT}" "${SAS_CLANGXX}" "${CMAKE_SOURCE_DIR}/test/CodingConventions/ROOT/ptr_cast_win.cpp" "${SAS_BINARY}" "sas.CodingConventions.ROOT" "[sas.CodingConventions.ROOT.PtrCastWinChecker]")
-add_test(NAME "sas.CodingConventions.General.NoUsingNamespaceInHeaders"  COMMAND "python" "${SAS_TEST_SCRIPT}" "${SAS_CLANGXX}" "${CMAKE_SOURCE_DIR}/test/CodingConventions/General/using_namespace.cpp" "${SAS_BINARY}" "sas.CodingConventions.General" "[sas.CodingConventions.General.NoUsingNamespaceInHeaders]")
-add_test(NAME "sas.ThreadSafety.ConstCastAwayChecker"  COMMAND "python" "${SAS_TEST_SCRIPT}" "${SAS_CLANGXX}" "${CMAKE_SOURCE_DIR}/test/ThreadSafety/const_cast_away.cpp" "${SAS_BINARY}" "sas.ThreadSafety" "[sas.ThreadSafety.ConstCastAwayChecker]")
-add_test(NAME "sas.ThreadSafety.ConstCastChecker"  COMMAND "python" "${SAS_TEST_SCRIPT}" "${SAS_CLANGXX}" "${CMAKE_SOURCE_DIR}/test/ThreadSafety/const_cast.cpp" "${SAS_BINARY}" "sas.ThreadSafety" "[sas.ThreadSafety.ConstCastChecker]")
-add_test(NAME "sas.ThreadSafety.GlobalStaticChecker"  COMMAND "python" "${SAS_TEST_SCRIPT}" "${SAS_CLANGXX}" "${CMAKE_SOURCE_DIR}/test/ThreadSafety/global_static.cpp" "${SAS_BINARY}" "sas.ThreadSafety" "[sas.ThreadSafety.GlobalStaticChecker]")
-add_test(NAME "sas.ThreadSafety.StaticLocalChecker"  COMMAND "python" "${SAS_TEST_SCRIPT}" "${SAS_CLANGXX}" "${CMAKE_SOURCE_DIR}/test/ThreadSafety/static_local.cpp" "${SAS_BINARY}" "sas.ThreadSafety" "[sas.ThreadSafety.StaticLocalChecker]")
-add_test(NAME "sas.ThreadSafety.MutableMemberChecker"  COMMAND "python" "${SAS_TEST_SCRIPT}" "${SAS_CLANGXX}" "${CMAKE_SOURCE_DIR}/test/ThreadSafety/mutable_member.cpp" "${SAS_BINARY}" "sas.ThreadSafety" "[sas.ThreadSafety.MutableMemberChecker]")
-add_test(NAME "sas.Performance.ArgSizeChecker"  COMMAND "python" "${SAS_TEST_SCRIPT}" "${SAS_CLANGXX}" "${CMAKE_SOURCE_DIR}/test/Performance/arg_size.cpp" "${SAS_BINARY}" "sas.Performance" "[sas.Performance.ArgSizeChecker]")
-add_test(NAME "sas.Performance.FiniteMathChecker"  COMMAND "python" "${SAS_TEST_SCRIPT}" "${SAS_CLANGXX}" "${CMAKE_SOURCE_DIR}/test/Performance/finite_math.cpp" "${SAS_BINARY}" "sas.Performance" "[sas.Performance.FiniteMathChecker]")
-add_test(NAME "sas.Example.Varname"  COMMAND "python" "${SAS_TEST_SCRIPT}" "${SAS_CLANGXX}" "${CMAKE_SOURCE_DIR}/test/Example/varname.cpp" "${SAS_BINARY}" "sas.Example" "[sas.Example.Varname]")
+include( CTest )

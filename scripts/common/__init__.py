@@ -25,7 +25,7 @@ import difflib
 import sys
 import os
 
-_ClangFormatExeName="clang-format-3.5"
+_ClangFormatExeName="/usr/bin/clang-format"
 _SourceFilesExtensions=[".cpp",".cxx",".c",
                         ".h",".hpp",".icc",".hxx"]
 _SourceFilesExtensions+=map(str.upper,_SourceFilesExtensions)
