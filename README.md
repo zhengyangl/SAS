@@ -16,7 +16,7 @@ Clone the SAS repository and then:
 ```
 export SASBUILDDIR=SASbuild
 mkdir $SASBUILDDIR;cd $SASBUILDDIR
-cmake -D LLVM_DEV_DIR=<location of llvm> ../SAS
+cmake ../SAS
 make -j 4
 ```
 
@@ -66,34 +66,6 @@ SA_PLUGIN=$SASBUILDDIR/lib/libSas.so SA_FORMATTING=1 SA_CHECKERS="sas.threadsafe
 ## Requirements
 To start using SAS, you need cmake (at least version 2.6), clang, llvm and their development files. The required version for Clang is 3.5.
 
-## Available checkers
-**sas**
-
-1. security
-   1. NonFiniteMath
-2. threadsafety
-   1. ConstCast *
-   2. ConstCastAway
-   3. GlobalStatic
-   4. StaticLocal
-   5. MutableMember
-3. performance
-   1. ArgSize
-4. CodeRules
-   1. UsingNamespace *
-   2. CatchAll
-5. optional (disabled)
-   1. ClassDumperCT
-   2. ClassDumperFT
-   3. ClassDumperInherit
-6. example
-   1. Varname *
-
-Checkers marked with an asterisk can be disabled using comments (see next section for details).
-
-## How to add a new checker
-To add a new checker to the library, you need to define a checker class derived from `clang::ento::Checker` and register the checker in the library.
-
 ## Details about the implementation
 You can find the source code of the existing SAS checkers in the files *src/*Checker.**. Feel free to inspect the source code to get basic understanding of how checkers are implemented. Note that `VarnameChecker` and `GlobalAccInCtorChecker` are expected to have more comprehensive documentation. Please consult the [Checker Developer Manual] for more information about checker development.
 Useful links:
@@ -104,7 +76,7 @@ Useful links:
 Once you've created a new checker class, you need to register it in the SAS library. To do that, edit the files *src/ClangSasCheckerPluginRegister.cpp* and *CMakeLists.txt*. The comments in the files explain the steps to be taken in order to add a checker to the library.
 After this step is performed, configure SAS build again with `cmake` to propagate the changes in the build files and re-build SAS.
 
-## How to disable a checker from within the source code
+## How to disable a checker from within the source code (experimental)
 A checker disabling mechanism is provided for suppressing false positives.
 To disable a checker on a particular line in target source code, add a comment on a preceding line that starts with "//" (two slashes) and contains the following text:
 ```
