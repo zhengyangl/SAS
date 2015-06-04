@@ -37,40 +37,4 @@ then
   export FC=gfortran
   export CXX=`which g++`
   export CC=`which gcc`
-
-#  export ExtraCMakeOptions="-Dchirp=OFF -Dhdfs=OFF -Dbonjour=OFF -Dfail-on-missing=ON ${ExtraCMakeOptions}"
-
-elif [[ $COMPILER == *clang* ]]
-then
-  clang34version=3.4
-  clang35version=3.5
-  clang36version=3.6
-  COMPILERversion=${COMPILER}version
-  clang34gcc=48
-  clang35gcc=49
-  clang36gcc=49
-  GCCversion=${COMPILER}gcc
-
-  ARCH=$(uname -m)
-  . /afs/cern.ch/sw/lcg/external/llvm/${!COMPILERversion}/${ARCH}-slc6/setup.sh
-  export CC=`which clang`
-  export CXX=`which clang++`
-
-#  export ExtraCMakeOptions="${ExtraCMakeOptions} -Dfortran=OFF -Dgcctoolchain=$(dirname $(dirname `which gcc`))"
-
-elif [[ $COMPILER == *native* ]]
-then
-#  export ExtraCMakeOptions="-Dfortran=OFF ${ExtraCMakeOptions}"
-
-elif [[ $COMPILER == *icc* ]]
-then
-  . /afs/cern.ch/sw/IntelSoftware/linux/setup.sh
-  . /afs/cern.ch/sw/IntelSoftware/linux/x86_64/xe2013/bin/ifortvars.sh intel64
-  . /afs/cern.ch/sw/IntelSoftware/linux/x86_64/xe2013/bin/iccvars.sh intel64
-  export CC=icc
-  export CXX=icc
-  export FC=ifort
 fi
-
-#echo ${THIS}/setup.py -o ${LABEL} -c ${COMPILER} -b ${BUILDTYPE} -v ${EXTERNALS}
-#eval `${THIS}/setup.py -o ${LABEL} -c ${COMPILER} -b ${BUILDTYPE} -v ${EXTERNALS}`
