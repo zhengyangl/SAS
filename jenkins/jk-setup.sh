@@ -18,12 +18,16 @@ else
   return
 fi
 
-if [ $LABEL == slc6 ] || [ $LABEL == cc7 ] 
+echo "jkSetup Here"
+
+if [ $LABEL == slc6 ] || [ $LABEL == cc7 ]
 then
   export PATH=/afs/cern.ch/sw/lcg/contrib/CMake/3.0.0/Linux-i386/bin:${PATH}
 else
   export EXTERNALDIR=$HOME/ROOT-externals/
 fi
+
+echo "jkSetup Here"
 
 if [[ $COMPILER == *gcc* ]]
 then
