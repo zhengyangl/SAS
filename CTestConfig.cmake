@@ -4,23 +4,33 @@ set(CTEST_SOURCE_DIRECTORY "$ENV{CMAKE_SOURCE_DIR}")
 set(CTEST_BINARY_DIRECTORY "$ENV{CMAKE_BINARY_DIR}")
 set(CTEST_COMMAND "ctest")
 
-macro(add_sas_test TEST_NAME TEST_SOURCE)
+macro(add_sas_test_generic TEST_NAME TEST_SOURCE TEST_WORKING_DIRECTORY CONFIGURATION_YAML)
    set(SAS_TEST_SCRIPT "${CMAKE_SOURCE_DIR}/scripts/test.py")
    set(SAS_CLANG "${CMAKE_BINARY_DIR}/scripts/clang")
    set(SAS_CLANGXX "${CMAKE_BINARY_DIR}/scripts/clang++")
    set(SAS_BINARY "${CMAKE_BINARY_DIR}/lib/libSas.so")
 
    # By default use the name of the test
-   set(TEST_ENABLED_CHECKERS ${TEST_NAME})
+   if(${TEST_NAME} MATCHES "^bwlist")
+     set(TEST_ENABLED_CHECKERS "sas.CodingConventions.ROOT")
+   else()
+     set(TEST_ENABLED_CHECKERS ${TEST_NAME})
+   endif()
 
-   set(FULL_TEST_SOURCE "${CMAKE_SOURCE_DIR}/test/${TEST_SOURCE}")
-   set(FULL_TEST_REF "${CMAKE_SOURCE_DIR}/test/${TEST_SOURCE}")
-   string(REPLACE ".cpp" ".ref" FULL_TEST_REF ${FULL_TEST_SOURCE})
-
+   set(FULL_TEST_REF "${CMAKE_SOURCE_DIR}/test/${TEST_WORKING_DIRECTORY}${TEST_SOURCE}")
+   string(REPLACE ".cpp" ".ref" FULL_TEST_REF ${FULL_TEST_REF})
    add_test(NAME "${TEST_NAME}"
-            COMMAND "python" "${SAS_TEST_SCRIPT}" "${SAS_CLANGXX}" "${FULL_TEST_SOURCE}" "${SAS_BINARY}" "${TEST_ENABLED_CHECKERS}" "${FULL_TEST_REF}"
-            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/Testing")
-endmacro(add_sas_test)
+     COMMAND "python" "${SAS_TEST_SCRIPT}" "${SAS_CLANGXX}" "${TEST_SOURCE}" "${SAS_BINARY}" "${TEST_ENABLED_CHECKERS}" "${FULL_TEST_REF}" "${CONFIGURATION_YAML}"
+     WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/test/${TEST_WORKING_DIRECTORY}")
+ endmacro(add_sas_test_generic)
+
+ macro(add_sas_test TEST_NAME TEST_SOURCE)
+   add_sas_test_generic("${TEST_NAME}" "${TEST_SOURCE}" "" "")
+ endmacro(add_sas_test)
+
+macro(add_sas_test_wd TEST_NAME TEST_SOURCE TEST_WORKING_DIRECTORY)
+   add_sas_test_generic("${TEST_NAME}" "${TEST_SOURCE}" "${TEST_WORKING_DIRECTORY}" "")
+endmacro(add_sas_test_wd)
 
 enable_testing()
 
@@ -42,5 +52,17 @@ add_sas_test("sas.ThreadSafety.MutableMember" "ThreadSafety/mutable_member.cpp")
 
 add_sas_test("sas.Performance.ArgSizeChecker"    "Performance/arg_size.cpp")
 add_sas_test("sas.Performance.FiniteMathChecker" "Performance/finite_math.cpp")
+
+add_sas_test_wd("bwlist.filepath.blacklist.match"  "BlackList/match.cpp" "BWList/FilePath/")
+add_sas_test_wd("bwlist.filepath.blacklist.unmatch"  "BlackList/unmatch.cpp" "BWList/FilePath/")
+add_sas_test_wd("bwlist.filepath.whitelist.match"  "WhiteList/match.cpp" "BWList/FilePath/")
+add_sas_test_wd("bwlist.filepath.whitelist.unmatch"  "WhiteList/unmatch.cpp" "BWList/FilePath/")
+add_sas_test_wd("bwlist.namespace.blacklist" "BlackList/match.cpp" "BWList/Namespace/")
+add_sas_test_wd("bwlist.namespace.whitelist" "WhiteList/match.cpp" "BWList/Namespace/")
+add_sas_test_wd("bwlist.class.blacklist" "BlackList/match.cpp" "BWList/Class/")
+add_sas_test_wd("bwlist.class.whitelist" "WhiteList/match.cpp" "BWList/Class/")
+add_sas_test_wd("bwlist.struct.blacklist" "BlackList/match.cpp" "BWList/Struct/")
+add_sas_test_wd("bwlist.struct.whitelist" "WhiteList/match.cpp" "BWList/Struct/")
+add_sas_test_generic("bwlist.locate_yaml_by_env" "match.cpp" "BWList/Misc/" "configuration.yaml")
 
 add_sas_test("sas.Example.Varname"  "Example/varname.cpp")

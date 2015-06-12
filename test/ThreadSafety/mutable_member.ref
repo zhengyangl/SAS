@@ -1,5 +1,5 @@
-/test/ThreadSafety/mutable_member.cpp:3:4: warning: [sas.ThreadSafety.MutableMemberChecker] Mutable member'p' in class, might be thread-unsafe when accessing via a const handle
+ThreadSafety/mutable_member.cpp:3:4: warning: [sas.ThreadSafety.MutableMemberChecker] Mutable member'p' in class, might be thread-unsafe when accessing via a const handle
    mutable int p;
    ^
-/test/ThreadSafety/mutable_member.cpp:3:4: note: [sas.ThreadSafety.MutableMemberChecker] Mutable member'p' in class, might be thread-unsafe when accessing via a const handle
+ThreadSafety/mutable_member.cpp:3:4: note: [sas.ThreadSafety.MutableMemberChecker] Mutable member'p' in class, might be thread-unsafe when accessing via a const handle
 1 warning generated.

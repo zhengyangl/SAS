@@ -1,0 +1,5 @@
+CONFIGURATION:
+  - FILE_PATH: ["match.cpp"]
+    CHECKER: ["sas.CodingConventions.ROOT.RN3"]
+    B/W: B
+

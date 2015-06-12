@@ -1,5 +1,5 @@
-/test/CodingConventions/ROOT/RN6.cpp:3:1: warning: [sas.CodingConventions.ROOT.RN6] RN6: Enumerations names must start with "E"
+CodingConventions/ROOT/RN6.cpp:3:1: warning: [sas.CodingConventions.ROOT.RN6] RN6: Enumerations names must start with "E"
 enum myEnum{};
 ^
-/test/CodingConventions/ROOT/RN6.cpp:3:1: note: [sas.CodingConventions.ROOT.RN6] RN6: Enumerations names must start with "E"
+CodingConventions/ROOT/RN6.cpp:3:1: note: [sas.CodingConventions.ROOT.RN6] RN6: Enumerations names must start with "E"
 1 warning generated.

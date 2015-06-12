@@ -1,5 +1,5 @@
-/test/Example/varname.cpp:8:3: warning: [sas.Example.Varname] Variable name doesn't begin with an upper case letter
+Example/varname.cpp:8:3: warning: [sas.Example.Varname] Variable name doesn't begin with an upper case letter
   int variable; // bug: doesn't begin with uppercase
   ^
-/test/Example/varname.cpp:8:3: note: [sas.Example.Varname] Variable name doesn't begin with an upper case letter
+Example/varname.cpp:8:3: note: [sas.Example.Varname] Variable name doesn't begin with an upper case letter
 1 warning generated.

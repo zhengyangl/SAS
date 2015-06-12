@@ -1,5 +1,5 @@
-/test/CodingConventions/ROOT/RN11.cpp:4:4: warning: [sas.CodingConventions.ROOT.RN11] RN11: The names of static data members must begin with "fg"
+CodingConventions/ROOT/RN11.cpp:4:4: warning: [sas.CodingConventions.ROOT.RN11] RN11: The names of static data members must begin with "fg"
    static int fWrongName;
    ^
-/test/CodingConventions/ROOT/RN11.cpp:4:4: note: [sas.CodingConventions.ROOT.RN11] RN11: The names of static data members must begin with "fg"
+CodingConventions/ROOT/RN11.cpp:4:4: note: [sas.CodingConventions.ROOT.RN11] RN11: The names of static data members must begin with "fg"
 1 warning generated.

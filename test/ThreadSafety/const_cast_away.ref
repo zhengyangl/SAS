@@ -1,13 +1,13 @@
-/test/ThreadSafety/const_cast_away.cpp:14:41: warning: [sas.ThreadSafety.ConstCastAwayChecker]const qualifier was removed via a cast, this may result in thread-unsafe code
+ThreadSafety/const_cast_away.cpp:14:41: warning: [sas.ThreadSafety.ConstCastAwayChecker]const qualifier was removed via a cast, this may result in thread-unsafe code
     std::string & r = (std::string &) ( r_const );
                       ~~~~~~~~~~~~~~~~~~^~~~~~~~~
-/test/ThreadSafety/const_cast_away.cpp:14:41: note: [sas.ThreadSafety.ConstCastAwayChecker]const qualifier was removed via a cast, this may result in thread-unsafe code
+ThreadSafety/const_cast_away.cpp:14:41: note: [sas.ThreadSafety.ConstCastAwayChecker]const qualifier was removed via a cast, this may result in thread-unsafe code
     std::string & r = (std::string &) ( r_const );
                       ~~~~~~~~~~~~~~~~~~^~~~~~~~~
-/test/ThreadSafety/const_cast_away.cpp:15:36: warning: [sas.ThreadSafety.ConstCastAwayChecker]const qualifier was removed via a cast, this may result in thread-unsafe code
+ThreadSafety/const_cast_away.cpp:15:36: warning: [sas.ThreadSafety.ConstCastAwayChecker]const qualifier was removed via a cast, this may result in thread-unsafe code
         std::string * p = (std::string *) ( p_const );
                           ~~~~~~~~~~~~~~~~^~~~~~~~~~~
-/test/ThreadSafety/const_cast_away.cpp:15:36: note: [sas.ThreadSafety.ConstCastAwayChecker]const qualifier was removed via a cast, this may result in thread-unsafe code
+ThreadSafety/const_cast_away.cpp:15:36: note: [sas.ThreadSafety.ConstCastAwayChecker]const qualifier was removed via a cast, this may result in thread-unsafe code
         std::string * p = (std::string *) ( p_const );
                           ~~~~~~~~~~~~~~~~^~~~~~~~~~~
 2 warnings generated.

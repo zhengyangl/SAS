@@ -20,10 +20,12 @@ def printDiff(str1,str2):
    print ''.join(diff),
 
 def runTest():
-   cc, src, sas_plugin, checkers, refOutputName = sys.argv[1:]
+   cc, src, sas_plugin, checkers, refOutputName, configuration_yaml = sys.argv[1:]
    basePath = getBasePath(sas_plugin)
 
    compile_env = {"SA_PLUGIN": sas_plugin, "SA_CHECKERS": checkers}
+   if configuration_yaml != "":
+      compile_env["SA_CONFIGURATION"] = configuration_yaml
    process = subprocess.Popen([cc, "-c", "-std=c++11", src], stderr=subprocess.PIPE, env=compile_env)
 
    analyze_output = process.communicate()[1]

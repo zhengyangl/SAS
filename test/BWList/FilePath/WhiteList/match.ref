@@ -1,0 +1,5 @@
+WhiteList/match.cpp:2:1: warning: [sas.CodingConventions.ROOT.RN3] RN3: Typedefs and aliases names must end with a "_t"
+typedef int time;  // RN3 bug
+^
+WhiteList/match.cpp:2:1: note: [sas.CodingConventions.ROOT.RN3] RN3: Typedefs and aliases names must end with a "_t"
+1 warning generated.

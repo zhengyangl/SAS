@@ -1,14 +1,14 @@
-/test/Performance/finite_math.cpp:14:7: warning: [sas.Performance.FiniteMathChecker] The function isnan/isinf does not work when fast-math is enabled. Please check the bits of the floating point number instead
+Performance/finite_math.cpp:14:7: warning: [sas.Performance.FiniteMathChecker] The function isnan/isinf does not work when fast-math is enabled. Please check the bits of the floating point number instead
   if (isnan(Var)) { // bug: isnan used
       ^
 /usr/include/math.h:255:9: note: expanded from macro 'isnan'
       ? __isnanf (x)                                                          \
         ^
-/test/Performance/finite_math.cpp:14:7: note: '?' condition is true
+Performance/finite_math.cpp:14:7: note: '?' condition is true
 /usr/include/math.h:254:7: note: expanded from macro 'isnan'
      (sizeof (x) == sizeof (float)                                            \
       ^
-/test/Performance/finite_math.cpp:14:7: note: [sas.Performance.FiniteMathChecker] The function isnan/isinf does not work when fast-math is enabled. Please check the bits of the floating point number instead
+Performance/finite_math.cpp:14:7: note: [sas.Performance.FiniteMathChecker] The function isnan/isinf does not work when fast-math is enabled. Please check the bits of the floating point number instead
   if (isnan(Var)) { // bug: isnan used
       ^~~~~~~~~~
 /usr/include/math.h:255:9: note: expanded from macro 'isnan'

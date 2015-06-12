@@ -1,13 +1,13 @@
-/test/ThreadSafety/const_cast.cpp:14:36: warning: [sas.ThreadSafety.ConstCastChecker] const_cast was used, this may result in thread-unsafe code
+ThreadSafety/const_cast.cpp:14:36: warning: [sas.ThreadSafety.ConstCastChecker] const_cast was used, this may result in thread-unsafe code
   string& r1 = const_cast<string&>(r_const); // bug
                ~~~~~~~~~~~~~~~~~~~~^~~~~~~~
-/test/ThreadSafety/const_cast.cpp:14:36: note: [sas.ThreadSafety.ConstCastChecker] const_cast was used, this may result in thread-unsafe code
+ThreadSafety/const_cast.cpp:14:36: note: [sas.ThreadSafety.ConstCastChecker] const_cast was used, this may result in thread-unsafe code
   string& r1 = const_cast<string&>(r_const); // bug
                ~~~~~~~~~~~~~~~~~~~~^~~~~~~~
-/test/ThreadSafety/const_cast.cpp:15:36: warning: [sas.ThreadSafety.ConstCastChecker] const_cast was used, this may result in thread-unsafe code
+ThreadSafety/const_cast.cpp:15:36: warning: [sas.ThreadSafety.ConstCastChecker] const_cast was used, this may result in thread-unsafe code
   string& r2 = const_cast<string&>(r_const); // bug
                ~~~~~~~~~~~~~~~~~~~~^~~~~~~~
-/test/ThreadSafety/const_cast.cpp:15:36: note: [sas.ThreadSafety.ConstCastChecker] const_cast was used, this may result in thread-unsafe code
+ThreadSafety/const_cast.cpp:15:36: note: [sas.ThreadSafety.ConstCastChecker] const_cast was used, this may result in thread-unsafe code
   string& r2 = const_cast<string&>(r_const); // bug
                ~~~~~~~~~~~~~~~~~~~~^~~~~~~~
 2 warnings generated.
