@@ -123,6 +123,7 @@ add_clang_plugin(libSas
    src/BlackWhiteListCheckerDisabler.cpp
    # New Structure
    src/CodingConventions/General/UsingNamespace.cpp
+   src/CodingConventions/General/StdPrintoutsChecker.cpp
    src/CodingConventions/ROOT/RN3Checker.cpp
    src/CodingConventions/ROOT/RN4Checker.cpp
    src/CodingConventions/ROOT/RN6Checker.cpp

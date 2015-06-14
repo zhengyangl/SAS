@@ -43,6 +43,7 @@ add_sas_test("sas.CodingConventions.ROOT.RN11"                         "CodingCo
 add_sas_test("sas.CodingConventions.ROOT.RN12"                         "CodingConventions/ROOT/RN12.cpp")
 add_sas_test("sas.CodingConventions.ROOT.PtrCastWin"                   "CodingConventions/ROOT/ptr_cast_win.cpp")
 add_sas_test("sas.CodingConventions.General.NoUsingNamespaceInHeaders" "CodingConventions/General/using_namespace.cpp")
+add_sas_test("sas.CodingConventions.General.StdPrintouts" "CodingConventions/General/std_printouts.cpp")
 
 add_sas_test("sas.ThreadSafety.ConstCastAway" "ThreadSafety/const_cast_away.cpp")
 add_sas_test("sas.ThreadSafety.ConstCast"     "ThreadSafety/const_cast.cpp")
