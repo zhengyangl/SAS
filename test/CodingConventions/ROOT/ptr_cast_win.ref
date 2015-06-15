@@ -1,7 +1,7 @@
-/test/CodingConventions/ROOT/ptr_cast_win.cpp:5:13: warning: [sas.CodingConventions.ROOT.PtrCastWinChecker] Casting pointers to integer types which are not (unsigned) long long (in this case a long) is wrong on Windows 64 bits. 
+CodingConventions/ROOT/ptr_cast_win.cpp:5:13: warning: [sas.CodingConventions.ROOT.PtrCastWinChecker] Casting pointers to integer types which are not (unsigned) long long (in this case a long) is wrong on Windows 64 bits. 
    a =(long)p;
       ~~~~~~^
-/test/CodingConventions/ROOT/ptr_cast_win.cpp:5:13: note: [sas.CodingConventions.ROOT.PtrCastWinChecker] Casting pointers to integer types which are not (unsigned) long long (in this case a long) is wrong on Windows 64 bits. 
+CodingConventions/ROOT/ptr_cast_win.cpp:5:13: note: [sas.CodingConventions.ROOT.PtrCastWinChecker] Casting pointers to integer types which are not (unsigned) long long (in this case a long) is wrong on Windows 64 bits. 
    a =(long)p;
       ~~~~~~^
 1 warning generated.

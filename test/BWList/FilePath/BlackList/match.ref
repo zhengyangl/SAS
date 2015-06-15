@@ -1,0 +1,9 @@
+BlackList/match.cpp:4:1: warning: [sas.CodingConventions.ROOT.RN4] RN4: Ill formed class/struct name. The first letter must be a "T", the second uppercase and the third lowercase
+class Tyourclass{}; //RN4 bug
+^
+BlackList/match.cpp:4:1: note: [sas.CodingConventions.ROOT.RN4] RN4: Ill formed class/struct name. The first letter must be a "T", the second uppercase and the third lowercase
+BlackList/match.cpp:5:1: warning: [sas.CodingConventions.ROOT.RN4] RN4: Ill formed class/struct name. The first letter must be a "T", the second uppercase and the third lowercase
+class myClass{}; // RN4 bug
+^
+BlackList/match.cpp:5:1: note: [sas.CodingConventions.ROOT.RN4] RN4: Ill formed class/struct name. The first letter must be a "T", the second uppercase and the third lowercase
+2 warnings generated.

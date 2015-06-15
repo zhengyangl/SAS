@@ -62,6 +62,7 @@ extern "C" void clang_registerCheckers(clang::ento::CheckerRegistry& registry)
    {
       using namespace sas::CodingConventions::General;
       AddToRegistry<NoUsingNamespaceInHeaders>(registry);
+      AddToRegistry<StdPrintoutsChecker>(registry);
    }
 
    // ROOT Coding Conventions

@@ -1,0 +1,7 @@
+CONFIGURATION:
+  - FILE_PATH: ["WhiteList/mat*.cpp"]
+    CHECKER: ["sas.CodingConventions.ROOT.RN3"]
+    B/W: W
+  - FILE_PATH: ["BlackList/mat*.cpp"]
+    CHECKER: ["sas.CodingConventions.ROOT.RN3"]
+    B/W: B

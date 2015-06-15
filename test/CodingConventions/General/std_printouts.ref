@@ -1,0 +1,19 @@
+CodingConventions/General/std_printouts.cpp:6:4: warning: [sas.CodingConventions.General.StdPrintouts] Big software systems always come with an advanced logging infrastructure. The usage of printouts may be considered an issue
+   std::cout<<"a";
+   ^~~~~~~~~~~~~~
+CodingConventions/General/std_printouts.cpp:6:4: note: [sas.CodingConventions.General.StdPrintouts] Big software systems always come with an advanced logging infrastructure. The usage of printouts may be considered an issue
+   std::cout<<"a";
+   ^~~~~~~~~~~~~~
+CodingConventions/General/std_printouts.cpp:7:4: warning: [sas.CodingConventions.General.StdPrintouts] Big software systems always come with an advanced logging infrastructure. The usage of printouts may be considered an issue
+   std::cerr<<"b";
+   ^~~~~~~~~~~~~~
+CodingConventions/General/std_printouts.cpp:7:4: note: [sas.CodingConventions.General.StdPrintouts] Big software systems always come with an advanced logging infrastructure. The usage of printouts may be considered an issue
+   std::cerr<<"b";
+   ^~~~~~~~~~~~~~
+CodingConventions/General/std_printouts.cpp:8:4: warning: [sas.CodingConventions.General.StdPrintouts] Big software systems always come with an advanced logging infrastructure. The usage of printouts may be considered an issue
+   printf("%d",10);
+   ^~~~~~~~~~~~~~~
+CodingConventions/General/std_printouts.cpp:8:4: note: [sas.CodingConventions.General.StdPrintouts] Big software systems always come with an advanced logging infrastructure. The usage of printouts may be considered an issue
+   printf("%d",10);
+   ^~~~~~~~~~~~~~~
+3 warnings generated.

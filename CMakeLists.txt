@@ -57,6 +57,17 @@ set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin )
 set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib )
 set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib )
 
+# Find yaml-cpp
+include(cmake/FindYamlCpp.cmake)
+# Yaml-cpp is based on boost, find boost
+include(cmake/FindBoost.cmake)
+
+if(NOT YAMLCPP_FOUND)
+  message(FATAL_ERROR "Could not find libyaml-cpp")
+endif()
+if(NOT Boost_FOUND)
+  message(FATAL_ERROR "Could not find boost, Black/White List Filter may not work!")
+endif()
 
 # the rest should work automatically
 
@@ -66,7 +77,7 @@ set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib )
 add_definitions (-D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS)
 add_definitions (-D_GNU_SOURCE -DHAVE_CLANG_CONFIG_H)
 
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fno-common -Woverloaded-virtual -Wcast-qual -fno-strict-aliasing -pedantic -Wno-long-long -Wall -W -Wno-unused-parameter -Wwrite-strings -fno-exceptions -fno-rtti -O3")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fno-common -Woverloaded-virtual -Wcast-qual -fno-strict-aliasing -pedantic -Wno-long-long -Wall -W -Wno-unused-parameter -Wwrite-strings -fexceptions -fno-rtti -O3")
 
 set (CMAKE_MODULE_LINKER_FLAGS "-Wl,-flat_namespace -Wl,-undefined -Wl,suppress")
 
@@ -76,7 +87,8 @@ macro(add_clang_plugin name)
    include_directories(
       "${LLVM_INLCUDE_DIR}/"
       "${CLANG_INCLUDE_DIRS}"
-      "${CMAKE_CURRENT_SOURCE_DIR}/src")
+      "${CMAKE_CURRENT_SOURCE_DIR}/src"
+      "${YAMLCPP_INCLUDE_DIR}")
    link_directories( "${LLVM_LIB_DIR}/" )
 
    add_library( ${name} SHARED ${srcs} )
@@ -97,6 +109,7 @@ endmacro(add_clang_plugin)
 
 set (USER_LIBS
    pthread
+   ${YAMLCPP_LIBRARY}
 )
 
 # Add new checkers to the plugin by adding their source files as arguments to
@@ -107,8 +120,10 @@ add_clang_plugin(libSas
 #    src/ClassDumper.cpp
    src/CatchAll.cpp
    src/CheckerDisabler.cpp
+   src/BlackWhiteListCheckerDisabler.cpp
    # New Structure
    src/CodingConventions/General/UsingNamespace.cpp
+   src/CodingConventions/General/StdPrintoutsChecker.cpp
    src/CodingConventions/ROOT/RN3Checker.cpp
    src/CodingConventions/ROOT/RN4Checker.cpp
    src/CodingConventions/ROOT/RN6Checker.cpp

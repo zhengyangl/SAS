@@ -12,6 +12,7 @@ EXPERIMENTAL
 #include <clang/Basic/SourceManager.h>
 #include <clang/AST/DeclCXX.h>
 #include <clang/StaticAnalyzer/Core/PathSensitive/CheckerContext.h>
+#include "BlackWhiteListCheckerDisabler.h"
 #include <memory>
 #include <regex>
 
@@ -74,6 +75,8 @@ public:
       auto &srcMgr = BR.getSourceManager();
       auto sLoc = D->getLocation();
       if (MustSkipReport(sLoc, srcMgr)) return;
+      BlackWhiteListCheckerDisabler bw = BlackWhiteListCheckerDisabler(D, Traits::Name, BR, sLoc);
+      if(bw.isDisabled()) return;
       auto DLoc = clang::ento::PathDiagnosticLocation::createBegin(D, srcMgr);
       BR.EmitBasicReport(D, this, Traits::BugName, Traits::BugCategory, msg, DLoc);
    }
@@ -82,6 +85,9 @@ public:
       auto &srcMgr = C.getSourceManager();
       auto sLoc = E->getLocStart();
       if (MustSkipReport(sLoc, srcMgr)) return;
+      auto &BR = C.getBugReporter();
+      BlackWhiteListCheckerDisabler bw = BlackWhiteListCheckerDisabler(C, Traits::Name, BR, sLoc);
+      if(bw.isDisabled()) return;
       if (auto errorNode = C.addTransition()) {
          auto bt = new clang::ento::BugType(this, Traits::BugName, Traits::BugCategory);
          auto br = new clang::ento::BugReport(*bt, msg, errorNode);
@@ -91,4 +97,3 @@ public:
    }
 };
 #endif
-

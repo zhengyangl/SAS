@@ -1,0 +1,17 @@
+WhiteList/match.cpp:3:7: warning: [sas.CodingConventions.ROOT.RN3] RN3: Typedefs and aliases names must end with a "_t"
+      typedef int time;  // RN3 bug
+      ^
+WhiteList/match.cpp:3:7: note: [sas.CodingConventions.ROOT.RN3] RN3: Typedefs and aliases names must end with a "_t"
+WhiteList/match.cpp:13:7: warning: [sas.CodingConventions.ROOT.RN3] RN3: Typedefs and aliases names must end with a "_t"
+      typedef int time;  // RN3 bug
+      ^
+WhiteList/match.cpp:13:7: note: [sas.CodingConventions.ROOT.RN3] RN3: Typedefs and aliases names must end with a "_t"
+WhiteList/match.cpp:16:7: warning: [sas.CodingConventions.ROOT.RN4] RN4: Ill formed class/struct name. The first letter must be a "T", the second uppercase and the third lowercase
+      class Tyourclass{}; //RN4 bug
+      ^
+WhiteList/match.cpp:16:7: note: [sas.CodingConventions.ROOT.RN4] RN4: Ill formed class/struct name. The first letter must be a "T", the second uppercase and the third lowercase
+WhiteList/match.cpp:17:7: warning: [sas.CodingConventions.ROOT.RN4] RN4: Ill formed class/struct name. The first letter must be a "T", the second uppercase and the third lowercase
+      class myClass{}; // RN4 bug
+      ^
+WhiteList/match.cpp:17:7: note: [sas.CodingConventions.ROOT.RN4] RN4: Ill formed class/struct name. The first letter must be a "T", the second uppercase and the third lowercase
+4 warnings generated.

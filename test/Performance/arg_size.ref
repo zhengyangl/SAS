@@ -1,5 +1,5 @@
-/test/Performance/arg_size.cpp:11:4: warning: [sas.Performance.ArgSizeChecker] Function parameter passed by value with size of parameter '320' bits > max size '128' bits parameter type 'struct SuperLong' function 'FuncA' class 'TDemo'
+Performance/arg_size.cpp:11:4: warning: [sas.Performance.ArgSizeChecker] Function parameter passed by value with size of parameter '320' bits > max size '128' bits parameter type 'struct SuperLong' function 'FuncA' class 'TDemo'
    int FuncA (SuperLong arg){return 0;}
    ^
-/test/Performance/arg_size.cpp:11:4: note: [sas.Performance.ArgSizeChecker] Function parameter passed by value with size of parameter '320' bits > max size '128' bits parameter type 'struct SuperLong' function 'FuncA' class 'TDemo'
+Performance/arg_size.cpp:11:4: note: [sas.Performance.ArgSizeChecker] Function parameter passed by value with size of parameter '320' bits > max size '128' bits parameter type 'struct SuperLong' function 'FuncA' class 'TDemo'
 1 warning generated.
