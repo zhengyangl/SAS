@@ -2,7 +2,7 @@
 
 // Author: Filip Bartek (2013)
 
-// See "checkerdisabler.cpp" for documentation.
+// See "comment_checker_disabler.cpp" for documentation.
 
 // Bugs: 2
 
@@ -10,9 +10,9 @@
 // std::string
 // namespace std
 
-// sas[disable_checker : "sas.CodeRules.UsingNamespace"]
+// sas[disable_checker : "sas.CodingConventions.General.NoUsingNamespaceInHeaders"]
 using std::string; // not bug (UsingNamespace): disabled by comment
-// sas[disable_checker : "sas.CodeRules.UsingNamespace"]
+// sas[disable_checker : "sas.CodingConventions.General.NoUsingNamespaceInHeaders"]
 using namespace std; // not bug (UsingNamespace): disabled by comment
 
 using std::string; // bug (UsingNamespace): using std::*

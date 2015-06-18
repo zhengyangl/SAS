@@ -13,6 +13,7 @@ EXPERIMENTAL
 #include <clang/AST/DeclCXX.h>
 #include <clang/StaticAnalyzer/Core/PathSensitive/CheckerContext.h>
 #include "BlackWhiteListCheckerDisabler.h"
+#include "CommentCheckerDisabler.h"
 #include <memory>
 #include <regex>
 
@@ -74,6 +75,7 @@ public:
    void Report(const clang::Decl *D, const char *msg, clang::ento::BugReporter &BR) const {
       auto &srcMgr = BR.getSourceManager();
       auto sLoc = D->getLocation();
+      if (sas::IsDisabled(D, BR, llvm::StringRef(Traits::Name))) return;
       if (MustSkipReport(sLoc, srcMgr)) return;
       BlackWhiteListCheckerDisabler bw = BlackWhiteListCheckerDisabler(D, Traits::Name, BR, sLoc);
       if(bw.isDisabled()) return;
@@ -84,6 +86,7 @@ public:
    void Report(const clang::Stmt *E, const char *msg, clang::ento::CheckerContext &C) const {
       auto &srcMgr = C.getSourceManager();
       auto sLoc = E->getLocStart();
+      if (sas::IsDisabled(E, C, llvm::StringRef(Traits::Name))) return;
       if (MustSkipReport(sLoc, srcMgr)) return;
       auto &BR = C.getBugReporter();
       BlackWhiteListCheckerDisabler bw = BlackWhiteListCheckerDisabler(C, Traits::Name, BR, sLoc);

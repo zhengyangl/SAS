@@ -2,10 +2,10 @@ In file included from CodingConventions/General/using_namespace.cpp:1:
 CodingConventions/General/using_namespace.h:1:17: warning: using directive refers to implicitly-defined namespace 'std'
 using namespace std; //bug
                 ^
-CodingConventions/General/using_namespace.h:1:1: warning: [sas.CodingConventions.General.NoUsingNamespaceInHeaders] Detected usage of 'using namespac ' in a header
+CodingConventions/General/using_namespace.h:1:1: warning: [sas.CodingConventions.General.NoUsingNamespaceInHeaders] Detected usage of 'using namespace' in a header
 using namespace std; //bug
 ^
-CodingConventions/General/using_namespace.h:1:1: note: [sas.CodingConventions.General.NoUsingNamespaceInHeaders] Detected usage of 'using namespac ' in a header
+CodingConventions/General/using_namespace.h:1:1: note: [sas.CodingConventions.General.NoUsingNamespaceInHeaders] Detected usage of 'using namespace' in a header
 2 warnings generated.
 In file included from CodingConventions/General/using_namespace.cpp:1:
 CodingConventions/General/using_namespace.h:1:17: warning: using directive refers to implicitly-defined namespace 'std'
