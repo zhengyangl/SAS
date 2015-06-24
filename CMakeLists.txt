@@ -57,18 +57,6 @@ set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin )
 set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib )
 set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib )
 
-# Find yaml-cpp
-include(cmake/FindYamlCpp.cmake)
-# Yaml-cpp is based on boost, find boost
-include(cmake/FindBoost.cmake)
-
-if(NOT YAMLCPP_FOUND)
-  message(FATAL_ERROR "Could not find libyaml-cpp")
-endif()
-if(NOT Boost_FOUND)
-  message(FATAL_ERROR "Could not find boost, Black/White List Filter may not work!")
-endif()
-
 # the rest should work automatically
 
 # assumes for clang to be under llvm/tools/, as suggested by the clang website
@@ -87,8 +75,7 @@ macro(add_clang_plugin name)
    include_directories(
       "${LLVM_INLCUDE_DIR}/"
       "${CLANG_INCLUDE_DIRS}"
-      "${CMAKE_CURRENT_SOURCE_DIR}/src"
-      "${YAMLCPP_INCLUDE_DIR}")
+      "${CMAKE_CURRENT_SOURCE_DIR}/src")
    link_directories( "${LLVM_LIB_DIR}/" )
 
    add_library( ${name} SHARED ${srcs} )
@@ -109,7 +96,6 @@ endmacro(add_clang_plugin)
 
 set (USER_LIBS
    pthread
-   ${YAMLCPP_LIBRARY}
 )
 
 # Add new checkers to the plugin by adding their source files as arguments to
