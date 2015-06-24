@@ -1,6 +1,6 @@
 // Author: Filip Bartek (2013)
 
-#include "CheckerDisabler.h"
+#include "CommentCheckerDisabler.h"
 
 #include <llvm/ADT/StringRef.h>
 using llvm::StringRef;
@@ -58,9 +58,6 @@ using std::string;
 
 namespace
 {
-   // Obsolete
-   bool IsCommentedWithString(const Decl* const decl, const StringRef commentString);
-
    string FormDisablerString(const StringRef checkerName);
 
    // Interface
@@ -97,26 +94,6 @@ bool sas::IsDisabled(const Decl* const decl, const SourceManager& sourceManager,
    return IsDisabledByPreceding(sourceLocation, sourceManager, disablerStringRef);
 }
 
-bool sas::IsDisabledBySpecial(const Decl* const decl, const StringRef checkerName)
-{
-   string commentString = FormDisablerString(checkerName);
-   const StringRef commentStringRef(commentString);
-   return IsCommentedWithString(decl, commentStringRef);
-}
-
-bool sas::IsDisabledBySpecial(const DeclStmt* const declStmt, const StringRef checkerName)
-{
-   if (!declStmt) return false; // invalid stmt
-   const DeclGroupRef declGroupRef = declStmt->getDeclGroup();
-   typedef DeclGroupRef::const_iterator DeclIterator;
-   DeclIterator b = declGroupRef.begin();
-   DeclIterator e = declGroupRef.end();
-   for (DeclIterator i = b; i != e; ++i) {
-      if (IsDisabledBySpecial(*i, checkerName)) return true; // disabled decl
-   }
-   return false;
-}
-
 namespace
 {
    string FormDisablerString(const StringRef checkerName)
@@ -126,34 +103,6 @@ namespace
       commentOss << checkerName.data();
       commentOss << "\"]";
       return commentOss.str();
-   }
-
-   bool IsCommentedWithString(const Decl* const decl, const StringRef commentString)
-   {
-      if (!decl) return false; // invalid decl
-      const ASTContext& Context = decl->getASTContext();
-      FullComment* Comment = Context.getLocalCommentForDeclUncached(decl);
-      if (!Comment) return false; // no comment is attached
-      ArrayRef<BlockContentComment*> BlockContent = Comment->getBlocks();
-      typedef ArrayRef<BlockContentComment*>::const_iterator BlockContentIterator;
-      BlockContentIterator b = BlockContent.begin();
-      BlockContentIterator e = BlockContent.end();
-      for (BlockContentIterator i = b; i != e; ++i) {
-         const ParagraphComment* const paragraphComment = dyn_cast<const ParagraphComment>(*i);
-         if (!paragraphComment) continue; // the comment is empty
-         typedef clang::comments::Comment::child_iterator CommentIterator;
-         CommentIterator child_b = paragraphComment->child_begin();
-         CommentIterator child_e = paragraphComment->child_end();
-         for (CommentIterator child_i = child_b; child_i != child_e; ++child_i) {
-            const TextComment* const textComment = dyn_cast<const TextComment>(*child_i);
-            if (!textComment) continue;
-            if (textComment->isWhitespace()) continue; // the comment line consists of whitespace only
-            const StringRef text = textComment->getText();
-            const size_t found = text.find(commentString);
-            if (found != npos) return true; // the comment line contains the disabling string
-         }
-      }
-      return false;
    }
 
    bool IsDisabledByPreceding(const Stmt* const stmt, CheckerContext& checkerContext, const StringRef checkerName)
@@ -169,25 +118,20 @@ namespace
    bool IsDisabledByPreceding(const SourceLocation& stmtLoc, const SourceManager& sourceManager, const StringRef disablerString)
    {
       const unsigned stmtLineNum = sourceManager.getSpellingLineNumber(stmtLoc);
-      if (stmtLineNum < 2) // FIXME: Uses 2 preceding lines instead of 1.
-         return false;     // Not enough preceding lines
+      if (stmtLineNum <= 1)
+         return false;
       const FileID fileID = sourceManager.getFileID(stmtLoc);
-      // Warning: Line numbers are shifted by `-1` on input to `translateLineCol`
-      // or `getCharacterData` (see further in this file).
-      // [FB] Reason: unknown. (Clang bug?)
-      // TODO: Investigate.
-      const unsigned beginLine = stmtLineNum == 2 ? 1 : stmtLineNum-2;
-      // FIXME: Uses 2 preceding lines instead of just one.
-      // [FB] hasn't found a way to use just one.
+
+      const unsigned Line = stmtLineNum - 1;
       const unsigned beginCol = 1;
-      const unsigned endLine = stmtLineNum == 2 ? 1 : stmtLineNum - 1;
       const unsigned endCol = 0;
-      // Warning: Column argument of `translateLineCol` has no effect on resulting
-      // `char *` pointers (`begin`, `end`).
-      const SourceLocation locBegin = sourceManager.translateLineCol(fileID, beginLine, beginCol);
-      const SourceLocation locEnd = sourceManager.translateLineCol(fileID, endLine, endCol);
-      const char* begin = sourceManager.getCharacterData(locBegin) + 1;
-      // `+ 1` gets rid of the '\n' in the beginning of the string
+      // When the argument 'Col' is 0,
+      // according to http://clang.llvm.org/doxygen/SourceManager_8cpp_source.html#l01761 ,
+      // A SourceLocation of Last character of the line will be returned.
+      // This is not well documented in Clang documentation.
+      const SourceLocation locBegin = sourceManager.translateLineCol(fileID, Line, beginCol);
+      const SourceLocation locEnd = sourceManager.translateLineCol(fileID, Line, endCol);
+      const char* begin = sourceManager.getCharacterData(locBegin);
       const char* end = sourceManager.getCharacterData(locEnd);
       assert(end >= begin);
       const string lineString = string(begin, end - begin);

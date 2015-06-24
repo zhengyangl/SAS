@@ -16,10 +16,10 @@
 // sas[disable_checker : "MyChecker"]
 // where MyChecker is a fully qualified name of the checker to be muted.
 // Example of such comment:
-// sas[disable_checker : "sas.example.Varname"]
+// sas[disable_checker : "sas.Example.Varname"]
 
-#ifndef SAS_CHECKERDISABLER_H
-#define SAS_CHECKERDISABLER_H
+#ifndef SAS_COMMENTCHECKERDISABLER_H
+#define SAS_COMMENTCHECKERDISABLER_H
 
 // Forward declarations:
 
@@ -54,10 +54,6 @@ namespace sas
 
    // Low-level (used by Decl variants):
    bool IsDisabled(const clang::Decl* const decl, const clang::SourceManager& sourceManager, const llvm::StringRef checkerName);
-
-   // Obsolete:
-   bool IsDisabledBySpecial(const clang::Decl* const decl, const llvm::StringRef checkerName);
-   bool IsDisabledBySpecial(const clang::DeclStmt* const declStmt, const llvm::StringRef checkerName);
 } // end namespace sas
 
 #endif

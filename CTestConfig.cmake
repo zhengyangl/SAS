@@ -13,6 +13,8 @@ macro(add_sas_test_generic TEST_NAME TEST_SOURCE TEST_WORKING_DIRECTORY CONFIGUR
    # By default use the name of the test
    if(${TEST_NAME} MATCHES "^bwlist")
      set(TEST_ENABLED_CHECKERS "sas.CodingConventions.ROOT")
+   elseif(${TEST_NAME} MATCHES "^commentDisabler")
+     set(TEST_ENABLED_CHECKERS "sas.Example.Varname:sas.CodingConventions.General.NoUsingNamespaceInHeaders:sas.ThreadSafety.ConstCast")
    else()
      set(TEST_ENABLED_CHECKERS ${TEST_NAME})
    endif()
@@ -65,5 +67,6 @@ add_sas_test_wd("bwlist.class.whitelist" "WhiteList/match.cpp" "BWList/Class/")
 add_sas_test_wd("bwlist.struct.blacklist" "BlackList/match.cpp" "BWList/Struct/")
 add_sas_test_wd("bwlist.struct.whitelist" "WhiteList/match.cpp" "BWList/Struct/")
 add_sas_test_generic("bwlist.locate_yaml_by_env" "match.cpp" "BWList/Misc/" "configuration.yaml")
+add_sas_test("commentDisabler" "comment_checker_disabler.cpp")
 
 add_sas_test("sas.Example.Varname"  "Example/varname.cpp")

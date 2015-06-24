@@ -7,9 +7,6 @@
 
 #include "ConstCastChecker.h"
 
-#include "CheckerDisabler.h"
-using sas::IsDisabled;
-
 namespace sas
 {
    namespace ThreadSafety {
@@ -17,7 +14,6 @@ namespace sas
 
       void ConstCastChecker::checkPreStmt(const clang::CXXConstCastExpr* CE, clang::ento::CheckerContext& C) const
       {
-         if (IsDisabled(CE, C, checkerName)) return; // Disabled by comment
          clang::ento::ExplodedNode* errorNode = C.addTransition();
          if (errorNode) {
             const char* msg = "[sas.ThreadSafety.ConstCastChecker] const_cast was used, this may result in thread-unsafe code.";

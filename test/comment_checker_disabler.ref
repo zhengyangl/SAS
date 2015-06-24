@@ -1,0 +1,58 @@
+In file included from comment_checker_disabler.cpp:10:
+./comment_checker_disabler.h:18:1: warning: Detected usage of 'using std::' in a header
+using std::string; // bug (UsingNamespace): using std::*
+^
+./comment_checker_disabler.h:18:1: note: Detected usage of 'using std::' in a header
+./comment_checker_disabler.h:19:1: warning: [sas.CodingConventions.General.NoUsingNamespaceInHeaders] Detected usage of 'using namespace' in a header
+using namespace std; // bug (UsingNamespace): using namespace * (`std`)
+^
+./comment_checker_disabler.h:19:1: note: [sas.CodingConventions.General.NoUsingNamespaceInHeaders] Detected usage of 'using namespace' in a header
+comment_checker_disabler.cpp:17:3: warning: [sas.Example.Varname] Variable name doesn't begin with an upper case letter
+  int variable; // bug (Varname): doesn't begin with uppercase
+  ^
+comment_checker_disabler.cpp:17:3: note: [sas.Example.Varname] Variable name doesn't begin with an upper case letter
+comment_checker_disabler.cpp:24:3: warning: [sas.Example.Varname] Variable name doesn't begin with an upper case letter
+  int varAsteriskAsteriskSingle; // bug (Varname): not disabled by /***/ comment
+  ^
+comment_checker_disabler.cpp:24:3: note: [sas.Example.Varname] Variable name doesn't begin with an upper case letter
+comment_checker_disabler.cpp:30:3: warning: [sas.Example.Varname] Variable name doesn't begin with an upper case letter
+  int varAsteriskExclamationSingle; // bug (Varname): not disabled by /*!*/ comment
+  ^
+comment_checker_disabler.cpp:30:3: note: [sas.Example.Varname] Variable name doesn't begin with an upper case letter
+comment_checker_disabler.cpp:35:3: warning: [sas.Example.Varname] Variable name doesn't begin with an upper case letter
+  int varSlashSlashMulti; // bug: disabled too high
+  ^
+comment_checker_disabler.cpp:35:3: note: [sas.Example.Varname] Variable name doesn't begin with an upper case letter
+comment_checker_disabler.cpp:40:3: warning: [sas.Example.Varname] Variable name doesn't begin with an upper case letter
+  int varAsteriskAsteriskMulti; // bug: not disabled by comment
+  ^
+comment_checker_disabler.cpp:40:3: note: [sas.Example.Varname] Variable name doesn't begin with an upper case letter
+comment_checker_disabler.cpp:45:3: warning: [sas.Example.Varname] Variable name doesn't begin with an upper case letter
+  int varSlashExclamationMulti; // bug: not disabled by comment
+  ^
+comment_checker_disabler.cpp:45:3: note: [sas.Example.Varname] Variable name doesn't begin with an upper case letter
+comment_checker_disabler.cpp:50:3: warning: [sas.Example.Varname] Variable name doesn't begin with an upper case letter
+  int varAsteriskExclamationMulti; // bug: not disabled by comment
+  ^
+comment_checker_disabler.cpp:50:3: note: [sas.Example.Varname] Variable name doesn't begin with an upper case letter
+comment_checker_disabler.cpp:53:3: warning: [sas.Example.Varname] Variable name doesn't begin with an upper case letter
+  int varNotQualified; // bug: disable comment string not fully qualified
+  ^
+comment_checker_disabler.cpp:53:3: note: [sas.Example.Varname] Variable name doesn't begin with an upper case letter
+comment_checker_disabler.cpp:62:3: warning: [sas.Example.Varname] Variable name doesn't begin with an upper case letter
+  int varCommonAsterisk; // bug (Varname): disabler in common * comment (not special)
+  ^
+comment_checker_disabler.cpp:62:3: note: [sas.Example.Varname] Variable name doesn't begin with an upper case letter
+comment_checker_disabler.cpp:65:35: warning: [sas.ThreadSafety.ConstCastChecker] const_cast was used, this may result in thread-unsafe code
+  string& S = const_cast<string&>(S_const); // bug (ConstCast): const_cast used
+              ~~~~~~~~~~~~~~~~~~~~^~~~~~~~
+comment_checker_disabler.cpp:65:35: note: [sas.ThreadSafety.ConstCastChecker] const_cast was used, this may result in thread-unsafe code
+  string& S = const_cast<string&>(S_const); // bug (ConstCast): const_cast used
+              ~~~~~~~~~~~~~~~~~~~~^~~~~~~~
+comment_checker_disabler.cpp:75:35: warning: [sas.ThreadSafety.ConstCastChecker] const_cast was used, this may result in thread-unsafe code
+  string& S = const_cast<string&>(S_const); // bug: const_cast used
+              ~~~~~~~~~~~~~~~~~~~~^~~~~~~~
+comment_checker_disabler.cpp:75:35: note: [sas.ThreadSafety.ConstCastChecker] const_cast was used, this may result in thread-unsafe code
+  string& S = const_cast<string&>(S_const); // bug: const_cast used
+              ~~~~~~~~~~~~~~~~~~~~^~~~~~~~
+13 warnings generated.
