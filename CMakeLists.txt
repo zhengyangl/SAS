@@ -141,3 +141,4 @@ exec_program("sed" ARGS "-i" "\"s|/usr/bin/clang++|${LLVM_BIN_DIR}/clang++|g\"" 
 exec_program("sed" ARGS "-i" "\"s|/usr/bin/clang-format|${LLVM_BIN_DIR}/clang-format|g\"" "${CMAKE_BINARY_DIR}/scripts/common/__init__.py")
 
 include( CTest )
+include( cmake/test.cmake )

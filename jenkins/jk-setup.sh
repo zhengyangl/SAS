@@ -14,7 +14,7 @@ if [ $# -ge 3 ]; then
   COMPILER=$1 ; shift
   BUILDTYPE=$1 ; shift
 else
-  echo "$0: expecting 3 arguments [LABEL]  [COMPILER] [BUILDTYPE]"
+  echo "$0: expecting 3 arguments [LABEL] [COMPILER] [BUILDTYPE]"
   return
 fi
 
@@ -38,3 +38,12 @@ then
   export CXX=`which g++`
   export CC=`which gcc`
 fi
+#---need add correct compiler settings for clang? --------
+
+export CMAKE_SOURCE_DIR=$WORKSPACE
+export CMAKE_BINARY_DIR=$WORKSPACE/builds
+export CMAKE_BUILD_TYPE=$BUILDTYPE
+export CTEST_BUILD_OPTIONS=""
+export LABEL
+
+ctest -VV -S ${THIS}/sas-test.cmake || true
