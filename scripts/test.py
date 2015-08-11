@@ -4,6 +4,7 @@ import sys
 import os
 import subprocess
 import difflib
+import re
 
 def getBasePath(sas_plugin):
    """
@@ -20,12 +21,22 @@ def printDiff(str1,str2):
    print ''.join(diff),
 
 def runTest():
-   cc, src, sas_plugin, checkers, refOutputName, configuration_yaml = sys.argv[1:]
+   cc, src, sas_plugin, checkers, refOutputName, environmentStr = sys.argv[1:]
+   compile_env = {"SA_PLUGIN": sas_plugin, "SA_CHECKERS": checkers}
+
+   #separate environment variable list by ';'
+   if os.environ.has_key("PATH"):
+      compile_env["PATH"] = os.environ["PATH"]
+   environmentList = environmentStr.split(';')
+
+   #get environment variable key-value pair
+   for envStr in environmentList:
+      env = envStr.split('=',1)
+      if len(env) == 2:
+         compile_env[env[0]] = env[1]
+
    basePath = getBasePath(sas_plugin)
 
-   compile_env = {"SA_PLUGIN": sas_plugin, "SA_CHECKERS": checkers}
-   if configuration_yaml != "":
-      compile_env["SA_CONFIGURATION"] = configuration_yaml
    process = subprocess.Popen([cc, "-c", "-std=c++11", src], stderr=subprocess.PIPE, env=compile_env)
 
    analyze_output = process.communicate()[1]

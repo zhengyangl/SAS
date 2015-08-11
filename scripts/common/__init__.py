@@ -24,8 +24,10 @@ import subprocess
 import difflib
 import sys
 import os
+import shutil
 
 _ClangFormatExeName="/usr/bin/clang-format"
+_ClangModernizeExeName="/usr/bin/clang-modernize"
 _SourceFilesExtensions=[".cpp",".cxx",".c",
                         ".h",".hpp",".icc",".hxx"]
 _SourceFilesExtensions+=map(str.upper,_SourceFilesExtensions)
@@ -84,7 +86,7 @@ def _WrapClangCommand(command, SA_CLANG_COMPILER):
 
    return subprocess.call(command)
 
-def _CompareFiles(filename, clangFormatOutput):
+def _CompareFiles(filename, clangFormatOutput, outputType):
     '''
     Compare the formatted version of the file with the existing one.
     '''
@@ -104,24 +106,51 @@ def _CompareFiles(filename, clangFormatOutput):
     # an error.
     if nViolations >0 :
         plural = "" if nViolations == 1 else "s"
-        print (_Bold(_Purple("warning:")), _Bold('%s code formatting rules violation%s detected.' %(nViolations,plural)), file=sys.stderr)
+        print (_Bold(_Purple("warning:")), _Bold('%s %s%s detected.' %(nViolations,outputType,plural)), file=sys.stderr)
         print ("\n".join(diffLines), file=sys.stderr)
     return nViolations
 
-def _RunClangFormat(filename):
+def _RunClangCommand(command, filename):
     '''
     Run clang-format and capture output
     '''
-    process = subprocess.Popen([_ClangFormatExeName,filename], stdout=subprocess.PIPE)
+    process = subprocess.Popen([command,filename], stdout=subprocess.PIPE)
     result = process.communicate()[0]
+    return result
+
+def _RunClangModernize(command, filename, options):
+    '''
+    Run clang-modernize and capture output
+    '''
+    basename=os.path.basename(filename)
+    tempname=basename[:basename.rfind('.')] + '.temp' + basename[basename.rfind('.'):]
+    dirname=os.path.dirname(filename)
+    tempfile=os.path.join(dirname, tempname)
+
+    shutil.copyfile(filename, tempfile)
+    optionsList = options.split(' ')
+
+    process = subprocess.Popen([command] + optionsList + [tempfile], stdout = subprocess.PIPE)
+    process.communicate()[0]
+    resultFile = open(tempfile, 'r')
+    result = resultFile.read()
+    resultFile.close()
+    os.remove(tempname)
     return result
 
 def CheckFormattingRules(filename):
     '''
     Check the formatting rules
     '''
-    clangFormatOutput = _RunClangFormat(filename)
-    nViolations = _CompareFiles(filename, clangFormatOutput)
+    clangFormatOutput = _RunClangCommand(_ClangFormatExeName, filename)
+    nViolations = _CompareFiles(filename, clangFormatOutput, 'code formatting rules violation')
+
+def ClangModernize(options, filename):
+    '''
+    Run clang-modernize on sources
+    '''
+    clangModernizeOutput = _RunClangModernize(_ClangModernizeExeName, filename, options)
+    nViolations = _CompareFiles(filename, clangModernizeOutput, 'available clang-modernize transformation')
 
 def _IsSourceFile(filename):
     '''
@@ -135,10 +164,15 @@ def Analyze(command, sa_clang_compiler):
     Perform static analysis and check of formatting rules if requested
     '''
     returnVal=0
+    sources = filter(_IsSourceFile, command)
     if os.environ.has_key("SA_FORMATTING"):
-       sources = filter(_IsSourceFile, command)
        res = map(CheckFormattingRules, sources)
        returnVal = len(res)
+    if os.environ.has_key("SA_MODERNIZE"):
+       options = os.environ['SA_MODERNIZE']
+       res = map(lambda source: ClangModernize(options,source), sources)
+       returnVal = len(res)
+
 
     returnVal += _WrapClangCommand(command, sa_clang_compiler)
     return returnVal
