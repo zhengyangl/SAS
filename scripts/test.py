@@ -23,6 +23,7 @@ def printDiff(str1,str2):
 def runTest():
    cc, src, sas_plugin, checkers, refOutputName, environmentStr = sys.argv[1:]
    compile_env = {"SA_PLUGIN": sas_plugin, "SA_CHECKERS": checkers}
+   compile_env.update(os.environ)
 
    #separate environment variable list by ';'
    if os.environ.has_key("PATH"):
