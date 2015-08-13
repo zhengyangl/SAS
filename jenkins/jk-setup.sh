@@ -38,6 +38,15 @@ then
   export CXX=`which g++`
   export CC=`which gcc`
 fi
+
+if [[ $COMPILER == *clang* ]]
+then
+  clang36version=3.6
+  COMPILERversion=${COMPILER}version
+
+  . /afs/cern.ch/sw/lcg/external/llvm/${!COMPILERversion}/${ARCH}-${LABEL}/setup.sh
+fi
+
 #---need add correct compiler settings for clang? --------
 
 export CMAKE_SOURCE_DIR=$WORKSPACE
@@ -45,5 +54,3 @@ export CMAKE_BINARY_DIR=$WORKSPACE/builds
 export CMAKE_BUILD_TYPE=$BUILDTYPE
 export CTEST_BUILD_OPTIONS=""
 export LABEL
-
-ctest -VV -S ${THIS}/sas-test.cmake || true
