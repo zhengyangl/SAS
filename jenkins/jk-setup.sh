@@ -25,6 +25,8 @@ else
   export EXTERNALDIR=$HOME/ROOT-externals/
 fi
 
+ARCH=$(uname -m)
+
 if [[ $COMPILER == *gcc* ]]
 then
   gcc47version=4.7
@@ -32,7 +34,6 @@ then
   gcc49version=4.9
   COMPILERversion=${COMPILER}version
 
-  ARCH=$(uname -m)
   . /afs/cern.ch/sw/lcg/contrib/gcc/${!COMPILERversion}/${ARCH}-${LABEL}/setup.sh
   export FC=gfortran
   export CXX=`which g++`
