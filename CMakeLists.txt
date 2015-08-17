@@ -132,17 +132,27 @@ add_clang_plugin(libSas
         # Add your checker here!
 )
 
-file(COPY scripts USE_SOURCE_PERMISSIONS DESTINATION ${CMAKE_BINARY_DIR}/)
+file(COPY scripts USE_SOURCE_PERMISSIONS DESTINATION ${CMAKE_BINARY_DIR}/ PATTERN "*.in" EXCLUDE)
 file(COPY config USE_SOURCE_PERMISSIONS DESTINATION ${CMAKE_BINARY_DIR}/)
 
-#modify script clang path to the real one
-if (LLVM_BIN_DIR)
-    set(CLANG_EXES_LOCATION ${LLVM_BIN_DIR}/)
+find_program(CLANG_BINARY_PATH "clang" ${LLVM_BIN_DIR})
+find_program(CLANGXX_BINARY_PATH "clang++" ${LLVM_BIN_DIR})
+find_program(CLANG_MODERNIZE_BINARY_PATH "clang-modernize" ${LLVM_BIN_DIR})
+find_program(CLANG_FORMAT_BINARY_PATH "clang-format" ${LLVM_BIN_DIR})
+
+if(CLANG_MODERNIZE_BINARY_PATH STREQUAL CLANG_MODERNIZE_BINARY_PATH-NOTFOUND )
+  set(CLANG_MODERNIZE_DISABLER "'''")
+  message(STATUS "clang-modernize not found.")
 endif()
-exec_program("sed" ARGS "-i" "\"s|@@@clang|${CLANG_EXES_LOCATION}clang|g\"" "${CMAKE_BINARY_DIR}/scripts/clang")
-exec_program("sed" ARGS "-i" "\"s|@@@clang++|${CLANG_EXES_LOCATION}clang++|g\"" "${CMAKE_BINARY_DIR}/scripts/clang++")
-exec_program("sed" ARGS "-i" "\"s|@@@clang-format|${CLANG_EXES_LOCATION}clang-format|g\"" "${CMAKE_BINARY_DIR}/scripts/common/__init__.py")
-exec_program("sed" ARGS "-i" "\"s|@@@clang-modernize|${CLANG_EXES_LOCATION}clang-modernize|g\"" "${CMAKE_BINARY_DIR}/scripts/common/__init__.py")
+if(CLANG_FORMAT_BINARY_PATH STREQUAL CLANG_FORMAT_BINARY_PATH-NOTFOUND )
+  set(CLANG_FORMAT_DISABLER "'''")
+  message(STATUS "clang-format not found.")
+endif()
+
+configure_file("${CMAKE_SOURCE_DIR}/scripts/clang.in" "${CMAKE_BINARY_DIR}/scripts/clang")
+configure_file("${CMAKE_SOURCE_DIR}/scripts/clang++.in" "${CMAKE_BINARY_DIR}/scripts/clang++")
+configure_file("${CMAKE_SOURCE_DIR}/scripts/common/__init__.py.in"
+               "${CMAKE_BINARY_DIR}/scripts/common/__init__.py")
 
 include( CTest )
 include( cmake/test.cmake )

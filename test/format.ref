@@ -1,0 +1,18 @@
+Can't find usable .clang-format, using LLVM style
+[1m[35mwarning: [m [m [1m3 code formatting rules violations detected. [m
+*** Original File (format.cpp)
+
+--- Formatted File
+
+***************
+
+*** 1,5 ****
+
+! int func(
+! )
+! {
+! return 0 ;
+! }
+--- 1 ----
+
+! int func() { return 0; }

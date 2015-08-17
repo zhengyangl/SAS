@@ -26,8 +26,13 @@ import sys
 import os
 import shutil
 
+<<<<<<< HEAD:scripts/common/__init__.py
 _ClangFormatExeName="@@@clang-format"
 _ClangModernizeExeName="@@@clang-modernize"
+=======
+_ClangFormatExeName="${CLANG_FORMAT_BINARY_PATH}"
+_ClangModernizeExeName="${CLANG_MODERNIZE_BINARY_PATH}"
+>>>>>>> CMake support for locate [clang-modernize, clang-format] and disable the tests if cannot find [clang-modernize, clang-format]:scripts/common/__init__.py.in
 _SourceFilesExtensions=[".cpp",".cxx",".c",
                         ".h",".hpp",".icc",".hxx"]
 _SourceFilesExtensions+=map(str.upper,_SourceFilesExtensions)
@@ -165,14 +170,17 @@ def Analyze(command, sa_clang_compiler):
     '''
     returnVal=0
     sources = filter(_IsSourceFile, command)
+    ${CLANG_FORMAT_DISABLER}
     if os.environ.has_key("SA_FORMATTING"):
        res = map(CheckFormattingRules, sources)
        returnVal = len(res)
+    ${CLANG_FORMAT_DISABLER}
+    ${CLANG_MODERNIZE_DISABLER}
     if os.environ.has_key("SA_MODERNIZE"):
        options = os.environ['SA_MODERNIZE']
        res = map(lambda source: ClangModernize(options,source), sources)
        returnVal = len(res)
-
+    ${CLANG_MODERNIZE_DISABLER}
 
     returnVal += _WrapClangCommand(command, sa_clang_compiler)
     return returnVal
