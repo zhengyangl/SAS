@@ -128,7 +128,7 @@ add_clang_plugin(libSas
    src/Performance/FiniteMathChecker.cpp
    src/Example/VarnameChecker.cpp
    src/ClangSasCheckerPluginRegister.cpp
-#         src/GlobalAccInCtorChecker.cpp
+#   src/GlobalAccInCtorChecker.cpp
         # Add your checker here!
 )
 

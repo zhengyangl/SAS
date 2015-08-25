@@ -16,7 +16,7 @@
 
 #include "ClassDumper.h"
 #include "CatchAll.h"
-#include "GlobalAccInCtorChecker.h"
+//#include "GlobalAccInCtorChecker.h"
 // ThreadSafety
 #include "ThreadSafety/Checkers.h"
 
@@ -47,7 +47,7 @@ extern "C" void clang_registerCheckers(clang::ento::CheckerRegistry& registry)
 //    registry.addChecker<sas::ClassDumperFT>("sas.optional.ClassDumperFT", "Dump class info");
 //    registry.addChecker<sas::ClassDumperInherit>("sas.optional.ClassDumperInherit", "Dump class inheritance info");
    registry.addChecker<sas::CatchAll>("sas.CodeRules.CatchAll", "Check for 'catch(...)' in source files");
-   registry.addChecker<sas::GlobalAccInCtorChecker>("sas.security.GlobalAccInCtor", "Check for access to global variable in constructor");
+//   registry.addChecker<sas::GlobalAccInCtorChecker>("sas.security.GlobalAccInCtor", "Check for access to global variable in constructor");
 
    // ThreadSafety
    {
