@@ -89,6 +89,8 @@ macro(add_clang_plugin name)
       target_link_libraries( ${name} ${user_lib} )
    endforeach()
 
+   install(TARGETS ${name} DESTINATION lib)
+
    set_target_properties( ${name} PROPERTIES
       LINKER_LANGUAGE CXX
       PREFIX "")
