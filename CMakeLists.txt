@@ -89,6 +89,8 @@ macro(add_clang_plugin name)
       target_link_libraries( ${name} ${user_lib} )
    endforeach()
 
+   install(TARGETS ${name} DESTINATION lib)
+
    set_target_properties( ${name} PROPERTIES
       LINKER_LANGUAGE CXX
       PREFIX "")
@@ -128,7 +130,7 @@ add_clang_plugin(libSas
    src/Performance/FiniteMathChecker.cpp
    src/Example/VarnameChecker.cpp
    src/ClangSasCheckerPluginRegister.cpp
-#         src/GlobalAccInCtorChecker.cpp
+#   src/GlobalAccInCtorChecker.cpp
         # Add your checker here!
 )
 
@@ -139,10 +141,10 @@ file(COPY config USE_SOURCE_PERMISSIONS DESTINATION ${CMAKE_BINARY_DIR}/)
 if (LLVM_BIN_DIR)
     set(CLANG_EXES_LOCATION ${LLVM_BIN_DIR}/)
 endif()
-exec_program("sed" ARGS "-i" "\"s|@@@clang|${CLANG_EXES_LOCATION}clang|g\"" "${CMAKE_BINARY_DIR}/scripts/clang")
-exec_program("sed" ARGS "-i" "\"s|@@@clang++|${CLANG_EXES_LOCATION}clang++|g\"" "${CMAKE_BINARY_DIR}/scripts/clang++")
-exec_program("sed" ARGS "-i" "\"s|@@@clang-format|${CLANG_EXES_LOCATION}clang-format|g\"" "${CMAKE_BINARY_DIR}/scripts/common/__init__.py")
-exec_program("sed" ARGS "-i" "\"s|@@@clang-modernize|${CLANG_EXES_LOCATION}clang-modernize|g\"" "${CMAKE_BINARY_DIR}/scripts/common/__init__.py")
+exec_program("sed" ARGS "-i" "-e" "\"s|[@][@][@]clang|${CLANG_EXES_LOCATION}clang|g\"" "${CMAKE_BINARY_DIR}/scripts/clang")
+exec_program("sed" ARGS "-i" "-e" "\"s|[@][@][@]clang++|${CLANG_EXES_LOCATION}clang++|g\"" "${CMAKE_BINARY_DIR}/scripts/clang++")
+exec_program("sed" ARGS "-i" "-e" "\"s|[@][@][@]clang-format|${CLANG_EXES_LOCATION}clang-format|g\"" "${CMAKE_BINARY_DIR}/scripts/common/__init__.py")
+exec_program("sed" ARGS "-i" "-e" "\"s|[@][@][@]clang-modernize|${CLANG_EXES_LOCATION}clang-modernize|g\"" "${CMAKE_BINARY_DIR}/scripts/common/__init__.py")
 
 include( CTest )
 include( cmake/test.cmake )
