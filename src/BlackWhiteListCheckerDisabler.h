@@ -8,13 +8,13 @@
 #include <clang/StaticAnalyzer/Core/BugReporter/BugReporter.h>
 #include <clang/StaticAnalyzer/Core/PathSensitive/CheckerContext.h>
 #include <fnmatch.h>
-#include "llvm/Support/YAMLTraits.h"
+#include "jsonxx.h"
 #include <regex>
 
 class BlackWhiteListCheckerDisabler {
-   bool PathWildCardMatch(std::vector<std::string> &, const std::string &) const;
-   bool RegexMatch(std::vector<std::string> &, const std::string &) const;
-   bool PrefixMatch(std::vector<std::string> &, const std::string &) const;
+   bool PathWildCardMatch(jsonxx::Array &, const std::string &) const;
+   bool RegexMatch(jsonxx::Array &, const std::string &) const;
+   bool PrefixMatch(jsonxx::Array &, const std::string &) const;
    bool ParseBlackWhiteField(std::string &) const;
    bool CheckBlackWhiteListConfiguration() const;
    void WalkDeclContext(const clang::DeclContext *);
@@ -38,38 +38,6 @@ public:
                                  const clang::SourceLocation &sLoc);
    bool isDisabled();
 
-   struct blackWhiteItem {
-      std::string blackOrWhite = "B";
-      std::vector<std::string> checkerList, namespaceList, filePathList, classList, structList;
-   };
-
-   struct configuration {
-      std::vector<blackWhiteItem> blackWhiteSequence;
-   };
 };
-
-
-LLVM_YAML_IS_SEQUENCE_VECTOR(std::string)
-LLVM_YAML_IS_SEQUENCE_VECTOR(BlackWhiteListCheckerDisabler::blackWhiteItem)
-namespace llvm{
-   namespace yaml{
-      template <> struct MappingTraits<BlackWhiteListCheckerDisabler::blackWhiteItem> {
-         static void mapping(IO &io, BlackWhiteListCheckerDisabler::blackWhiteItem &info) {
-            io.mapRequired("B/W", info.blackOrWhite);
-            io.mapOptional("CHECKER", info.checkerList);
-            io.mapOptional("NAMESPACE", info.namespaceList);
-            io.mapOptional("CLASS", info.classList);
-            io.mapOptional("STRUCT", info.structList);
-            io.mapOptional("FILE_PATH", info.filePathList);
-         }
-      };
-
-      template <> struct MappingTraits<BlackWhiteListCheckerDisabler::configuration> {
-         static void mapping(IO &io, BlackWhiteListCheckerDisabler::configuration &info) {
-            io.mapOptional("CONFIGURATION", info.blackWhiteSequence);
-         }
-      };
-   }
-}
 
 #endif

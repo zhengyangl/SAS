@@ -52,15 +52,16 @@ void BlackWhiteListCheckerDisabler::WalkDeclContext(const clang::DeclContext *DC
    }
 }
 
-bool BlackWhiteListCheckerDisabler::PathWildCardMatch(std::vector<std::string> &pathWildCardList,
+bool BlackWhiteListCheckerDisabler::PathWildCardMatch(jsonxx::Array &pathWildCardList,
                                                       const std::string &matchString) const {
    if(matchString.empty()) return true;
+   std::cout<<"PATHSIZE "<<pathWildCardList.size()<<std::endl;
    if(pathWildCardList.size() != 0)
    {
       for(std::size_t listIndex = 0;
           listIndex < pathWildCardList.size();
           ++listIndex){
-         if (fnmatch(pathWildCardList[listIndex].c_str(),
+         if (fnmatch(pathWildCardList.get<std::string>(listIndex).c_str(),
                      matchString.c_str(),
                      FNM_PATHNAME) == 0)
             return true;
@@ -70,7 +71,7 @@ bool BlackWhiteListCheckerDisabler::PathWildCardMatch(std::vector<std::string> &
    else return true;
 }
 
-bool BlackWhiteListCheckerDisabler::RegexMatch(std::vector<std::string> &regexList,
+bool BlackWhiteListCheckerDisabler::RegexMatch(jsonxx::Array &regexList,
                                                const std::string &matchString) const {
    if(matchString.empty()) return true;
    if(regexList.size() != 0)
@@ -78,7 +79,7 @@ bool BlackWhiteListCheckerDisabler::RegexMatch(std::vector<std::string> &regexLi
       for(std::size_t regexListIndex = 0;
           regexListIndex < regexList.size();
           ++regexListIndex){
-         std::regex regex(regexList[regexListIndex]);
+         std::regex regex(regexList.get<std::string>(regexListIndex));
          if(std::regex_match(matchString, regex))
             return true;
       }
@@ -87,7 +88,7 @@ bool BlackWhiteListCheckerDisabler::RegexMatch(std::vector<std::string> &regexLi
    else return true;
 }
 
-bool BlackWhiteListCheckerDisabler::PrefixMatch(std::vector<std::string> &prefixList,
+bool BlackWhiteListCheckerDisabler::PrefixMatch(jsonxx::Array &prefixList,
                                                 const std::string &matchString) const{
    if(matchString.empty()) return true;
    if(prefixList.size() != 0)
@@ -96,7 +97,7 @@ bool BlackWhiteListCheckerDisabler::PrefixMatch(std::vector<std::string> &prefix
           prefixListIndex < prefixList.size();
           ++prefixListIndex)
       {
-         std::string prefixInList = prefixList[prefixListIndex];
+         std::string prefixInList = prefixList.get<std::string>(prefixListIndex);
          if(std::equal(prefixInList.begin(), prefixInList.end(), matchString.begin()))
             return true;
       }
@@ -120,9 +121,9 @@ bool BlackWhiteListCheckerDisabler::CheckBlackWhiteListConfiguration() const{
    {
       sas_configuration_path = env_p;
    }
-   // if SA_CONFIGURATION is not set we will scan the .sas.yaml under working directory
-   // if we cannot find configuration yaml, then we fire the checker by default
-   else sas_configuration_path = ".sas.yaml";
+   // if SA_CONFIGURATION is not set we will scan the .sas.json under working directory
+   // if we cannot find configuration json, then we fire the checker by default
+   else sas_configuration_path = ".sas.json";
    std::ifstream config_file(sas_configuration_path);
    if (!config_file.good()) {
         config_file.close();
@@ -131,27 +132,40 @@ bool BlackWhiteListCheckerDisabler::CheckBlackWhiteListConfiguration() const{
 
    std::string config_string((std::istreambuf_iterator<char>(config_file)),
                              std::istreambuf_iterator<char>());
+
    config_file.close();
 
-   llvm::yaml::Input yin((llvm::StringRef(config_string)));
-   configuration bwConfiguration;
-   yin>>bwConfiguration;
+   jsonxx::Object json;
+   if(!json.parse(config_string)) return false;
+   if(!json.has<jsonxx::Array>("CONFIGURATION")) return false;
+   jsonxx::Array configuration_list = json.get<jsonxx::Array>("CONFIGURATION");
 
-   if(bwConfiguration.blackWhiteSequence.size() == 0) return false;
+   for(size_t i = 0 ; i < configuration_list.size(); i ++)
+   {
+      jsonxx::Object configuration = configuration_list.get<jsonxx::Object>(i);
+      jsonxx::Array filepathList, namespaceList, structList, classList, checkerList;
 
-   // parse the configuration file
-   for (blackWhiteItem bwItem_i: bwConfiguration.blackWhiteSequence ) {
-      bool path_match=PathWildCardMatch(bwItem_i.filePathList, relPath.str()),
-         namespace_match=RegexMatch(bwItem_i.namespaceList, namespace_name),
-         struct_match=RegexMatch(bwItem_i.structList, struct_name),
-         class_match=RegexMatch(bwItem_i.classList, class_name);
+      if(configuration.has<jsonxx::Array>("FILE_PATH"))
+         filepathList = configuration.get<jsonxx::Array>("FILE_PATH");
+      if(configuration.has<jsonxx::Array>("NAMESPACE"))
+         namespaceList = configuration.get<jsonxx::Array>("NAMESPACE");
+      if(configuration.has<jsonxx::Array>("STRUCT"))
+         structList = configuration.get<jsonxx::Array>("STRUCT");
+      if(configuration.has<jsonxx::Array>("CLASS"))
+         classList = configuration.get<jsonxx::Array>("CLASS");
+      if(configuration.has<jsonxx::Array>("CHECKER"))
+         checkerList = configuration.get<jsonxx::Array>("CHECKER");
+      bool path_match=PathWildCardMatch(filepathList, relPath.str()),
+         namespace_match=RegexMatch(namespaceList, namespace_name),
+         struct_match=RegexMatch(structList, struct_name),
+         class_match=RegexMatch(classList, class_name);
 
       bool match = path_match && namespace_match && struct_match && class_match;
       //if all path/namespace/class/struct are matched, we then check the b/w and decide whether we fire
       if (match)
       {
-         bool blackWhite = ParseBlackWhiteField(bwItem_i.blackOrWhite),
-            checkerMatch = PrefixMatch(bwItem_i.checkerList, checker),
+         bool blackWhite = configuration.get<jsonxx::Boolean>("B/W"),
+            checkerMatch = PrefixMatch(checkerList, checker),
             ifLaunch = (checkerMatch) ? blackWhite : !blackWhite;
          if(!ifLaunch) return true;
       }

@@ -108,6 +108,7 @@ add_clang_plugin(libSas
 #    src/ClassDumper.cpp
    src/CatchAll.cpp
    src/CommentCheckerDisabler.cpp
+   src/jsonxx.cc
    src/BlackWhiteListCheckerDisabler.cpp
    # New Structure
    src/CodingConventions/General/UsingNamespace.cpp

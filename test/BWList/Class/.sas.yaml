@@ -1,9 +1,0 @@
-CONFIGURATION:
-  - FILE_PATH: ["WhiteList/*.cpp"]
-    CLASS: ["TA.*"]
-    CHECKER: ["sas.CodingConventions.ROOT.RN3"]
-    B/W: W
-  - FILE_PATH: ["BlackList/*.cpp"]
-    CLASS: ["TA.*"]
-    CHECKER: ["sas.CodingConventions.ROOT.RN3"]
-    B/W: B

@@ -1,0 +1,16 @@
+{"CONFIGURATION":
+ [
+     {
+         "FILE_PATH": ["WhiteList/*.cpp"],
+         "NAMESPACE": ["outside::inside"],
+         "CHECKER": ["sas.CodingConventions.ROOT.RN3"],
+         "B/W": true
+     },
+     {
+         "FILE_PATH": ["BlackList/*.cpp"],
+         "NAMESPACE": ["outside::inside"],
+         "CHECKER": ["sas.CodingConventions.ROOT.RN3"],
+         "B/W": false
+     }
+ ]
+}
